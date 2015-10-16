@@ -1,0 +1,17 @@
+{
+	"wechat": {
+		"appid": "",
+		"appsecret": "",
+		"baseUrl": "http://127.0.0.1:65001"
+	},
+	"db": {
+		"path": "db/",
+		"level": {
+			"userbind": "userbind.level"
+		},
+		"sqlite": {
+			"y1timetable": "y1timetable.sqlite",
+			"coal": "coal.sqlite"
+		}
+	}
+}
