@@ -1,0 +1,79 @@
+{
+	"button":[
+		{
+			"name": "一键查询",
+			"sub_button": [
+				{
+					"type": "click",
+					"name": "课表",
+					"key": "QUERY_TIMETABLE"
+				},
+				{
+					"type": "click",
+					"name": "水电",
+					"key": "QUERY_COAL"
+				},
+				{
+					"type": "click",
+					"name": "体育卡",
+					"key": "QUERY_EXERCISE"
+				},
+				{
+					"type": "click",
+					"name": "书单",
+					"key": "QUERY_READING"
+				},
+				{
+					"type": "view",
+					"name": "修改信息",
+					"url": "/wechat/bind"
+				}
+			]
+		},
+		{
+			"name": "有腔调",
+			"sub_button": [
+				{
+					"type": "click",
+					"name": "Podcast",
+					"key": "TONE_PODCAST"
+				},
+				{
+					"type": "click",
+					"name": "快照",
+					"key": "TONE_PHOTO"
+				},
+				{
+					"type": "click",
+					"name": "影像",
+					"key": "TONE_VIDEO"
+				},
+				{
+					"type": "click",
+					"name": "卡券",
+					"key": "TONE_COUPON"
+				}
+			]
+		},
+		{
+			"name": "关于我们",
+			"sub_button": [
+				{
+					"type": "click",
+					"name": "团队介绍",
+					"key": "ABOUT_TEAM"
+				},
+				{
+					"type": "click",
+					"name": "联系方式",
+					"key": "ABOUT_CONTACT"
+				},
+				{
+					"type": "click",
+					"name": "理念",
+					"key": "ABOUT_BELIEF"
+				}
+			]
+		}
+	]
+}
