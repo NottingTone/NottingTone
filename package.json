@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "private": true,
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "gulpjs/gulp#4.0",
+    "gulp-csslint": "^0.2.0",
+    "gulp-eslint": "^1.0.0",
+    "gulp-minify-ejs": "^1.0.3",
+    "gulp-uglify": "^1.4.1",
+    "gulp-uglifycss": "^1.0.4"
+  }
+}
