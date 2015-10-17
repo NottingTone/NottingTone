@@ -46,7 +46,6 @@ router.get('/', function (req, res) {
 
 // 相应微信事件
 router.post('/', function (req, res) {
-	console.log(req.body);
 	switch (req.body.xml.msgtype[0]) {
 		case 'text':
 			handlers.TEXT(req.body.xml, res);
