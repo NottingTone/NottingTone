@@ -48,6 +48,7 @@ router.post('/', function (req, res) {
 	console.log(req.body);
 	switch (req.body.xml.msgtype[0]) {
 		case 'text':
+			handlers.TEXT(req.body.xml, res);
 			break;
 		case 'event':
 			switch (req.body.xml.event[0]) {
@@ -63,6 +64,7 @@ router.post('/', function (req, res) {
 						// 不支持当前操作
 						responses.sendResponse(res, 'unsupported', null, req.body.xml);
 					}
+					break;
 				default:
 					// 忽略事件
 					res.status(200).end('');
