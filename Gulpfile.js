@@ -50,7 +50,7 @@ gulp.task('lint:js-frontend', function(cb) {
 
 // 审查后端js
 gulp.task('lint:js-backend', function(cb) {
-	return gulp.src(['tools/*.js', 'web/*.js', 'web/modules/*/*.js'])
+	return gulp.src(['tools/*.js', 'web/*.js', 'web/modules/*.js', 'web/modules/*/*.js'])
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.on('finish', cb);
