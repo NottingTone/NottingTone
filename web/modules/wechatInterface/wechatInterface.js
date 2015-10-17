@@ -53,7 +53,7 @@ router.post('/', function (req, res) {
 			switch (req.body.xml.event[0]) {
 				case 'SUBSCRIBE':
 					// 订阅欢迎信息
-					response.sendResponse(res, 'subscribe', null, req.body.xml);
+					responses.sendResponse(res, 'subscribe', null, req.body.xml);
 					break;
 				case 'CLICK':
 					if (req.body.xml.eventkey[0] in handlers) {
