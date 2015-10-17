@@ -24,9 +24,9 @@
 					"key": "QUERY_READING"
 				},
 				{
-					"type": "view",
-					"name": "修改信息",
-					"url": "/wechat/bind"
+					"type": "click",
+					"name": "解除绑定",
+					"key": "QUERY_UNBIND"
 				}
 			]
 		},
