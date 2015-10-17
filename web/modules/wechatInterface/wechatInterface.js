@@ -8,7 +8,8 @@ var handlers = {
 	QUERY_TIMETABLE   : require('../timetable/timetable'),
 	QUERY_COAL        : require('../coal/coal'),
 	QUERY_EXERCISE    : require('../exercise/exercise'),
-	QUERY_READING     : require('../reading/reading')
+	QUERY_READING     : require('../reading/reading'),
+	QUERY_UNBIND      : require('../unbind/unbind')
 	//TONE_PODCAST      : require('../podcast/podcast'),
 	//TONE_PHOTO        : require('../photo/photo'),
 	//TONE_VIDEO        : require('../video/video'),
