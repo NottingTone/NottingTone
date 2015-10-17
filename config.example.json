@@ -2,7 +2,8 @@
 	"wechat": {
 		"appid": "",
 		"appsecret": "",
-		"baseUrl": "http://127.0.0.1:65001"
+		"baseUrl": "http://127.0.0.1:65001",
+		"token": ""
 	},
 	"db": {
 		"path": "db/",
