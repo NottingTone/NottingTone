@@ -33,8 +33,8 @@ function bindResident (req, res, data, cb) {
 }
 
 function inputCourse (req, res, data, cb) {
-	if (req.content[0].match(/[A-Z0-9]{6}/)) {
-		data.context.courseId    = req.content[0];
+	if (req.content[0].match(/[A-Za-z0-9]{6}/)) {
+		data.context.courseId    = req.content[0].toUpperCase();
 		common.putUser(req, res, data, cb);
 	} else {
 		responses.sendResponse(res, 'invalidData', null, req);
@@ -64,7 +64,7 @@ function text (req, res) {
 					});
 					break;
 				case 'inputCourse':
-					inputCourse(function (courseId) {
+					inputCourse(req, res, data, function (courseId) {
 						handlers.QUERY_READING(req, res);
 					});
 					break;
