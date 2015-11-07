@@ -1,6 +1,5 @@
+var responses    = require('../wechatInterface/responses');
 var common       = require('../common');
-
-var responses = require('../wechatInterface/responses');
 
 function unbind (req, res) {
 	common.getUser(req, res, function (data) {
