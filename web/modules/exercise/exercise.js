@@ -15,7 +15,7 @@ function exercise (req, res) {
 			});
 		} else {
 			var stuId = data.stuId;
-
+			responses.sendResponse(res, 'unsupported', null, req);
 		}
 	});
 
