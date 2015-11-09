@@ -1,0 +1,16 @@
+{
+	"touser": "<%= toUser %>",
+	"msgtype": "news",
+	"news": {
+		"articles": [
+<% articles.forEach(function (article) { %>
+		{
+			"title": "<%= article.title %>",
+			"description": "<%= article.description %>",
+			"url": "<%= article.url %>",
+			"picurl": "<%= article.picUrl %>"
+		}
+<% }); %>
+		]
+	}
+}
