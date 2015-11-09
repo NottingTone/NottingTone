@@ -51,7 +51,13 @@ router.post('/', function (req, res) {
 		scale         : getValue('scale'),
 		title         : getValue('title'),
 		description   : getValue('description'),
-		url           : getValue('url')
+		url           : getValue('url'),
+		event         : getValue('event'),
+		eventKey      : getValue('eventkey'),
+		ticket        : getValue('ticket'),
+		latitude      : getValue('latitude'),
+		longtitude    : getValue('longtitude'),
+		precision     : getValue('precision')
 	}
 
 	handler.initializeHandler(wxEvent, res);
