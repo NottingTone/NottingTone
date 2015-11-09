@@ -5,32 +5,32 @@ var fs         = require('fs');
 var request    = require('request');
 var ejs        = require('ejs');
 
+var db         = require('db');
+
+var router     = require('handlers/router/router');
+
 var templatePath = path.resolve(__dirname, 'wechatTemplates');
 
-var handler = (function() {
+var Handler = (function() {
 
-	function handler (wxEvent, userInfo, resp) {
-		this.wxEvent = wxEvent;
-		this.userInfo = userInfo;
-		this.resp = resp;
-		this.respSent = false;
+	function Handler () {
+
 	}
 
-	handler.prototype.setResponseTimeout = function (time) {
+	Handler.prototype.setResponseTimeout = function (time) {
 		this.timeout = setTimeout((function() {
 			this.sendRawResponse('txt', '');
 		}).bind(this), time);
 	}
 
 	// 将事务交与下一个handler处理
-	handler.prototype.handOver = function (nextHandler) {
-		theNextHandler = new nextHandler(this.wxEvent, this.userInfo, this.res);
-		theNextHandler.go();
+	Handler.prototype.handOver = function (nextHandler) {
+		nextHandler.call(this);
 	}
 
 	// 发送裸响应
 	// 若已发送过相应，则调用客服接口
-	handler.prototype.sendRawResponse = function (type, resp, forceMode) {
+	Handler.prototype.sendRawResponse = function (type, resp, forceMode) {
 		if (this.respSent && forceMode == 'passive') {
 			throw new Error('Passive mode cannot be used due to sent response.');
 		} else if (this.respSent || forceMode === 'active') {
@@ -45,7 +45,7 @@ var handler = (function() {
 	}
 
 	// 发送模板响应
-	handler.prototype.sendTemplateResponse = function (templateFileName, data) {
+	Handler.prototype.sendTemplateResponse = function (templateFileName, data) {
 
 		if (!data) {
 			data = {};
@@ -64,28 +64,28 @@ var handler = (function() {
 	}
 
 	// 发送文字消息
-	handler.prototype.sendTextResponse = function (text) {
+	Handler.prototype.sendTextResponse = function (text) {
 		this.sendTemplateResponse('base/text', {
 			text: text
 		});
 	}
 
 	// 发送图片消息
-	handler.prototype.sendImageResponse = function (mediaId) {
+	Handler.prototype.sendImageResponse = function (mediaId) {
 		this.sendTemplateResponse('base/image', {
 			mediaId: mediaId
 		});
 	}
 
 	// 发送语音消息
-	handler.prototype.sendVoiceResponse = function (mediaId) {
+	Handler.prototype.sendVoiceResponse = function (mediaId) {
 		this.sendTemplateResponse('base/voice', {
 			mediaId: mediaId
 		});
 	}
 
 	// 发送视频消息
-	handler.prototype.sendVideoResponse = function (mediaId, thumbMediaId, title, description) {
+	Handler.prototype.sendVideoResponse = function (mediaId, thumbMediaId, title, description) {
 		this.sendTemplateResponse('base/video', {
 			mediaId: mediaId,
 			thumbMediaId: thumbMediaId,
@@ -95,7 +95,7 @@ var handler = (function() {
 	}
 
 	// 发送音乐消息
-	handler.prototype.sendMusicResponse = function (url, hqUrl, thumbMediaId, title, description) {
+	Handler.prototype.sendMusicResponse = function (url, hqUrl, thumbMediaId, title, description) {
 		this.sendTemplateResponse('base/music', {
 			url: url,
 			hqUrl: hqUrl,
@@ -117,21 +117,72 @@ var handler = (function() {
 	...
 	]
 	*/
-	handler.prototype.sendNewsResponse = function (articles) {
+	Handler.prototype.sendNewsResponse = function (articles) {
 		this.sendTemplateResponse('base/news', {
 			articles: articles
 		});
 	}
 
 	// 发送卡券消息
-	handler.prototype.sendCardResponse = function (cardId, cardExt) {
+	Handler.prototype.sendCardResponse = function (cardId, cardExt) {
 		this.sendTemplateResponse('base/card', {
 			cardId: cardId,
 			cardExt: cardExt
 		});
 	}
 
-	return handler;
+	return Handler;
 
 })();
 
+
+var User = (function() {
+
+	function User (openid) {
+		this.openid = openid;
+	}
+
+	user.prototype.load = function (cb) {
+		db.userbind.get(this.openid, function (err, ret) {
+			if (err) {
+				cb && cb(false);
+			} else {
+				this.info = JSON.parse(ret);
+				cb && cb(true);
+			}
+		});
+	}
+
+	user.prototype.save = function (cb) {
+		db.userbind.put(this.openid, JSON.stringify(this.info), function (err) {
+			if (err) {
+				cb && cb(false);
+			} else {
+				cb && cb(true);
+			}
+		});
+	}
+
+	return Handler;
+
+})();
+
+function initializeHandler (wxEvent, resp) {
+
+	var user = new User(wxEvent.openid);
+
+	var handler = new Handler();
+
+	handler.wxEvent = wxEvent;
+	handler.user    = user;
+	handler.resp    = resp;
+	handler.resSent = false;
+
+	user.load(function () {
+		router.call(handler);
+	});
+}
+
+module.exports = {
+	initializeHandler: initializeHandler
+}
