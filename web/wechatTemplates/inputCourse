@@ -1,0 +1,2 @@
+<% text = "请输入课程代码"; %>
+<% include base/text %>

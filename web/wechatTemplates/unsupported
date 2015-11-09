@@ -1,0 +1,2 @@
+<% text = "您的操作暂时不被支持"; %>
+<% include base/text %>

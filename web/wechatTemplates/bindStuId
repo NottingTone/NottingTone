@@ -1,0 +1,2 @@
+<% text = "请输入学号\n示例：\n6500000"; %>
+<% include base/text %>

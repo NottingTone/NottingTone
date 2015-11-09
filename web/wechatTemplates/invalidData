@@ -1,0 +1,2 @@
+<% text = "您的输入有误"; %>
+<% include base/text %>

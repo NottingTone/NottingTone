@@ -1,0 +1,2 @@
+<% text = "操作成功"; %>
+<% include base/text %>

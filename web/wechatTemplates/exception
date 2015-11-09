@@ -1,0 +1,2 @@
+<% text = "服务器异常"; %>
+<% include base/text %>
