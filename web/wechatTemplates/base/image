@@ -1,0 +1,5 @@
+<% if (respSent) { %>
+<% include active/image.json %>
+<% } else { %>
+<% include passive/image.xml %>
+<% } %>

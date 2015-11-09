@@ -45,22 +45,7 @@ var handler = (function() {
 	}
 
 	// 发送模板响应
-	// sendTemplateResponse (templateFileName, [data], [forceMode])
-	// sendTemplateResponse (passiveTemplateFileName, activeTemplateFileName, [data])
-	handler.prototype.sendTemplateResponse = function (templateFileName, paramB, paramC, paramD) {
-
-		var data, forceMode;
-
-		if (typeof paramB === 'string' || paramB instanceof String) {
-			if (this.respSent) {
-				templateFileName = paramB;
-			}
-			data = paramC;
-			forceMode = paramD;
-		} else {
-			data = paramB;
-			forceMode = undefined;
-		}
+	handler.prototype.sendTemplateResponse = function (templateFileName, data) {
 
 		if (!data) {
 			data = {};
@@ -69,6 +54,7 @@ var handler = (function() {
 		data.toUser = wxEvent.openid;
 		data.fromUser = wxEvent.mpid;
 		data.timestemp = Date.now() / 1000 | 0;
+		data.respSent = this.respSent;
 
 		var type = path.extname(templateFileName);
 		var template = fs.readFileSync(path.resolve(templatePath, templateFileName));
@@ -79,28 +65,28 @@ var handler = (function() {
 
 	// 发送文字消息
 	handler.prototype.sendTextResponse = function (text) {
-		this.sendTemplateResponse('base/passive/text.xml', 'base/active/text.json', {
+		this.sendTemplateResponse('base/text', {
 			text: text
 		});
 	}
 
 	// 发送图片消息
 	handler.prototype.sendImageResponse = function (mediaId) {
-		this.sendTemplateResponse('base/passive/image.xml', 'base/active/image.json', {
+		this.sendTemplateResponse('base/image', {
 			mediaId: mediaId
 		});
 	}
 
 	// 发送语音消息
 	handler.prototype.sendVoiceResponse = function (mediaId) {
-		this.sendTemplateResponse('base/passive/voice.xml', 'base/active/voice.json', {
+		this.sendTemplateResponse('base/voice', {
 			mediaId: mediaId
 		});
 	}
 
 	// 发送视频消息
 	handler.prototype.sendVideoResponse = function (mediaId, thumbMediaId, title, description) {
-		this.sendTemplateResponse('base/passive/video.xml', 'base/active/video.json', {
+		this.sendTemplateResponse('base/video', {
 			mediaId: mediaId,
 			thumbMediaId: thumbMediaId,
 			title: title,
@@ -110,7 +96,7 @@ var handler = (function() {
 
 	// 发送音乐消息
 	handler.prototype.sendMusicResponse = function (url, hqUrl, thumbMediaId, title, description) {
-		this.sendTemplateResponse('base/passive/music.xml', 'base/active/music.json', {
+		this.sendTemplateResponse('base/music', {
 			url: url,
 			hqUrl: hqUrl,
 			thumbMediaId: thumbMediaId,
@@ -132,17 +118,17 @@ var handler = (function() {
 	]
 	*/
 	handler.prototype.sendNewsResponse = function (articles) {
-		this.sendTemplateResponse('base/passive/news.xml', 'base/active/news.json', {
+		this.sendTemplateResponse('base/news', {
 			articles: articles
 		});
 	}
 
 	// 发送卡券消息
 	handler.prototype.sendCardResponse = function (cardId, cardExt) {
-		this.sendTemplateResponse('base/active/card.json', {
+		this.sendTemplateResponse('base/card', {
 			cardId: cardId,
 			cardExt: cardExt
-		}, true);
+		});
 	}
 
 	return handler;

@@ -1,0 +1,5 @@
+<% if (respSent) { %>
+<% include active/music.json %>
+<% } else { %>
+<% include passive/music.xml %>
+<% } %>
