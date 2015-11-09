@@ -19,7 +19,7 @@ var Handler = (function() {
 
 	Handler.prototype.setResponseTimeout = function (time) {
 		this.timeout = setTimeout((function() {
-			this.sendRawResponse('txt', '');
+			this.sendEmptyResponse();
 		}).bind(this), time);
 	}
 
@@ -42,6 +42,10 @@ var Handler = (function() {
 				clearTimeout(this.timeout);
 			}
 		}
+	}
+
+	Handler.prototype.sendEmptyResponse = function () {
+		this.sendRawResponse('txt', '');
 	}
 
 	// 发送模板响应
