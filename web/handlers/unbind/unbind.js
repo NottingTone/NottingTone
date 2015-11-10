@@ -1,6 +1,6 @@
 "use strict";
 
-function unbind (req, res) {
+function unbind () {
 
 	this.user.info = {};
 

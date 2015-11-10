@@ -1,6 +1,6 @@
 "use strict";
 
-function exercise (req, res) {
+function exercise () {
 	if (!this.user.info.stuId) {
 		this.handOver('REQUIRE_STUID');
 	} else {

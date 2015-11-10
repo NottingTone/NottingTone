@@ -1,6 +1,6 @@
 "use strict";
 
-function timetable (req, res) {
+function timetable () {
 	if (!this.user.info.stuId) {
 		this.handOver('REQUIRE_STUID');
 	} else {
