@@ -14,7 +14,7 @@ function requireDorm () {
 }
 
 function inputDorm () {
-	var match = this.wxEvent.content.match(/\s*(\d{2})\s*(\d{3,4})\s*/);
+	var match = this.wxEvent.content.match(/^\s*(\d{2})\s*(\d{3,4})\s*$/);
 	var _this = this;
 	var nextHandler = this.user.info.context.next;
 	if (match) {

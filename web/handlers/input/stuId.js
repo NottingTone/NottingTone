@@ -14,7 +14,7 @@ function requireStuId () {
 }
 
 function inputStuId () {
-	var match = this.wxEvent.content.match(/\s*(65\d{5})\s*/);
+	var match = this.wxEvent.content.match(/^\s*(65\d{5})\s*$/);
 	var _this = this;
 	var nextHandler = this.user.info.context.next;
 	if (match) {
