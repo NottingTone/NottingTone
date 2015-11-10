@@ -1,5 +1,0 @@
-<% if (respSent) { %>
-<% include active/voice.json %>
-<% } else { %>
-<% include passive/voice.xml %>
-<% } %>

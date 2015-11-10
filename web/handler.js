@@ -5,11 +5,12 @@ var fs         = require('fs');
 var request    = require('request');
 var ejs        = require('ejs');
 
-var db         = require('db');
+var config     = require('../config');
+var db         = require('./db');
 
-var router     = require('handlers/router/router');
+var router     = require('./handlers/router/router');
 
-var templatePath = path.resolve(__dirname, 'wechatTemplates');
+var templateDir = path.resolve(__dirname, 'wechatTemplates');
 
 var Handler = (function() {
 
@@ -30,10 +31,8 @@ var Handler = (function() {
 
 	// 发送裸响应
 	// 若已发送过相应，则调用客服接口
-	Handler.prototype.sendRawResponse = function (type, resp, forceMode) {
-		if (this.respSent && forceMode == 'passive') {
-			throw new Error('Passive mode cannot be used due to sent response.');
-		} else if (this.respSent || forceMode === 'active') {
+	Handler.prototype.sendRawResponse = function (type, resp) {
+		if (this.respSent) {
 			// https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
 		} else {
 			this.resp.type(type).send(resp);
@@ -55,15 +54,21 @@ var Handler = (function() {
 			data = {};
 		}
 
-		data.toUser = wxEvent.openid;
-		data.fromUser = wxEvent.mpid;
-		data.timestemp = Date.now() / 1000 | 0;
+		data.toUser = this.wxEvent.openid;
+		data.fromUser = this.wxEvent.mpid;
+		data.timestamp = Date.now() / 1000 | 0;
 		data.respSent = this.respSent;
 
-		var type = path.extname(templateFileName);
-		var template = fs.readFileSync(path.resolve(templatePath, templateFileName));
+		var templatePath = path.resolve(templateDir, templateFileName + '.ejs');
+		var template = fs.readFileSync(templatePath, {encoding: 'utf-8'});
+		
+		var renderred = ejs.render(template, data, {filename: templatePath});
 
-		this.sendRawResponse(type, ejs.render(template, data), forceMode);
+		var match = renderred.match(/^\s*#\*\s*(\S*)\s*\n([\s\S]*)$/);
+		var type = (match && match[1]) || 'txt';
+		var body = (match && match[2]) || renderred;
+		
+		this.sendRawResponse(type, body);
 
 	}
 
@@ -146,18 +151,19 @@ var User = (function() {
 		this.openid = openid;
 	}
 
-	user.prototype.load = function (cb) {
+	User.prototype.load = function (cb) {
+		var _this = this;
 		db.userbind.get(this.openid, function (err, ret) {
 			if (err) {
 				cb && cb(false);
 			} else {
-				this.info = JSON.parse(ret);
+				_this.info = JSON.parse(ret);
 				cb && cb(true);
 			}
 		});
 	}
 
-	user.prototype.save = function (cb) {
+	User.prototype.save = function (cb) {
 		db.userbind.put(this.openid, JSON.stringify(this.info), function (err) {
 			if (err) {
 				cb && cb(false);
@@ -167,7 +173,7 @@ var User = (function() {
 		});
 	}
 
-	return Handler;
+	return User;
 
 })();
 
@@ -181,6 +187,8 @@ function initializeHandler (wxEvent, resp) {
 	handler.user    = user;
 	handler.resp    = resp;
 	handler.resSent = false;
+
+	handler.setResponseTimeout(config.wechat.responseTimeout);
 
 	user.load(function () {
 		router.call(handler);

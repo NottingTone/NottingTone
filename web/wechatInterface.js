@@ -34,11 +34,12 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
 
 	function getValue (key) {
-		return req.body[key] && req.body[key][0];
+		return req.body.xml[key] && req.body.xml[key][0];
 	}
 
 	var wxEvent = {
 		openid        : getValue('fromusername'),
+		mpid          : getValue('tousername'),
 		type          : getValue('msgtype'),
 		content       : getValue('content'),
 		picUrl        : getValue('picurl'),

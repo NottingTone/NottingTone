@@ -1,5 +1,0 @@
-<% if (respSent) { %>
-<% include active/text.json %>
-<% } else { %>
-<% include passive/text.xml %>
-<% } %>

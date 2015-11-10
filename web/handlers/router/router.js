@@ -35,7 +35,7 @@ function router () {
 					this.sendTemplateResponse('subscribe');
 					break;
 				case 'CLICK':
-					if (this.wxEvent.eventkey in handlers) {
+					if (this.wxEvent.eventkey in menuHandlers) {
 						this.handOver(handlers[this.wxEvent.eventkey]);
 					} else {
 						this.sendTemplateResponse('unsupported');

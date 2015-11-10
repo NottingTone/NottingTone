@@ -1,5 +1,0 @@
-<% if (respSent) { %>
-<% include active/card.json %>
-<% } else { %>
-<% throw new Error("Unable to send card passively.") %>
-<% } %>

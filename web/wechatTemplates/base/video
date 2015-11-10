@@ -1,5 +1,0 @@
-<% if (respSent) { %>
-<% include active/video.json %>
-<% } else { %>
-<% include passive/video.xml %>
-<% } %>
