@@ -1,7 +1,6 @@
 "use strict";
 
 var menuHandlers = {
-	TEXT              : require('../text/text'),
 	QUERY_TIMETABLE   : require('../timetable/timetable'),
 	QUERY_COAL        : require('../coal/coal'),
 	QUERY_EXERCISE    : require('../exercise/exercise'),
