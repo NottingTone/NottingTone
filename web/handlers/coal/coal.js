@@ -1,29 +1,12 @@
-var request      = require('request');
-
-
-function getCoal (build, room) {
-
-}
+"use strict";
 
 function coal (req, res) {
-
-	common.getUser(req, res, function (data) {
-		
-		if (!data.build || !data.room) {
-			data.context = {
-				type: 'coal',
-				expiration: Date.now()/1000|0 + 300
-			}
-			common.putUser(req, res, data, function () {
-				responses.sendResponse(res, 'bindResident', null, req);
-			});
-		} else {
-			var build = data.build;
-			var room = data.room;
-			responses.sendResponse(res, 'unsupported', null, req);
-		}
-	});
-
+	if (!this.user.info.build || !this.user.info.room) {
+		this.handOver('REQUIRE_DORM');
+	} else {
+		// do stuff
+		this.sendTemplateResponse('unsupported');
+	}
 }
 
 module.exports = coal;
