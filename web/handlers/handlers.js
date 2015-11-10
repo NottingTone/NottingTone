@@ -15,9 +15,9 @@ var handlers = {
 	//ABOUT_CONTACT     : require('./contact/contact'),
 	//ABOUT_BELIEF      : require('./belief/belief')
 	REQUIRE_STUID     : require('./input/stuId').requireStuId,
-	INPUT_STUID       : require('./input/stuId').inputStuId
-	//REQUIRE_DORM      : require('./input/dorm').requireDorm,
-	//INPUT_DORM        : require('./input/dorm').inputDorm,
+	INPUT_STUID       : require('./input/stuId').inputStuId,
+	REQUIRE_DORM      : require('./input/dorm').requireDorm,
+	INPUT_DORM        : require('./input/dorm').inputDorm
 	//REQUIRE_COURSE    : require('./input/courseId').requireCourse,
 	//INPUT_COURSE      : require('./input/courseId').inputCourse
 };
