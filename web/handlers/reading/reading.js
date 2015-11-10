@@ -1,24 +1,10 @@
-
-function reading (req, res) {
-
-	common.getUser(req, res, function (data) {
-		
-		if (!data.context || !data.context.courseId) {
-			data.context = {
-				type: 'inputCourse',
-				expiration: Date.now()/1000|0 + 300
-			};
-			common.putUser(req, res, data, function () {
-				responses.sendResponse(res, 'inputCourse', null, req);
-			});
-		} else {
-			var courseId = data.context.courseId;
-			data.context = null;
-			common.putUser(req, res, data, function () {
-				responses.sendResponse(res, 'unsupported', null, req);
-			});
-		}
-	});
+function reading () {
+	if (!this.user.courseId) {
+		this.handOver('REQUIRE_COURSE');
+	} else {
+		// do stuff
+		this.sendTemplateResponse('unsupported');
+	}
 }
 
 module.exports = reading;

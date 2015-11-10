@@ -17,9 +17,9 @@ var handlers = {
 	REQUIRE_STUID     : require('./input/stuId').requireStuId,
 	INPUT_STUID       : require('./input/stuId').inputStuId,
 	REQUIRE_DORM      : require('./input/dorm').requireDorm,
-	INPUT_DORM        : require('./input/dorm').inputDorm
-	//REQUIRE_COURSE    : require('./input/courseId').requireCourse,
-	//INPUT_COURSE      : require('./input/courseId').inputCourse
+	INPUT_DORM        : require('./input/dorm').inputDorm,
+	REQUIRE_COURSE    : require('./input/course').requireCourse,
+	INPUT_COURSE      : require('./input/course').inputCourse
 };
 
 module.exports = handlers;
