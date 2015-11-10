@@ -8,7 +8,7 @@ var ejs        = require('ejs');
 var config     = require('../config');
 var db         = require('./db');
 
-var router     = require('./handlers/router/router');
+var handlers   = require('./handlers/handlers')
 
 var templateDir = path.resolve(__dirname, 'wechatTemplates');
 
@@ -26,7 +26,13 @@ var Handler = (function() {
 
 	// 将事务交与下一个handler处理
 	Handler.prototype.handOver = function (nextHandler) {
-		nextHandler.call(this);
+		if (nextHandler in handlers) {
+			this.prev = this.current;
+			this.current = nextHandler;
+			handlers[nextHandler].call(this);
+		} else {
+			this.sendTemplateResponse('exception');
+		}
 	}
 
 	// 发送裸响应
@@ -187,11 +193,12 @@ function initializeHandler (wxEvent, resp) {
 	handler.user    = user;
 	handler.resp    = resp;
 	handler.resSent = false;
+	handler.current = 'ROUTER';
 
 	handler.setResponseTimeout(config.wechat.responseTimeout);
 
 	user.load(function () {
-		router.call(handler);
+		handlers.ROUTER.call(handler);
 	});
 }
 
