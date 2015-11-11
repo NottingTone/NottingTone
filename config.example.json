@@ -3,7 +3,8 @@
 		"appid": "",
 		"appsecret": "",
 		"baseUrl": "http://127.0.0.1:65001",
-		"token": ""
+		"token": "",
+		"responseTimeout": 4000
 	},
 	"db": {
 		"path": "db/",
