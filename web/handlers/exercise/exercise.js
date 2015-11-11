@@ -1,7 +1,9 @@
 "use strict";
+
 var request = require('request');
 
 function exercise (req, res) {
+	
 	var thisSemesterPeNumWeb = "";
 	var lastSemesterPeNumWeb = "";
 	var outputString = "";

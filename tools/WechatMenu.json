@@ -15,7 +15,7 @@
 				},
 				{
 					"type": "click",
-					"name": "体育卡",
+					"name": "锻炼和学分",
 					"key": "QUERY_EXERCISE"
 				},
 				{
