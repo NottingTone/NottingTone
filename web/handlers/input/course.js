@@ -18,7 +18,7 @@ function inputCourse () {
 	var _this = this;
 	var nextHandler = this.user.info.context.next;
 	if (match) {
-		this.user.courseId = match[1];
+		this.user.courseId = match[1].toUpperCase();
 		this.user.info.context = null;
 		this.user.save(function () {
 			_this.handOver(nextHandler);
