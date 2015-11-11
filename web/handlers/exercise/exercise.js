@@ -10,7 +10,7 @@ function exercise (req, res) {
 	} else {
 		// do stuff
 		var url_this_semester_pe_num = "http://unnctimetable.com/pe.php?stuid=" + this.user.info.stuId;
-		request(url, function (error, response, body) {
+		request(url_this_semester_pe_num, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				this_semester_pe_num_web += body;
 			} else {
@@ -21,7 +21,7 @@ function exercise (req, res) {
 			
 		})
 		var url_last_semester_pe_num = "http://unnctimetable.com/tiyuka.php?stuid=" + this.user.info.stuId;
-				request(url, function (error, response, body) {
+				request(url_last_semester_pe_num, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				last_semester_pe_num_web += body;
 			} else {
