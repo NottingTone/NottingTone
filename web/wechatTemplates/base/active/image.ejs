@@ -1,9 +1,9 @@
 #* json
 
-{
-	"touser": "<%= toUser %>",
-	"msgtype": "image",
-	"image": {
-		"media_id": "<%= mediaId %>"
+<%- JSON.stringify({
+	touser: toUser,
+	msgtype: "image",
+	image: {
+		media_id: mediaId
 	}
-}
+}) %>
