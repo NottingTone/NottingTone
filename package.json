@@ -9,5 +9,8 @@
     "gulp-minify-ejs": "^1.0.3",
     "gulp-uglify": "^1.4.1",
     "gulp-uglifycss": "^1.0.4"
+  },
+  "dependencies": {
+    "request": "^2.65.0"
   }
 }
