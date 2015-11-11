@@ -1,5 +1,4 @@
 "use strict";
-var request = require('request');
 
 function exercise (req, res) {
 	var this_semester_pe_num_web = "";

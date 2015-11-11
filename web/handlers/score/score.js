@@ -1,5 +1,4 @@
 "use strict";
-var request = require('request');
 
 function exercise (req, res) {
 	var project_credit = 0;
