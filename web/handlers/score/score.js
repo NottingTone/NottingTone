@@ -19,7 +19,7 @@ function exercise (req, res) {
 				scout_credit += jsonObj['scout_credit'];
 			} else {
 					// not success do stuff
-				outputString = "Oops, there are some problems happens about your pe information of this semester";
+				outputString = "Oops, there are some problems happens about your score information";
 			}
 
 			
