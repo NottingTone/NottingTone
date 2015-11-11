@@ -1,81 +1,101 @@
 "use strict";
 
 var request = require('request');
+var iconv = require('iconv').Iconv;
+
+var gbk2utf8 = new iconv('GBK', 'UTF-8//TRANSLIT//IGNORE');
+
+var TYPEID = {
+	'morning': '0304',
+	'exercise': '0302',
+	'run': '0303'
+}
+
+function getExerciseNumber (stuId, term, type) {
+	return new Promise (function (resolve, reject) {
+		var url = {
+			'last': "https://sports.nottingham.edu.cn/Student/kaoqingchaxun/pe/index1.asp",
+			'this': "https://sports.nottingham.edu.cn/Student/kaoqingchaxun/pe/index.asp"
+		}[term] + "?types=" + TYPEID[type];
+		request.get({
+			url: url,
+			encoding: null,
+			headers: {
+				Cookie: "C%5FStudent%5FNo=" + stuId
+			}
+		}, function (err, res, body) {
+			if (err || res.statusCode != 200) {
+				reject();
+			} else {
+				body = gbk2utf8.convert(body).toString();
+				var match = body.match(/<td bgcolor=#ffffff colspan=6>\s*å…±([\s\S]*?)æ¬¡\s*<\/td>/);
+				if (match) {
+					var match = match[1].match(/\d+/);
+					if (match) {
+						resolve(parseInt(match[0]))
+					} else {
+						resolve(0);
+					}
+				} else {
+					resolve(0);
+				}
+			}
+		});
+	});
+}
+
+function getCredit (stuId) {
+	return new Promise (function (resolve, reject) {
+		var result = {};
+
+		var urlCredit = "http://nottingham.coding.io/ajax/getCredits.php?student_no=" + stuId;
+
+		request.get(urlCredit, function (err, res, body) {
+			if (err || res.statusCode != 200) {
+				reject();
+			} else {
+				resolve(JSON.parse(body))
+			}
+		});
+	});
+}
 
 function exercise (req, res) {
-	
-	var thisSemesterPeNumWeb = "";
-	var lastSemesterPeNumWeb = "";
-	var outputString = "";
-	var projectCredit = 0;
-	var safetyCredit = 0;
-	var scoutCredit = 0;
-	var outputString = "";
-	
+
 	if (!this.user.info.stuId) {
 		this.handOver('REQUIRE_STUID');
 	} else {
-		// this semester pe counts
-		var urlThisSemesterPeNum = "http://unnctimetable.com/pe.php?stuid=" + this.user.info.stuId;
-		request(urlThisSemesterPeNum, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				thisSemesterPeNumWeb += body;
-			} else {
-					// not success do stuff
-				thisSemesterPeNumWeb = "Oops, there are some problems happens about your pe information of this semester";
-			}
 
-			
-		})
-		// last semester pe counts
-		var urlLastSemesterPeNum = "http://unnctimetable.com/tiyuka.php?stuid=" + this.user.info.stuId;
-				request(urlLastSemesterPeNum, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				lastSemesterPeNumWeb += body;
-			} else {
-					// not success do	 stuff
-					thisSemesterPeNumWeb = "Oops, there are some problems happens about your pe information of last semester";
-			}
-		})
-		
-		// do stuff
-		var urlCredit = "http://nottingham.coding.io/ajax/getCredits.php?student_no=" + this.user.info.stuId;
-		request(urlurlCredit, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				var jsonObj = JSON.parse(body);
-				projectCredit += jsonObj['proejct_credit'];
-				safetyCredit += jsonObj['safety_redit'];
-				scoutCredit += jsonObj['scout_credit'];
-			} else {
-					// not success do stuff
-				outputString = "Oops, there are some problems happens about your score information";
-			}
+		var result = {
+			stuId: this.user.info.stuId
+		};
 
-			
+		var _this = this;
+		getCredit(this.user.info.stuId)
+		.then(function (data) {
+			result.projectCredit = data.project_credit;
+			result.safetyCredit = data.safety_credit;
+			result.scoutCredit = data.scout_credit;
+
+			var params = [
+				[_this.user.info.stuId, 'this', 'morning'],
+				[_this.user.info.stuId, 'this', 'exercise'],
+				[_this.user.info.stuId, 'this', 'run'],
+				[_this.user.info.stuId, 'last', 'morning'],
+				[_this.user.info.stuId, 'last', 'exercise'],
+				[_this.user.info.stuId, 'last', 'run'],
+			]
+			return Promise.all(params.map(Function.prototype.apply.bind(getExerciseNumber,null)));
 		})
-		
-		outputString += thisSemesterPeNumWeb;
-		outputString += "\n";
-		outputString += lastSemesterPeNumWeb;
-		outputString += "Ñ§ºÅ: ";
-		outputString += this.user.info.stuId;
-		outputString += "\n";
-		outputString += "ÍÅÈÕ»î¶¯Ñ§·Ö: ";
-		outputString += projectCredit;
-		outputString += "\n";
-		outputString += "°²È«Êµ¼ù»î¶¯: ";
-		outputString += safetyCredit;
-		outputString += "\n";
-		outputString += "ÏîÄ¿»î¶¯: ";
-		outputString += scoutCredit;
-		
-		// send outputString to user
-		this.sendTextResponse("txt",outputString);
-		
-		
+		.then(function (data) {
+			result.thisTermExercise = data[0] + data[1] + data[2];
+			result.lastTermExercise = data[3] + data[4] + data[5];
+			_this.sendTemplateResponse('exercise', result);
+		})
+		.then(null, function (err) {
+			_this.sendTemplateResponse('exception');
+		});
 	}
-	
-	
 }
 
 module.exports = exercise;
