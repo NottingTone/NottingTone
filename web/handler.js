@@ -4,6 +4,8 @@ var path       = require('path');
 var fs         = require('fs');
 var request    = require('request');
 var ejs        = require('ejs');
+var request    = require('request');
+var mime       = require('mime');
 
 var config     = require('../config');
 var db         = require('./db');
@@ -39,7 +41,14 @@ var Handler = (function() {
 	// 若已发送过相应，则调用客服接口
 	Handler.prototype.sendRawResponse = function (type, resp) {
 		if (this.respSent) {
-			// https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
+			var url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + config.wechat.accessToken;
+			request.post({
+				url: url,
+				headers: {
+					"Content-Type": mime.lookup(type)
+				},
+				body: resp
+			});
 		} else {
 			this.resp.type(type).send(resp);
 			this.respSent = true;
