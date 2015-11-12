@@ -52,6 +52,11 @@
 					"type": "click",
 					"name": "卡券",
 					"key": "TONE_COUPON"
+				},
+				{
+					"type": "view",
+					"name": "生活馆",
+					"url": "http://detail.koudaitong.com/show/goods?alias=2g06exm609gvd"
 				}
 			]
 		},
