@@ -1,147 +1,137 @@
 ﻿"use strict";
 
 var request = require('request');
-var iconv = require('iconv').Iconv;
-
-var gbk2utf8 = new iconv('GBK', 'UTF-8//TRANSLIT//IGNORE');
 
 function reading () {
 	if (!this.user.courseId) {
 		this.handOver('REQUIRE_COURSE');
 	} else {
-		// do stuff
-		
 		var _this = this;
-		getCourse('unnc',this.user.courseId)
+		getCourse(this.user.courseId)
 		.then(function (data) {
-			if (data == 0) {
-				return getCourse('unuk',this.user.courseId);
-			} else {
-				return data;
-			}
+			return getCourseReadingList(data.url, data.name);
+		}, function () {
+			_this.sendTemplateResponse('readingNoList');
 		})
 		.then(function (data) {
-			if (data == 0) {
-				_this.sendTemplateResponse('unsupportedReadinglist2');
-			} else {
-				return getCourseReadingList(data);
-			}
-		}).then(function (data) {
-			if (data == 0) {
-				_this.sendTemplateResponse('unsupportedReadinglist1');
-			} else {
-				_this.sendTemplateResponse('base/news',data);
-			}
-			
-		}).then(null, function (err) {
+			_this.sendNewsResponse(data);
+		})
+		.then(null, function (err) {
+			console.error(err);
 			_this.sendTemplateResponse('exception');
-		})
+		});
 	}
 }
 
-module.exports = reading;
+function getCourse (courseId) {
+	return new Promise (function (resolve, reject) {
+		_getCourse('unnc', courseId)
+		.then(resolve, function () {
+			return _getCourse('unuk', courseId);
+		})
+		.then(resolve, reject);
+	});
+}
 
-
-function getCourse (area, courseId) {
+function _getCourse (campus, courseId) {
 	return new Promise (function (resolve, reject) {
 		
 		var url = {
-			'unnc': 'http://readinglists.nottingham.edu.cn/search.html?q=' ,
-			'unuk':  'http://readinglists.nottingham.ac.uk/search.html?q='
-		}[area] + this.user.courseId.toUpperCase();
-		
-		var moduleUrl = "";
-		var module = "";
-		
+			'unnc': 'http://readinglists.nottingham.edu.cn/search.html?q=',
+			'unuk': 'http://readinglists.nottingham.ac.uk/search.html?q='
+		}[campus] + courseId;
 		request(url, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				var match = body.match(/<li[^>]*class="decimal"[^>]*>([\s\S]*?)<\/li>/g);
-				if(match){
-					match.forEach(function(course){
-						var tempMatch = course.match(/(2015\/2016)/);
-						if(tempMatch){
-							module = course;
-						}
-					})
-					if(moduleUrl == "") {
-						resolve(0);
-					} else {
-						var moduleUrlMatch = module.match(/<a([\s\S]*?)href=\'([\s\S]*?)\'([\s\S]*?)>([\s\S]*?)<\/a>/);
-						moduleUrl = moduleUrlMatch[2];
-						resolve(moduleUrl);
-					}
-				} else {
-					resolve(0);
-				}
-				
-				
-			} else {
+			if (error || response.statusCode !== 200) {
 				reject();
+			} else {
+				var now = new Date();
+				var year = now.getFullYear();
+				if (now.getMonth < 8) { // August or earlier
+					year -= 1;
+				}
+
+				var regFindModule = new RegExp("<span class='label label-success'>List<\\/span> <a href='(.*?)' .*?><strong>(.*?)<\\/strong><\\/a> \\(" + year + "\\/" + (year + 1) + "\\)<\\/div>");
+				var match = body.match(regFindModule);
+				if (match) {
+					resolve({
+						url: match[1],
+						name: match[2]
+					});
+				} else {
+					reject();
+				}
 			}
 		});	
 	});
 }
 
-function getCourseReadingList (courseUrl) {
+function getCourseReadingList (url, name) {
 	return new Promise (function (resolve, reject) {
-		var url = courseUrl;
 		var article = {};
 		var articleArray = [];
 		
 		request(url, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				var urlMatch = body.match(/CONTEXT.page.requestUri = "([\s\S]*?)"/si);
-				var readinglistUrl = urlMatch[1];
-				
-				var titleMatch = body.match(/<h1 id="pageTitle"([\s\S]*?)>([\s\S]*?) <span>/);
-				var title = titleMatch[2];
-				
-				article.title = title;
-				article.description = "";
-				article.picUrl = "http://unnctimetable.com/images/library.jpg";
-				article.url = readinglistUrl;
-				
-				articleArray.push(article);
-				
-				var readinglistMatch = body.match(/<li class="item"([\s\S]*?)>([\s\S]*?)<\/li>/g);
-				
-				var bookCounter = 0;
-				readinglistMatch.forEach(function(book){
-					var bookMatch = book.match(/<span class="title">([\s\S]*?)<\/span>/);
-					var bookTitle = bookMatch[1];
-					bookMatch = book.match(/<a([\s\S]*?)href="([\s\S]*?)"([\s\S]*?)>/)
-					var bookUrl = bookMatch[2];
-					bookMatch = book.match(/<span([\s\S]*?)class=\'resourceType label\'([\s\S]*?)>([\s\S]*?)<\/span>/);
-					var bookLabel = bookMatch[3];
-					
-					if(bookLabel == "Book" && bookCounter < 9)
-					{
-						bookCounter += 1;
-						article = {};
-						article.title = bookTitle;
-						article.description = "";
-						article.picUrl = "http://unnctimetable.com/images/book.jpg";
-						article.url = bookUrl;
-						
-						articleArray.push(article);
-					} else if (bookCounter == 9){
-						bookCounter += 1;
-						article = {};
-						article.title = "查看更多";
-						article.description = "";
-						article.picUrl = "http://unnctimetable.com/images/book.jpg";
-						article.url = readinglistUrl;
-						articleArray.push(article);
-					}
-						
-				});
-				
-				resolve(articleArray);
-				
-			} else {
+			if (error || response.statusCode !== 200) {
 				reject();
+			} else {
+				var articles = [{
+					title         : name,
+					description   : "",
+					picurl        : "http://unnctimetable.com/images/library.jpg",
+					url           : url
+				}];
+
+				var regFindReading = /<li class="item".*?>([\s\S]*?)<\/li>/g;
+				var match;
+
+				while (match = regFindReading.exec(body)) {
+					if (articles.length >= 10) {
+						articles.pop();
+						articles.push({
+							title         : "查看更多",
+							description   : "",
+							picurl        : "http://unnctimetable.com/images/book.jpg",
+							url           : url
+						});
+						break;
+					}
+
+					var match1;
+					var label, title, bookUrl;
+					match1 = match[1].match(/<span class='resourceType label'>(.*?)<\/span>/);
+					if (match1) {
+						if (match1[1] !== 'Book') {
+							continue;
+						}
+					} else {
+						reject();
+						return;
+					}
+					match1 = match[1].match(/<span class="title">(.*?)<\/span>/);
+					if (match1) {
+						title = match1[1];
+					} else {
+						reject();
+						return;
+					}
+					match1 = match[1].match(/<a.*?href="(.*?)".*?class="itemLink">/);
+					if (match1) {
+						bookUrl = match1[1];
+					} else {
+						reject();
+						return;
+					}
+					articles.push({
+						title         : title,
+						description   : "",
+						picurl        : "",
+						url           : bookUrl
+					});
+				}
+				resolve(articles);
 			}
-		
 		});
 	});
 }
+
+module.exports = reading;
