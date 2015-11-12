@@ -90,7 +90,7 @@ function getCourseReadingList (url, name) {
 						articles.push({
 							title         : "查看更多",
 							description   : "",
-							picurl        : "http://unnctimetable.com/images/book.jpg",
+							picurl        : "",
 							url           : url
 						});
 						break;
@@ -124,7 +124,7 @@ function getCourseReadingList (url, name) {
 					articles.push({
 						title         : title,
 						description   : "",
-						picurl        : "",
+						picurl        : "http://unnctimetable.com/images/book.jpg",
 						url           : bookUrl
 					});
 				}
