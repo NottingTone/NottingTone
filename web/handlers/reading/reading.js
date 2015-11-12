@@ -67,8 +67,6 @@ function _getCourse (campus, courseId) {
 
 function getCourseReadingList (url, name) {
 	return new Promise (function (resolve, reject) {
-		var article = {};
-		var articleArray = [];
 		
 		request(url, function (error, response, body) {
 			if (error || response.statusCode !== 200) {
