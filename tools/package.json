@@ -1,7 +1,0 @@
-{
-	"name": "",
-	"private": true,
-	"dependencies": {
-		"request": "*"
-	}
-}

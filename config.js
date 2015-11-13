@@ -10,6 +10,7 @@ var grantToken = function () {
 		'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + config.wechat.appid + '&secret=' + config.wechat.appsecret,
 		function (err, resp, body) {
 			config.wechat.accessToken = JSON.parse(body).access_token;
+			config.wechat.accessTokenGranted && config.wechat.accessTokenGranted();
 		}
 	);
 }
