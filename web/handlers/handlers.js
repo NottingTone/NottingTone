@@ -19,7 +19,9 @@ var handlers = {
 	REQUIRE_DORM      : require('./input/dorm').requireDorm,
 	INPUT_DORM        : require('./input/dorm').inputDorm,
 	REQUIRE_COURSE    : require('./input/course').requireCourse,
-	INPUT_COURSE      : require('./input/course').inputCourse
+	INPUT_COURSE      : require('./input/course').inputCourse,
+	REQUIRE_SUBGROUP  : require('./input/timetable').requireSubGroup,
+	INPUT_SUBGROUP    : require('./input/timetable').inputSubGroup
 };
 
 module.exports = handlers;

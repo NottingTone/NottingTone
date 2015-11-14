@@ -9,7 +9,8 @@
 	"db": {
 		"path": "db/",
 		"level": {
-			"userbind": "userbind.level"
+			"userbind": "userbind.level",
+			"timetable": "timetable.level"
 		},
 		"sqlite": {
 			"y1timetable": "y1timetable.sqlite",
