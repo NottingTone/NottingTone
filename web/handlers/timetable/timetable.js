@@ -71,7 +71,7 @@ function y1GetActivityListWithoutSubGroup (_this, group) {
 					_this.user.info.possibleSubGroups = rows.map(function (x) { return x.subGroup });
 					_this.user.save(function () {
 						_this.handOver('REQUIRE_SUBGROUP');
-						reject(null);
+						reject('handOver');
 					});
 				} else {
 					_this.user.info.subGroup = null;
@@ -210,8 +210,10 @@ function timetable () {
 			_this.sendNewsResponse(result);
 		})
 		.then (null, function (err) {
-			if (err !== null) {
-				console.log(err.stack);
+			if (err !== 'handOver') {
+				if (err) {
+					console.log(err.stack);
+				}
 				_this.sendTemplateResponse('exception');
 			}
 		})
