@@ -50,7 +50,6 @@ function mergeActivities(activities) {
 }
 
 function y1GetGroup (stuId) {
-	console.log('y1GetGroup');
 	return new Promise (function (resolve, reject) {
 		db.y1timetable.get("SELECT * FROM students WHERE stuId=? LIMIT 1", [stuId], function (err, row) {
 			if (!err && row) {
@@ -63,7 +62,6 @@ function y1GetGroup (stuId) {
 }
 
 function y1GetActivityListWithoutSubGroup (_this, group) {
-	console.log('y1GetActivityListWithoutSubGroup');
 	return new Promise (function (resolve, reject) {
 		db.y1timetable.all("SELECT subGroup FROM groupActivity WHERE `group`=? GROUP BY subGroup", [group], function (err, rows) {
 			if (err) {
@@ -88,7 +86,6 @@ function y1GetActivityListWithoutSubGroup (_this, group) {
 }
 
 function y1GetActivityList (_this, group) {
-	console.log('y1GetActivityList');
 	return new Promise (function (resolve, reject) {
 		if (_this.user.info.subGroup !== undefined) {
 			db.y1timetable.all("SELECT * FROM activities WHERE activity IN (SELECT activity FROM groupActivity WHERE `group` = ? AND subGroup IS ?)", [group, _this.user.info.subGroup], function (err, rows) {
@@ -111,11 +108,9 @@ function y1GetActivityList (_this, group) {
 }
 
 function nonY1getActivityListByStuId(_this) {
-	console.log('nonY1getActivityListByStuId');
 	return new Promise (function (resolve, reject) {
 		var url = 'http://timetablingunnc.nottingham.ac.uk:8005/reporting/Spreadsheet;student;id;' + _this.user.info.stuId + '?days=1-7&weeks=1-52&periods=1-32&template=SWSCUST+student+Spreadsheet';
 		request.get(url, function(err, res, body) {
-			console.log('请求返回来了……');
 			try {
 				var activityList = [];
 				var table = body.match(/<table  cellspacing='0' cellpadding='2%' border='1'>([\s\S]*?)<\/table>/)[1];
@@ -151,7 +146,6 @@ function nonY1getActivityListByStuId(_this) {
 					}
 					activity.weeks = ws;
 					activityList.push(activity);
-					console.log('1');
 				}
 				resolve(mergeActivities(activityList));
 			} catch (e) {
@@ -162,7 +156,6 @@ function nonY1getActivityListByStuId(_this) {
 }
 
 function _getActivityList (_this) {
-	console.log('_getActivityList');
 	return new Promise (function (resolve, reject) {
 		cache.get(_this.user.info.stuId)
 		.then(function (ret) {                         // cached
