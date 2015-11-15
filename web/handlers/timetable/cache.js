@@ -50,7 +50,13 @@ function getByToken (token) {
 		}
 		var stuId = (6500000 + parseInt(hexStuId, 16)).toString();
 		get(stuId)
-		.then(resolve, reject);
+		.then(function (ret) {
+			if (ret.token === token) {
+				resolve(ret);
+			} else {
+				reject();
+			}
+		}, reject);
 	});
 }
 
