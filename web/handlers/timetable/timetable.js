@@ -157,30 +157,33 @@ function nonY1getActivityListByStuId(_this) {
 
 function _getActivityList (_this) {
 	return new Promise (function (resolve, reject) {
-		cache.get(_this.user.info.stuId)
-		.then(function (ret) {                         // cached
-			resolve(ret);
-		}, function () {                               // uncached
-			y1GetGroup(_this.user.info.stuId)
-			.then(function (group) {                   // Y1
-				y1GetActivityList(_this, group)
-				.then(resolve, reject);
-			}, function () {                           // non-Y1
-				nonY1getActivityListByStuId(_this)
-				.then(resolve, reject);
-			});
+		y1GetGroup(_this.user.info.stuId)
+		.then(function (group) {                   // Y1
+			y1GetActivityList(_this, group)
+			.then(resolve, reject);
+		}, function () {                           // non-Y1
+			nonY1getActivityListByStuId(_this)
+			.then(resolve, reject);
 		});
 	});
 }
 
 function getActivityList (_this) {
 	return new Promise (function (resolve, reject) {
-		_getActivityList(_this)
+		cache.get(_this.user.info.stuId)
 		.then(function (ret) {
-			cache.put(_this.user.info.stuId, ret)
-			.then(function () {
-				resolve(ret);
-			})
+			resolve(ret);
+		}, function () {
+			_getActivityList(_this)
+			.then(function (ret) {
+				cache.put(_this.user.info.stuId, ret)
+				.then(function (token) {
+					resolve({
+						data    : ret,
+						token   : token
+					});
+				})
+			});
 		})
 		.then(null, reject);
 	});
