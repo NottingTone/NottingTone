@@ -4,6 +4,7 @@ var COLUMNS = ['activity', 'size', 'module', 'day', 'start', 'end', 'room', 'roo
 var COLUMN_NEEDED = [0, 1, 2, 3, 4, 5, 7, 9, 10, 11];
 
 var request    = require('request');
+var moment     = require('moment')
 
 var config     = require('../../../config');
 var db         = require('../../db');
@@ -209,6 +210,61 @@ function timetable () {
 				picurl: "",
 				url: config.wechat.baseUrl + '/services/timetable/' + ret.token + '/import.ics'
 			}];
+
+			var incoming = [];
+
+			function addToIncoming(week) {
+				for (var idx in ret.data) {
+					var activity = ret.data[idx];
+					if (activity.weeks.indexOf(week) !== -1) {
+						var startTime = moment(activity.start, 'hh:mm');
+						var endTime = moment(activity.end, 'hh:mm');
+						var end = moment(config.firstWeek)
+							.add(week - 1, 'weeks')
+							.day(activity.day)
+							.hours(endTime.hours())
+							.minutes(endTime.minutes())
+							.seconds(endTime.seconds());
+						var start = moment(config.firstWeek)
+							.add(week - 1, 'weeks')
+							.day(activity.day)
+							.hours(startTime.hours())
+							.minutes(startTime.minutes())
+							.seconds(startTime.seconds());
+						console.log(end);
+						if (end > moment()) {
+							incoming.push({
+								start: start,
+								end: end,
+								name: activity.module,
+								room: activity.room
+							});
+						}
+					}
+				}
+			}
+
+			var thisWeek = moment().diff(config.firstWeek, 'week') + 1;
+
+			addToIncoming(thisWeek);
+			addToIncoming(thisWeek + 1);
+			console.log(incoming);
+			incoming.sort(function (a, b) {
+				return a.start - b.start;
+			});
+
+			for (var i = 0; i < Math.min(7, incoming.length); ++i) {
+				var activity = incoming[i];
+				result.push({
+					title: incoming[i].name + '\n@' + incoming[i].start.calendar() + '\n@' + incoming[i].room,
+					description: "",
+					picurl: "",
+					url: ""
+				});
+			}
+
+			_this.sendNewsResponse(result);
+
 		})
 		.then (null, function (err) {
 			if (err !== 'handOver') {

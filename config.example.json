@@ -16,5 +16,6 @@
 			"y1timetable": "y1timetable.sqlite",
 			"coal": "coal.sqlite"
 		}
-	}
+	},
+	"firstWeek": ""
 }
