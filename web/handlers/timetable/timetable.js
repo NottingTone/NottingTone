@@ -177,14 +177,15 @@ function getActivityList (_this) {
 		}, function () {
 			_getActivityList(_this)
 			.then(function (ret) {
-				cache.put(_this.user.info.stuId, ret)
-				.then(function (token) {
-					resolve({
-						data    : ret,
-						token   : token
-					});
-				})
-			});
+				return cache.put(_this.user.info.stuId, ret)
+			})
+			.then(function (token) {
+				resolve({
+					data    : ret,
+					token   : token
+				});
+			})
+			.then(null, reject);
 		})
 		.then(null, reject);
 	});
