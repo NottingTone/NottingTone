@@ -196,21 +196,19 @@ function timetable () {
 
 		var _this = this;
 
-		var result = [{
-			title: "查看完整课表",
-			description: "",
-			picurl: "",
-			url: config.wechat.baseUrl + '/service/timetable/view?stuId=' + this.user.info.stuId
-		}, {
-			title: "导入到日历",
-			description: "",
-			picurl: "",
-			url: config.wechat.baseUrl + '/service/timetable/import?stuId=' + this.user.info.stuId
-		}];
-
 		getActivityList(_this)
 		.then (function (ret) {
-			_this.sendNewsResponse(result);
+			var result = [{
+				title: "查看完整课表",
+				description: "",
+				picurl: "",
+				url: config.wechat.baseUrl + '/services/timetable/' + ret.token + '/view.html'
+			}, {
+				title: "导入到日历",
+				description: "",
+				picurl: "",
+				url: config.wechat.baseUrl + '/services/timetable/' + ret.token + '/import.ics'
+			}];
 		})
 		.then (null, function (err) {
 			if (err !== 'handOver') {
