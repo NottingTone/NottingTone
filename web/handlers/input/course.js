@@ -5,7 +5,7 @@ function requireCourse () {
 	this.user.info.context = {
 		handler      : 'INPUT_COURSE',
 		next         : this.prev,
-		expiration   : Date.now()/1000|0 + 300
+		expiration   : (Date.now()/1000|0) + 300
 	};
 
 	this.user.save(function () {

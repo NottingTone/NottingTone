@@ -29,7 +29,8 @@ function get (stuId) {
 				reject();
 			} else {
 				var obj = JSON.parse(ret);
-				if (obj.expiration > Date.now()/1000|0) {
+				console.log(obj);
+				if (obj.expiration > (Date.now()/1000|0)) {
 					resolve({
 						data: obj.data,
 						token: obj.token
@@ -66,7 +67,7 @@ function put (stuId, data) {
 		.then(function (token) {
 			db.timetable.put(stuId, JSON.stringify({
 				data: data,
-				expiration: Date.now()/1000|0 + 86400,
+				expiration: (Date.now()/1000|0) + 86400,
 				token: token
 			}), function (err) {
 				if (err) {
