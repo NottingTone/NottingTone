@@ -111,7 +111,10 @@ function y1GetActivityList (_this, group) {
 function nonY1getActivityListByStuId(_this) {
 	return new Promise (function (resolve, reject) {
 		var url = 'http://timetablingunnc.nottingham.ac.uk:8005/reporting/Spreadsheet;student;id;' + _this.user.info.stuId + '?days=1-7&weeks=1-52&periods=1-32&template=SWSCUST+student+Spreadsheet';
-		request.get(url, function(err, res, body) {
+		request.get({
+			url: url,
+			timeout: 10000
+		}, function(err, res, body) {
 			try {
 				var activityList = [];
 				var table = body.match(/<table  cellspacing='0' cellpadding='2%' border='1'>([\s\S]*?)<\/table>/)[1];
