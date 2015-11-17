@@ -153,6 +153,7 @@ function nonY1getActivityListByStuId(_this) {
 				}
 				resolve(mergeActivities(activityList));
 			} catch (e) {
+				console.log(e);
 				reject(e);
 			}
 		});
@@ -178,13 +179,15 @@ function getActivityList (_this) {
 		.then(function (ret) {
 			resolve(ret);
 		}, function () {
+			var list;
 			_getActivityList(_this)
 			.then(function (ret) {
-				return cache.put(_this.user.info.stuId, ret)
+				list = ret;
+				return cache.put(_this.user.info.stuId, ret);
 			})
 			.then(function (token) {
 				resolve({
-					data    : ret,
+					data    : list,
 					token   : token
 				});
 			})
@@ -198,7 +201,6 @@ function timetable () {
 	if (!this.user.info.stuId) {
 		this.handOver('REQUIRE_STUID');
 	} else {
-
 		var _this = this;
 
 		getActivityList(_this)
@@ -206,7 +208,7 @@ function timetable () {
 			var result = [{
 				title: "查看完整课表",
 				description: "",
-				picurl: "",
+				picurl: "http://unnctimetable.com/images/timetable.jpg",
 				url: config.wechat.baseUrl + '/services/timetable/' + ret.token + '/view.html'
 			}, {
 				title: "导入到日历",
@@ -235,7 +237,6 @@ function timetable () {
 							.hours(startTime.hours())
 							.minutes(startTime.minutes())
 							.seconds(startTime.seconds());
-						console.log(end);
 						if (end > moment()) {
 							incoming.push({
 								start: start,
@@ -252,7 +253,6 @@ function timetable () {
 
 			addToIncoming(thisWeek);
 			addToIncoming(thisWeek + 1);
-			console.log(incoming);
 			incoming.sort(function (a, b) {
 				return a.start - b.start;
 			});
