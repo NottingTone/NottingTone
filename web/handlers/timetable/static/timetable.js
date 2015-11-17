@@ -14,7 +14,7 @@ for (var i in data) {
 }
 
 function parseTime (time) {
-	return moment('2000-01-01 ' + time);
+	return moment('2000-01-01 ' + time, 'YYYY-MM-DD H:mm');
 }
 
 function showTimetableByWeek (week, showAll) {
@@ -177,7 +177,7 @@ function showTimetableByWeek (week, showAll) {
 	document.title = 'Week ' + week;
 	var iframe = $('iframe');
 	iframe.style.display = 'none';
-	iframe.src="http://baidu.com";
+	iframe.src="http://www.taobao.com/robots.txt";
 	iframe.onload = function () {
 		setTimeout(function() {
 			iframe.parentElement.removeChild(iframe);
@@ -220,6 +220,5 @@ weekControls.nextWeek.addEventListener('click', function () {
 
 function showAllOnChange() {
 	showAll = this.checked;
-	console.log(showAll);
 	showTimetableByWeek(currentWeek, showAll);
 }

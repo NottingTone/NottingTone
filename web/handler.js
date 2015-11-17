@@ -170,7 +170,8 @@ var User = (function() {
 		var _this = this;
 		db.userbind.get(this.openid, function (err, ret) {
 			if (err) {
-				cb && cb(false);
+				_this.info = {};
+				cb && cb(true);
 			} else {
 				_this.info = JSON.parse(ret);
 				cb && cb(true);
