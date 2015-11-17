@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="mobile-web-app-capable" content="yes">
+	<title>NottingTone - Timetable</title>
+	<style>
+#wx-wrapper {
+	position: fixed;
+	top: 0; left: 0;
+	height: 100%; width: 100%;
+	background: url(../wx.png) top right no-repeat #000;
+	opacity: .5;
+	color: #fff;
+	display: none;
+}
+
+#prompt {
+	position: absolute;
+	top: 30px;
+	right: 80px;
+}
+	</style>
+</head>
+<body>
+	<div id="wx-wrapper">
+		<div id="prompt">
+			<div>点击右上角菜单</div>
+			<div>在浏览器中打开</div>
+		</div>
+	</div>
+	<script>
+if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+	document.getElementById('wx-wrapper').style.display = 'block';
+	history.replaceState(null, null, 'import.ics');
+} else {
+	window.location.replace('import.ics');
+}
+	</script>
+</body>
+</html>

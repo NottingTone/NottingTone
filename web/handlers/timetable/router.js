@@ -1,9 +1,12 @@
+"use strict";
+
 var path      = require('path');
 var express   = require('express');
 
 var router    = require('express').Router();
 
 var cache     = require('./cache');
+var calendar  = require('./calendar');
 var config    = require('../../../config');
 
 router.get('/:token/view.html', function (req, res) {
@@ -20,17 +23,13 @@ router.get('/:token/view.html', function (req, res) {
 	})
 });
 
-router.get('/:token/import.ics', function (req, res) {
-
-});
+router.get('/:token/import.ics', calendar.serveIcs);
+router.get('/:token/import.html', calendar.servePrompt);
 
 router.get('/', function (req, res) {
 	res.status(403).end();
 })
 
 router.use(express.static(path.resolve(__dirname, 'static')));
-
-
-
 
 module.exports = router;

@@ -214,7 +214,7 @@ function timetable () {
 				title: "导入到日历",
 				description: "",
 				picurl: "",
-				url: config.wechat.baseUrl + '/services/timetable/' + ret.token + '/import.ics'
+				url: config.wechat.baseUrl + '/services/timetable/' + ret.token + '/import.html'
 			}];
 
 			var incoming = [];
