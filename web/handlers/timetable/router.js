@@ -4,13 +4,17 @@ var express   = require('express');
 var router    = require('express').Router();
 
 var cache     = require('./cache');
+var config    = require('../../../config');
 
 router.get('/:token/view.html', function (req, res) {
 	console.log(req.params.token);
 	cache.getByToken(req.params.token)
 	.then(function (ret) {
 		res.status(200);
-		res.render(path.resolve(__dirname, 'views/view'), JSON.stringify(ret.data));
+		res.render(path.resolve(__dirname, 'views/view'), {
+			data        : JSON.stringify(ret.data),
+			firstWeek   : config.firstWeek
+		});
 	}, function () {
 		res.status(404).end();
 	})
@@ -24,7 +28,9 @@ router.get('/', function (req, res) {
 	res.status(403).end();
 })
 
-router.get(express.static(path.resolve(__dirname, 'static')));
+router.use(express.static(path.resolve(__dirname, 'static')));
+
+
 
 
 module.exports = router;

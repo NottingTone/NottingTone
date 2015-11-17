@@ -1,0 +1,111 @@
+* {
+	outline: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	font-family: sans-serif;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+#timetables {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	bottom: 50px;
+	overflow: scroll;
+}
+
+#scroller {
+	overflow-x: scroll;
+	margin-left: 50px;
+}
+
+#week-controls {
+	position: fixed;
+	bottom: 0;
+	height: 50px;
+	width: 100%;
+}
+
+#week-controls>.week-control {
+	width: 33.333%;
+	box-sizing: border-box;
+	height: 50px;
+	font-size: 17px;
+	border: 1px solid #ddd;
+	background: #fff;
+}
+
+#week-controls>.week-control:not(:last-child) {
+	border-right: none;
+}
+
+#week-controls>.week-control:active {
+	background: #eee;
+}
+
+.timetable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.timetable th .day, .timetable th .date {
+	display: block;
+	color: #888;
+	white-space: nowrap;
+}
+
+.timetable th .day {
+	font-weight: 400;
+}
+
+.timetable th .date {
+	font-weight: 200;
+	font-size: 14px;
+}
+
+.timetable th.time, .timetable th.show-all {
+	position: absolute;
+	left: 0;
+	width: 50px;
+}
+
+.timetable th.time
+{
+	vertical-align: top;
+}
+
+.timetable th .time-marking {
+	display: block;
+	margin: -7px 5px 0;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 14px;
+	color: #888;
+	text-align: right;
+}
+
+.timetable tbody {
+	background: #eee;
+}
+
+.timetable td {
+	border-top: 1px solid #aaa;
+}
+
+.timetable tr:not(:last-child) {
+	height: 50px;
+}
+
+.timetable th.show-all {
+	font-weight: 400;
+	font-size: 14px;
+	color: #888;
+}
