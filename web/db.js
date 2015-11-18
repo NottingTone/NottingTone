@@ -5,7 +5,7 @@ var sqlite3    = require('sqlite3');
 var config     = require('../config');
 
 function dbGetAbsPath(relPath) {
-	return path.resolve(__dirname, '..', 'db', relPath);
+	return path.resolve(__dirname, '..', config.db.path, relPath);
 }
 
 var userbind      = level(dbGetAbsPath(config.db.level.userbind));
