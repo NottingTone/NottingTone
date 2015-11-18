@@ -1,9 +1,6 @@
-var path     = require('path');
-var fs       = require('fs');
 var request  = require('request');
 
-// 读取API配置文件
-var config = JSON.parse(fs.readFileSync(path.join(__dirname, './config.json')));
+var config = require('./config.json');
 
 var grantToken = function () {
 	request.get(
