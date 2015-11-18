@@ -18,6 +18,7 @@ import urllib3
 import sqlite3
 import leveldb
 import json
+import os
 
 
 count = 0
@@ -41,7 +42,9 @@ def initDatabase():
 	cursor.execute('CREATE TABLE IF NOT EXISTS usage (rid, water_value, water_money, hotwater_value, hotwater_money, electricity_value, electricity_money, time)')
 
 	global userbind
-	userbind = leveldb.LevelDB(os.path.join(os.path.dirname(__file__), '../..', config['db']['path'], config['db']['level']['userbind']))
+	userbindPath = os.path.join(os.path.dirname(__file__), '../..', config['db']['path'], config['db']['level']['userbind'])
+	os.remove(os.path.join(userbindPath, 'LOCK'))
+	userbind = leveldb.LevelDB(userbindPath)
 
 def rowInserted():
 	global count
