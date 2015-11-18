@@ -1,3 +1,4 @@
+"use strict";
 
 var handlers = {
 	QUERY_TIMETABLE   : require('../timetable/timetable'),

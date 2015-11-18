@@ -1,3 +1,5 @@
+"use strict";
+
 var path       = require('path');
 var level      = require('level');
 var sqlite3    = require('sqlite3');
