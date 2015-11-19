@@ -59,11 +59,9 @@ def updateRoomList():
 			if not checkRoomExist(data['build'], data['room']): # 假定列表里的房间已查询
 				ret = performQuery(data['build'], data['room'])
 				if ret:
-					print '新加一条'
 					roomCursor.execute('INSERT INTO roomlist (build, room) VALUES (?,?)', (data['build'], data['room']))
 					conn.commit()
 					rid = roomCursor.lastrowid
-					print rid, '<--'
 					saveResultByRid(rid, ret)
 
 def loadHTTPPool():
@@ -75,17 +73,12 @@ def performQueryForRoomList():
 	roomCursor.execute('SELECT id, build, room FROM roomlist')
 	room = roomCursor.fetchone()
 	while room:
-		print room
 		if not checkTodayExistByRid(room[0]):
-			print '还没数据'
 			ret = performQuery(room[1], room[2])
 			saveResultByRid(room[0], ret)
-		else:
-			print '已经有了'
 		room = roomCursor.fetchone()
 
 def performQuery(build, room):
-	print 'query', build, room
 	data = "build={0}&room={1}&xw=%D0%A3%CD%E2%B2%E9%D1%AF".format(build, room)
 	req = http_pool.urlopen('POST', uri_parsed.path, headers={'Content-Type': 'application/x-www-form-urlencoded'}, body=data)
 	html = req.data.decode('gbk')

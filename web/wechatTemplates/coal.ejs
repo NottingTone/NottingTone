@@ -1,0 +1,33 @@
+<%
+
+function parseValue (value) {
+	var s = (value/100).toString();
+	s = s.replace(/[0-9]/g, function (match) {
+		return "０１２３４５６７８９"[parseInt(match)];
+	});
+	var nDot = s.indexOf('.');
+	if (nDot === -1) {
+		nDot = s.length;
+		s += '.';
+	}
+	for (var i = nDot; i < 4; ++i) {
+		s = '　' + s;
+	}
+	while (s.length < 7) {
+		s = s + '０';
+	}
+	return s;
+}
+
+
+text = 
+"　　　　" + build + "栋" + room + '寝室\n\n' +
+"　剩余水量：" + parseValue(waterValue) + '吨\n' +
+"　剩余水费：" + parseValue(waterMoney) + '元\n' +
+"剩余热水量：" + parseValue(hotwaterValue) + '吨\n' +
+"剩余热水费：" + parseValue(hotwaterMoney) + '元\n' +
+"　剩余电量：" + parseValue(electricityValue) + '吨\n' +
+"　剩余电费：" + parseValue(electricityMoney) + '元';
+%>
+
+<% include base/text %>
