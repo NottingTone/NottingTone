@@ -6,6 +6,7 @@ var uuid      = require('node-uuid');
 
 var config    = require('../../../config');
 var cache     = require('./cache');
+var logger    = require('../../logger');
 
 function getDateTime (week, day, time) {
 	var date = moment(config.firstWeek).add(week - 1, 'week').day(day);
