@@ -17,7 +17,7 @@ function isSameWeeks(weeksA, weeksB) {
 }
 
 function isSameActivities(activityA, activityB) {
-	var toCompare = ['activity', 'module', 'day', 'start', 'end', 'room'];
+	var toCompare = ['activity', 'module', 'day', 'start', 'end'];
 	for (var i in toCompare) {
 		if (activityA[toCompare[i]] !== activityB[toCompare[i]]) {
 			return false;
@@ -32,7 +32,12 @@ function mergeActivities(activities) {
 		var found = false;
 		for (var j in activityList) {
 			if (isSameActivities(activities[i], activityList[j])) {
-				activityList[j].staff.push(activities[i].staff);
+				if (activityList[j].staff.indexOf(activities[i].staff) === -1) {
+					activityList[j].staff.push(activities[i].staff);
+				}
+				if (activityList[j].room.indexOf(activities[i].room) === -1) {
+					activityList[j].room.push(activities[i].room);
+				}
 				found = true;
 				break;
 			}
@@ -40,6 +45,7 @@ function mergeActivities(activities) {
 		if (!found) {
 			activityList.push(activities[i]);
 			activityList[activityList.length-1].staff = [activities[i].staff];
+			activityList[activityList.length-1].room = [activities[i].room];
 		}
 	}
 	for (var i in activityList) {
@@ -254,7 +260,7 @@ function timetable () {
 								start: start,
 								end: end,
 								name: activity.module,
-								room: activity.room
+								room: activity.room.join(', ')
 							});
 						}
 					}

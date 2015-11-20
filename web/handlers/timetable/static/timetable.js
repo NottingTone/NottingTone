@@ -157,7 +157,7 @@ function showTimetableByWeek (week, showAll) {
 						code.textContent = activity.activity.split('-')[0];
 						var loc = $('div');
 						loc.classList.add('loc');
-						loc.textContent = activity.room;
+						loc.textContent = activity.room.join('\n');
 						td.appendChild(code);
 						td.appendChild(loc);
 						tr.appendChild(td);
