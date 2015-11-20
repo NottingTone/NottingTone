@@ -96,10 +96,6 @@ button {
 	background: #eee;
 }
 
-.timetable td {
-	border-top: 1px solid #aaa;
-}
-
 .timetable tr:not(:last-child) {
 	height: 50px;
 }
