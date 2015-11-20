@@ -184,6 +184,9 @@ function showTimetableByWeek (week, showAll) {
 		var spanDay = $('span');
 		spanDay.classList.add('day');
 		spanDay.textContent = day.format('ddd');
+		if (day.isSame(moment(), 'day')) {
+			cell.classList.add('today');
+		}
 		var spanDate = $('span');
 		spanDate.classList.add('date');
 		spanDate.textContent = day.format('DD MMM');

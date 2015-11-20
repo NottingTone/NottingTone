@@ -109,7 +109,7 @@ button {
 	top: 0px;
 	left: 50px;
 	height: 45px;
-	padding: 5px;
+	padding: 5px 5px 5px 0;
 	box-sizing: border-box;
 	white-space: nowrap;
 	z-index: 1000;
@@ -119,6 +119,10 @@ button {
 	display: inline-block;
 	text-align: center;
 	margin: auto 0;
+}
+
+#hbar .cell.today {
+	border-bottom: 6px solid #3ad5e0;
 }
 
 #hbar .day, #hbar .date {
