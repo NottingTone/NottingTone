@@ -75,7 +75,7 @@ button {
 
 .activity {
 	text-align: center;
-	padding: 5px 5px 25px;
+	padding: 25px 5px;
 	position: relative;
 }
 
@@ -84,12 +84,19 @@ button {
 	background: #ddd;
 }
 
-.activity .loc {
+.activity .code, .activity .loc {
 	padding: 5px;
 	position: absolute;
-	bottom: 0px;
 	left: 0;
 	font-size: 12px;
+}
+
+.activity .code {
+	top: 0;
+}
+
+.activity .loc {
+	bottom: 0;
 }
 
 #show-all {

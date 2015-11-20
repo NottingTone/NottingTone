@@ -152,9 +152,13 @@ function showTimetableByWeek (week, showAll) {
 							td.style.color = colorTable[code].f;
 						}
 						td.rowSpan = timePoint.indexOf(activity.end) - i;
+						var code = $('div');
+						code.classList.add('code');
+						code.textContent = activity.activity.split('-')[0];
 						var loc = $('div');
 						loc.classList.add('loc');
 						loc.textContent = activity.room;
+						td.appendChild(code);
 						td.appendChild(loc);
 						tr.appendChild(td);
 					} else if (cursor[day][column] === 0 && i === 0) {
