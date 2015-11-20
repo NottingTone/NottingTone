@@ -77,7 +77,7 @@ function y1GetActivityListWithoutSubGroup (_this, group) {
 				} else {
 					_this.user.info.subGroup = null;
 					_this.user.save(function () {
-						y1GetActivityList(_this)
+						y1GetActivityList(_this, group)
 						.then(resolve, reject);
 					});
 				}
