@@ -71,7 +71,16 @@ button {
 
 .activity {
 	text-align: center;
+	padding: 5px 5px 25px;
+	position: relative;
+}
+
+.activity .loc {
 	padding: 5px;
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	font-size: 12px;
 }
 
 #show-all {
@@ -81,7 +90,7 @@ button {
 	height: 40px;
 	width: 50px;
 	background: #fff;
-	z-index: 2;
+	z-index: 1001;
 	text-align: center;
 }
 
@@ -94,6 +103,7 @@ button {
 	padding: 5px;
 	box-sizing: border-box;
 	white-space: nowrap;
+	z-index: 1000;
 }
 
 #hbar .cell {
@@ -122,6 +132,7 @@ button {
 	background: #fff;
 	top: 38px;
 	width: 50px;
+	z-index: 1000;
 }
 
 #vbar .time-marking {

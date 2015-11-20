@@ -142,12 +142,16 @@ function showTimetableByWeek (week, showAll) {
 					}
 					if (activity.start === timePoint[i]) {
 						var td = $('td');
-						td.innerHTML = activity.module;
+						td.textContent = activity.module;
 						var code = activity.activity.split('/')[0];
 						td.style.backgroundColor = colorTable[code].b;
 						td.style.color = colorTable[code].f;
 						td.classList.add('activity');
 						td.rowSpan = timePoint.indexOf(activity.end) - i;
+						var loc = $('div');
+						loc.classList.add('loc');
+						loc.textContent = activity.room;
+						td.appendChild(loc);
 						tr.appendChild(td);
 					} else if (cursor[day][column] === 0 && i === 0) {
 						var td = $('td');
