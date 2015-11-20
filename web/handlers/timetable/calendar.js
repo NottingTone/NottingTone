@@ -17,6 +17,7 @@ function getDateTime (week, day, time) {
 }
 
 function serveIcs (req, res) {
+	var ip = req.headers['X-Real-IP'] || req.connection.remoteAddress;
 	cache.getByToken(req.params.token)
 	.then(function (ret) {
 		var activityList = ret.data;
@@ -33,6 +34,12 @@ function serveIcs (req, res) {
 				
 			}
 		}
+		logger([
+			ip,
+			'TIMETABLE_IMPORT',
+			token,
+			'success'
+		]);
 		res.type('ics').render(path.resolve(__dirname, 'views/ics'), {
 			events: events,
 			now: moment(),
@@ -41,17 +48,36 @@ function serveIcs (req, res) {
 			}
 		});
 	}, function () {
+		logger([
+			ip,
+			'TIMETABLE_IMPORT',
+			token,
+			'invalid'
+		]);
 		res.status(404).end();
 	});
 }
 
 function servePrompt (req, res) {
+	var ip = req.headers['X-Real-IP'] || req.connection.remoteAddress;
 	cache.getByToken(req.params.token)
 	.then(function () {
+		logger([
+			ip,
+			'TIMETABLE_IMPORT_PROMPT',
+			token,
+			'success'
+		]);
 		res.render(path.resolve(__dirname, 'views/prompt'), {
 			token: req.param.token
 		});
 	}, function () {
+		logger([
+			ip,
+			'TIMETABLE_IMPORT_PROMPT',
+			token,
+			'invalid'
+		]);
 		res.status(404).end();
 	});
 }

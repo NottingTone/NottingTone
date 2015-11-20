@@ -9,6 +9,7 @@ function requireDorm () {
 	};
 
 	this.user.save(function () {
+		_this.log({}, '');
 		_this.sendTemplateResponse('inputDorm');
 	});
 }
@@ -22,9 +23,15 @@ function inputDorm () {
 		this.user.info.room = match[2];
 		this.user.info.context = null;
 		this.user.save(function () {
+			_this.log({
+				text: _this.wxEvent.content
+			}, 'success');
 			_this.handOver(nextHandler);
 		});
 	} else {
+		_this.log({
+			text: _this.wxEvent.content
+		}, 'invalid');
 		this.sendTemplateResponse('invalidInput');
 	}
 }

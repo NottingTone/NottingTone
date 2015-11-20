@@ -17,5 +17,8 @@
 			"coal": "coal.sqlite"
 		}
 	},
+	"log": {
+		"path": "logs/"
+	},
 	"firstWeek": ""
 }

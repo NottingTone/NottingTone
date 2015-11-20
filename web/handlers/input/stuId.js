@@ -9,6 +9,7 @@ function requireStuId () {
 	};
 
 	this.user.save(function () {
+		_this.log({}, '');
 		_this.sendTemplateResponse('inputStuId');
 	});
 }
@@ -21,9 +22,15 @@ function inputStuId () {
 		this.user.info.stuId = match[1];
 		this.user.info.context = null;
 		this.user.save(function () {
+			_this.log({
+				text: _this.wxEvent.content
+			}, 'success');
 			_this.handOver(nextHandler);
 		});
 	} else {
+		_this.log({
+			text: _this.wxEvent.content
+		}, 'invalid');
 		this.sendTemplateResponse('invalidInput');
 	}
 }

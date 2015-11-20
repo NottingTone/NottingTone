@@ -11,13 +11,21 @@ function reading () {
 		.then(function (data) {
 			return getCourseReadingList(data.url, data.name);
 		}, function () {
+			_this.log({
+				courseId: _this.user.courseId
+			}, 'failure, no such reading list');
 			_this.sendTemplateResponse('readingNoList');
 		})
 		.then(function (data) {
+			_this.log({
+				courseId: _this.user.courseId
+			}, 'success');
 			_this.sendNewsResponse(data);
 		})
 		.then(null, function (err) {
-			console.error(err);
+			_this.log({
+				courdeId: _this.user.courseId
+			}, 'failure');
 			_this.sendTemplateResponse('exception');
 		});
 	}

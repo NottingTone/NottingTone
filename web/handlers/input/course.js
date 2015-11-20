@@ -9,6 +9,7 @@ function requireCourse () {
 	};
 
 	this.user.save(function () {
+		_this.log({}, '');
 		_this.sendTemplateResponse('inputCourse');
 	});
 }
@@ -21,9 +22,15 @@ function inputCourse () {
 		this.user.courseId = match[1].toUpperCase();
 		this.user.info.context = null;
 		this.user.save(function () {
+			_this.log({
+				text: _this.wxEvent.content
+			}, 'success');
 			_this.handOver(nextHandler);
 		});
 	} else {
+		_this.log({
+			text: _this.wxEvent.content
+		}, 'invalid');
 		this.sendTemplateResponse('invalidInput');
 	}
 }

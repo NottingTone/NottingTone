@@ -29,7 +29,6 @@ function get (stuId) {
 				reject();
 			} else {
 				var obj = JSON.parse(ret);
-				console.log(obj);
 				if (obj.expiration > (Date.now()/1000|0)) {
 					resolve({
 						data: obj.data,

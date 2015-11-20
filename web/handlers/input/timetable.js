@@ -9,6 +9,7 @@ function requireSubGroup () {
 	};
 
 	this.user.save(function () {
+		_this.log({}, '');
 		_this.sendTemplateResponse('inputSubGroup', {
 			choices: _this.user.info.possibleSubGroups.map(function (val, idx) {
 				return idx + ": " + val;
@@ -25,9 +26,15 @@ function inputSubGroup () {
 		this.user.info.context = null;
 		this.user.info.possibleSubGroups = null;
 		this.user.save(function () {
+			_this.log({
+				text: _this.wxEvent.content
+			}, 'success');
 			_this.handOver(nextHandler);
 		});
 	} else {
+		_this.log({
+			text: _this.wxEvent.content
+		}, 'invalid');
 		this.sendTemplateResponse('invalidInput');
 	}
 }

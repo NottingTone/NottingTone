@@ -25,7 +25,7 @@ function getExerciseNumber (stuId, term, type) {
 			}
 		}, function (err, res, body) {
 			if (err || res.statusCode != 200) {
-				reject();
+				reject('net error');
 			} else {
 				body = gbk2utf8.convert(body).toString();
 				var match = body.match(/<td bgcolor=#ffffff colspan=6>\s*共([\s\S]*?)次\s*<\/td>/);
@@ -52,7 +52,7 @@ function getCredit (stuId) {
 
 		request.get(urlCredit, function (err, res, body) {
 			if (err || res.statusCode != 200) {
-				reject();
+				reject('net error');
 			} else {
 				resolve(JSON.parse(body))
 			}
@@ -90,9 +90,15 @@ function exercise (req, res) {
 		.then(function (data) {
 			result.thisTermExercise = data[0] + data[1] + data[2];
 			result.lastTermExercise = data[3] + data[4] + data[5];
+			_this.log({
+				stuId: _this.user.info.stuId
+			}, 'success, from query');
 			_this.sendTemplateResponse('exercise', result);
 		})
 		.then(null, function (err) {
+			_this.log({
+				stuId: _this.user.info.stuId
+			}, 'failure, ' + (typeof err === 'string' ? err : err.message));
 			_this.sendTemplateResponse('exception');
 		});
 	}

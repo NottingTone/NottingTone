@@ -27,14 +27,11 @@ function performQuery(build, room) {
 			}
 		}, function (err, res, body) {
 			if (err || res.statusCode != 200) {
-				console.log(err);
-				console.log('失败1');
-				reject();
+				reject('net error');
 			} else {
 				body = gbk2utf8.convert(body).toString();
 				if (body.match(REGEX_BACK)) {
-					console.log('失败2');
-					reject();
+					reject('no room');
 				} else {
 					var time_str = body.match(REGEX_TIME)[1];
 					var time = moment(time_str, 'YYYY-MM-DD h:mm a').unix();
@@ -87,6 +84,10 @@ function coal () {
 				_this.sendTemplateResponse('exception');
 			} else {
 				if (row) {
+					_this.log({
+						build: build,
+						room: room
+					}, 'success, from cache');
 					_this.sendTemplateResponse('coal', {
 						build: build,
 						room: room,
@@ -100,7 +101,10 @@ function coal () {
 				} else {
 					performQuery(build, room)
 					.then(function (ret) {
-						console.log('返回了');
+						_this.log({
+							build: build,
+							room: room
+						}, 'success, from query');
 						_this.sendTemplateResponse('coal', {
 							build: build,
 							room: room,
@@ -112,8 +116,18 @@ function coal () {
 							electricityMoney: ret.electricity.money
 						});
 					}, function (e) {
-						console.log(e);
-						_this.sendTemplateResponse('exception');
+						var msg = typeof e === 'string' ? e : e.message;
+						if (e === 'net error') {
+							_this.sendTextResponse('网络错误');
+						} else if (e === 'no room') {
+							_this.sendTextResponse('找不到该寝室');
+						} else {
+							_this.sendTemplateResponse('exception');
+						}
+						_this.log({
+							build: build,
+							room: room
+						}, 'failure, ' + msg);
 					});
 				}
 			}

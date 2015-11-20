@@ -7,6 +7,7 @@ function unbind () {
 	var _this = this;
 
 	this.user.save(function () {
+		_this.log({}, 'success');
 		_this.sendTemplateResponse('success');
 	});
 

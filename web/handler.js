@@ -9,6 +9,7 @@ var mime       = require('mime');
 
 var config     = require('../config');
 var db         = require('./db');
+var logger     = require('./logger');
 
 var handlers   = require('./handlers/handlers')
 
@@ -155,6 +156,18 @@ var Handler = (function() {
 		});
 	}
 
+	Handler.prototype.log = function (param, result) {
+
+		var info = [
+			this.wxEvent.openid,
+			this.current,
+			(Date.now() - this.start) + 'ms',
+			JSON.stringify(param),
+			result
+		];
+		logger(info);
+	}
+
 	return Handler;
 
 })();
@@ -204,6 +217,7 @@ function initializeHandler (wxEvent, resp) {
 	handler.resp    = resp;
 	handler.resSent = false;
 	handler.current = 'ROUTER';
+	handler.start   = Date.now();
 
 	handler.setResponseTimeout(config.wechat.responseTimeout);
 

@@ -8,12 +8,19 @@ var router    = require('express').Router();
 var cache     = require('./cache');
 var calendar  = require('./calendar');
 var config    = require('../../../config');
+var logger    = require('../../logger');
 
 router.get('/:token/view.html', function (req, res) {
-	console.log(req.params.token);
+	var ip = req.headers['X-Real-IP'] || req.connection.remoteAddress;
 	cache.getByToken(req.params.token)
 	.then(function (ret) {
 		res.status(200);
+		logger([
+			ip,
+			'TIMETABLE_VIEW',
+			token,
+			'success'
+		]);
 		res.render(path.resolve(__dirname, 'views/view'), {
 			data        : ret.data,
 			firstWeek   : config.firstWeek,
@@ -31,6 +38,12 @@ router.get('/:token/view.html', function (req, res) {
 			]
 		});
 	}, function () {
+		logger([
+			ip,
+			'TIMETABLE_VIEW',
+			token,
+			'invalid'
+		]);
 		res.status(404).end();
 	})
 });

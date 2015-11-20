@@ -72,7 +72,7 @@ function y1GetActivityListWithoutSubGroup (_this, group) {
 					_this.user.info.possibleSubGroups = rows.map(function (x) { return x.subGroup });
 					_this.user.save(function () {
 						_this.handOver('REQUIRE_SUBGROUP');
-						reject('handOver');
+						reject('hand over');
 					});
 				} else {
 					_this.user.info.subGroup = null;
@@ -97,6 +97,10 @@ function y1GetActivityList (_this, group) {
 						y1GetActivityListWithoutSubGroup(_this, group)
 						.then(resolve, reject);
 					} else {
+						_this.log({
+							stuId: _this.user.info.stuId,
+							subGroup: _this.user.info.subGroup
+						}, 'success, Y1, from db');
 						resolve(mergeActivities(rows));
 					}
 				}
@@ -168,7 +172,12 @@ function _getActivityList (_this) {
 			.then(resolve, reject);
 		}, function () {                           // non-Y1
 			nonY1getActivityListByStuId(_this)
-			.then(resolve, reject);
+			.then(function (ret) {
+				_this.log({
+					stuId: _this.user.info.stuId
+				}, 'success, non-Y1, from query');
+				resolve(ret);
+			}, reject);
 		});
 	});
 }
@@ -177,6 +186,9 @@ function getActivityList (_this) {
 	return new Promise (function (resolve, reject) {
 		cache.get(_this.user.info.stuId)
 		.then(function (ret) {
+			_this.log({
+				stuId: _this.user.info.stuId
+			}, 'success, from cache');
 			resolve(ret);
 		}, function () {
 			var list;
@@ -271,10 +283,11 @@ function timetable () {
 
 		})
 		.then (null, function (err) {
-			if (err !== 'handOver') {
-				if (err) {
-					console.log(err.stack);
-				}
+			if (err !== 'hand over') {
+				_this.log({
+					stuId: _this.user.info.stuId,
+					subGroup: _this.user.info.subGroup
+				}, 'failure, ' + (typeof err === 'string' ? err : err.message));
 				_this.sendTemplateResponse('exception');
 			}
 		})
