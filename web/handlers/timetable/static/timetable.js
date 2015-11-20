@@ -6,10 +6,16 @@ var minWeek, maxWeek, currentWeek, showAll;
 
 var thisWeek = moment().diff(firstWeek, 'week') + 1;
 
+var colorTable = {};
+var idx = -1;
 for (var i in data) {
 	for (var j in data[i].weeks) {
 		minWeek = data[i].weeks[j] > minWeek ? minWeek : data[i].weeks[j]; // this can handle undefined min/max
 		maxWeek = data[i].weeks[j] < maxWeek ? maxWeek : data[i].weeks[j];
+	}
+	var code = data[i].activity.split('/')[0];
+	if (!colorTable[code]) {
+		colorTable[code] = colors[++idx % colors.length];
 	}
 }
 
@@ -155,6 +161,10 @@ function showTimetableByWeek (week, showAll) {
 					if (activity.start === timePoint[i]) {
 						var td = $('td');
 						td.innerHTML = activity.module;
+						var code = activity.activity.split('/')[0];
+						td.style.backgroundColor = colorTable[code].b;
+						td.style.color = colorTable[code].f;
+						td.classList.add('activity');
 						td.rowSpan = timePoint.indexOf(activity.end) - i;
 						tr.appendChild(td);
 					} else if (cursor[day][column] === 0 && i === 0) {

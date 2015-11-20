@@ -109,3 +109,8 @@ button {
 	font-size: 14px;
 	color: #888;
 }
+
+.activity {
+	text-align: center;
+	padding: 5px;
+}
