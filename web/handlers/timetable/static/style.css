@@ -73,6 +73,12 @@ button {
 	text-align: center;
 	padding: 5px 5px 25px;
 	position: relative;
+	min-width: 100px;
+}
+
+.activity.disabled {
+	color: #aaa;
+	background: #ddd;
 }
 
 .activity .loc {

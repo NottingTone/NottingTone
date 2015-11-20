@@ -144,9 +144,13 @@ function showTimetableByWeek (week, showAll) {
 						var td = $('td');
 						td.textContent = activity.module;
 						var code = activity.activity.split('/')[0];
-						td.style.backgroundColor = colorTable[code].b;
-						td.style.color = colorTable[code].f;
 						td.classList.add('activity');
+						if (activity.weeks.indexOf(currentWeek) === -1) {
+							td.classList.add('disabled');
+						} else {
+							td.style.backgroundColor = colorTable[code].b;
+							td.style.color = colorTable[code].f;
+						}
 						td.rowSpan = timePoint.indexOf(activity.end) - i;
 						var loc = $('div');
 						loc.classList.add('loc');
