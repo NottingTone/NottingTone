@@ -1,22 +1,26 @@
 <%
 
 function parseValue (value) {
-	var s = (value/100).toString();
-	s = s.replace(/[0-9]/g, function (match) {
-		return "０１２３４５６７８９"[parseInt(match)];
-	});
-	var nDot = s.indexOf('.');
-	if (nDot === -1) {
-		nDot = s.length;
-		s += '.';
+	if (value === -1) {
+		return '　 无数据　　';
+	} else {
+		var s = (value/100).toString();
+		s = s.replace(/[0-9]/g, function (match) {
+			return "０１２３４５６７８９"[parseInt(match)];
+		});
+		var nDot = s.indexOf('.');
+		if (nDot === -1) {
+			nDot = s.length;
+			s += '.';
+		}
+		for (var i = nDot; i < 4; ++i) {
+			s = '　' + s;
+		}
+		while (s.length < 7) {
+			s = s + '０';
+		}
+		return s;
 	}
-	for (var i = nDot; i < 4; ++i) {
-		s = '　' + s;
-	}
-	while (s.length < 7) {
-		s = s + '０';
-	}
-	return s;
 }
 
 
