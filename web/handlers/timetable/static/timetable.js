@@ -1,6 +1,8 @@
 "use strict";
 
 var container = document.getElementById('scroller');
+var hbar = document.getElementById('hbar');
+var vbar = document.getElementById('vbar');
 
 var minWeek, maxWeek, currentWeek, showAll;
 
@@ -88,30 +90,14 @@ function showTimetableByWeek (week, showAll) {
 	timetable.classList.add('timetable');
 	var thead = $('thead');
 	var trHead = $('tr');
-	var day = moment(firstWeek).add(week - 1, 'week').day('Sun');
 	var th = $('th');
-	th.classList.add('show-all')
-	var check = $('input');
-	check.id = 'show-all';
-	check.type = 'checkbox';
-	check.checked = showAll;
-	check.addEventListener('change', showAllOnChange);
-	th.appendChild(check);
-	th.appendChild(document.createTextNode('all'));
 	trHead.appendChild(th);
+	var hths = [];
 	for (var i = 0; i < 5; ++i) {
-		day.add(1, 'day');
 		var th = $('th');
 		th.colSpan = activityList[i].length;
-		var spanDay = $('span');
-		spanDay.classList.add('day');
-		spanDay.textContent = day.format('ddd');
-		var spanDate = $('span');
-		spanDate.classList.add('date');
-		spanDate.textContent = day.format('DD MMM');
-		th.appendChild(spanDay);
-		th.appendChild(spanDate);
 		trHead.appendChild(th);
+		hths.push(th);
 	}
 	thead.appendChild(trHead);
 
@@ -125,15 +111,11 @@ function showTimetableByWeek (week, showAll) {
 			cursor[day].push(0);
 		}
 	}
-
+	var vths = [];
 	for (var i = 0; i < timePoint.length; ++i) {
 		var tr = $('tr');
 		var th = $('th');
-		th.classList.add('time');
-		var spanTime = $('span');
-		spanTime.classList.add('time-marking');
-		spanTime.textContent = timePoint[i];
-		th.appendChild(spanTime);
+		vths.push(th);
 		tr.appendChild(th);
 		for (var day in activityList) {
 			for (var column in activityList[day]) {
@@ -184,6 +166,41 @@ function showTimetableByWeek (week, showAll) {
 	container.innerHTML = '';
 	container.appendChild(timetable);
 
+	hbar.innerHTML = '';
+	var day = moment(firstWeek).add(week - 1, 'week').day('Sun');
+	for (var i = 0; i < 5; ++i) {
+		day.add(1, 'day');
+		var cell = $('div');
+		cell.classList.add('cell');
+		cell.style.width = hths[i].clientWidth + 'px';
+		var spanDay = $('span');
+		spanDay.classList.add('day');
+		spanDay.textContent = day.format('ddd');
+		var spanDate = $('span');
+		spanDate.classList.add('date');
+		spanDate.textContent = day.format('DD MMM');
+		cell.appendChild(spanDay);
+		cell.appendChild(spanDate);
+		hbar.appendChild(cell);
+	}
+
+	vbar.innerHTML = '';
+	for (var i = 0; i < timePoint.length; ++i) {
+		var cell = $('div');
+		cell.classList.add('cell');
+		var height = vths[i].parentElement.clientHeight;
+		if (i == timePoint.length - 1) {
+			height += 10;
+		}
+		cell.style.height = height + 'px';
+		var spanTime = $('span');
+		spanTime.classList.add('time-marking');
+		spanTime.textContent = timePoint[i];
+		cell.appendChild(spanTime);
+		vbar.appendChild(cell);
+	}
+
+
 	document.title = 'Week ' + week;
 	var iframe = $('iframe');
 	iframe.style.display = 'none';
@@ -228,7 +245,15 @@ weekControls.nextWeek.addEventListener('click', function () {
 	showTimetableByWeek(currentWeek, showAll);
 });
 
+document.getElementById('check-all').addEventListener('change', showAllOnChange);
+container.addEventListener('scroll', onScroll);
+
 function showAllOnChange() {
 	showAll = this.checked;
 	showTimetableByWeek(currentWeek, showAll);
+}
+
+function onScroll() {
+	hbar.style.marginLeft = -container.scrollLeft + 'px';
+	vbar.style.marginTop = -container.scrollTop + 'px';
 }

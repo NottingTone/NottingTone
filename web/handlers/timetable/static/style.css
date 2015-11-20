@@ -19,12 +19,13 @@ button {
 	width: 100%;
 	top: 0;
 	bottom: 50px;
-	overflow: scroll;
 }
 
 #scroller {
-	overflow-x: scroll;
-	margin-left: 50px;
+	overflow: scroll;
+	display: inline-block;
+	height: 100%;
+	width: 100%;
 }
 
 #week-controls {
@@ -52,44 +53,12 @@ button {
 }
 
 .timetable {
-	width: 100%;
 	border-collapse: collapse;
+	margin-left: 50px;
 }
 
-.timetable th .day, .timetable th .date {
-	display: block;
-	color: #888;
-	white-space: nowrap;
-}
-
-.timetable th .day {
-	font-weight: 400;
-}
-
-.timetable th .date {
-	font-weight: 200;
-	font-size: 14px;
-}
-
-.timetable th.time, .timetable th.show-all {
-	position: absolute;
-	left: 0;
-	width: 50px;
-}
-
-.timetable th.time
-{
-	vertical-align: top;
-}
-
-.timetable th .time-marking {
-	display: block;
-	margin: -7px 5px 0;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 14px;
-	color: #888;
-	text-align: right;
+.timetable thead tr {
+	height: 45px;
 }
 
 .timetable tbody {
@@ -100,13 +69,66 @@ button {
 	height: 50px;
 }
 
-.timetable th.show-all {
-	font-weight: 400;
-	font-size: 14px;
-	color: #888;
-}
-
 .activity {
 	text-align: center;
 	padding: 5px;
+}
+
+#show-all {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 40px;
+	width: 50px;
+	background: #fff;
+	z-index: 2;
+	text-align: center;
+}
+
+#hbar {
+	position: absolute;
+	background: #fff;
+	top: 0px;
+	left: 50px;
+	height: 45px;
+	padding: 5px;
+	box-sizing: border-box;
+	white-space: nowrap;
+}
+
+#hbar .cell {
+	display: inline-block;
+	text-align: center;
+	margin: auto 0;
+}
+
+#hbar .day, #hbar .date {
+	display: block;
+	color: #888;
+	white-space: nowrap;
+}
+
+#hbar .day {
+	font-weight: 400;
+}
+
+#hbar .date {
+	font-weight: 200;
+	font-size: 14px;
+}
+
+#vbar {
+	position: absolute;
+	background: #fff;
+	top: 38px;
+	width: 45px;
+}
+
+#vbar .time-marking {
+	display: block;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 14px;
+	color: #888;
+	text-align: right;
 }

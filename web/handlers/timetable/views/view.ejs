@@ -9,10 +9,18 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="mobile-web-app-capable" content="yes">
 	<script src="http://cdn.staticfile.org/moment.js/2.8.3/moment.min.js"></script>
+	<script src="http://cdn.staticfile.org/hammer.js/1.1.3/hammer.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="../style.css">
 </head>
 <body>
-	<div id="timetables"><div id="scroller"></div></div>
+	<div id="timetables">
+		<div id="show-all">
+			<input id="check-all" type="checkbox"><br>All
+		</div>
+		<div id="hbar"></div>
+		<div id="vbar"></div>
+		<div id="scroller"></div>
+	</div>
 	<div id="week-controls" ontouchstart><button class="week-control" id="prevWeek">上一周</button><button class="week-control" id="thisWeek" disabled>本周</button><button class="week-control" id="nextWeek">下一周</button></div>
 
 	<script>var data=<%-JSON.stringify(data)%>,firstWeek="<%-firstWeek%>",colors=<%-JSON.stringify(colors)%>;</script>
