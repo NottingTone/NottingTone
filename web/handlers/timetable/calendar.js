@@ -37,7 +37,7 @@ function serveIcs (req, res) {
 		logger([
 			ip,
 			'TIMETABLE_IMPORT',
-			token,
+			req.params.token,
 			'success'
 		]);
 		res.type('ics').render(path.resolve(__dirname, 'views/ics'), {
@@ -51,7 +51,7 @@ function serveIcs (req, res) {
 		logger([
 			ip,
 			'TIMETABLE_IMPORT',
-			token,
+			req.params.token,
 			'invalid'
 		]);
 		res.status(404).end();
@@ -65,7 +65,7 @@ function servePrompt (req, res) {
 		logger([
 			ip,
 			'TIMETABLE_IMPORT_PROMPT',
-			token,
+			req.params.token,
 			'success'
 		]);
 		res.render(path.resolve(__dirname, 'views/prompt'), {
@@ -75,7 +75,7 @@ function servePrompt (req, res) {
 		logger([
 			ip,
 			'TIMETABLE_IMPORT_PROMPT',
-			token,
+			req.params.token,
 			'invalid'
 		]);
 		res.status(404).end();

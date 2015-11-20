@@ -14,11 +14,10 @@ router.get('/:token/view.html', function (req, res) {
 	var ip = req.headers['X-Real-IP'] || req.connection.remoteAddress;
 	cache.getByToken(req.params.token)
 	.then(function (ret) {
-		res.status(200);
 		logger([
 			ip,
 			'TIMETABLE_VIEW',
-			token,
+			req.params.token,
 			'success'
 		]);
 		res.render(path.resolve(__dirname, 'views/view'), {
@@ -41,7 +40,7 @@ router.get('/:token/view.html', function (req, res) {
 		logger([
 			ip,
 			'TIMETABLE_VIEW',
-			token,
+			req.params.token,
 			'invalid'
 		]);
 		res.status(404).end();
