@@ -69,11 +69,14 @@ button {
 	height: 50px;
 }
 
+.timetable td {
+	min-width: 100px;
+}
+
 .activity {
 	text-align: center;
 	padding: 5px 5px 25px;
 	position: relative;
-	min-width: 100px;
 }
 
 .activity.disabled {
