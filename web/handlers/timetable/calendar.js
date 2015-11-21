@@ -18,7 +18,7 @@ function getDateTime (week, day, time) {
 }
 
 function serveIcs (req, res) {
-	var ip = req.headers['X-Real-IP'] || req.connection.remoteAddress;
+	var ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
 	cache.getByToken(req.params.token)
 	.then(function (ret) {
 		var activityList = ret.data;
@@ -60,7 +60,7 @@ function serveIcs (req, res) {
 }
 
 function servePrompt (req, res) {
-	var ip = req.headers['X-Real-IP'] || req.connection.remoteAddress;
+	var ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
 	cache.getByToken(req.params.token)
 	.then(function () {
 		logger([

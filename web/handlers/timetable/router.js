@@ -11,7 +11,7 @@ var config    = require('../../../config');
 var logger    = require('../../logger');
 
 router.get('/:token/view.html', function (req, res) {
-	var ip = req.headers['X-Real-IP'] || req.connection.remoteAddress;
+	var ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
 	cache.getByToken(req.params.token)
 	.then(function (ret) {
 		logger([
