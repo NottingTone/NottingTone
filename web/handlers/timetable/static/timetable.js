@@ -262,6 +262,7 @@ weekControls.nextWeek.addEventListener('click', function () {
 
 document.getElementById('check-all').addEventListener('change', showAllOnChange);
 container.addEventListener('scroll', onScroll);
+window.addEventListener('orientationchange', onOrientationChange);
 
 function showAllOnChange() {
 	showAll = this.checked;
@@ -271,4 +272,8 @@ function showAllOnChange() {
 function onScroll() {
 	hbar.style.marginLeft = -container.scrollLeft + 'px';
 	vbar.style.marginTop = -container.scrollTop + 'px';
+}
+
+function onOrientationChange() {
+	showTimetableByWeek(currentWeek, showAll);
 }
