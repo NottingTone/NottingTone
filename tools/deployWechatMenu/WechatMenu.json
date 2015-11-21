@@ -36,22 +36,12 @@
 				{
 					"type": "click",
 					"name": "Podcast",
-					"key": "TONE_PODCAST"
-				},
-				{
-					"type": "click",
-					"name": "快照",
-					"key": "TONE_PHOTO"
+					"url": "http://mp.weixin.qq.com/s?__biz=MzA4MDMyNDIxMg==&mid=400921796&idx=1&sn=973661b52b7a1222ff226ae9dcc32f34&scene=0"
 				},
 				{
 					"type": "click",
 					"name": "影像",
 					"key": "TONE_VIDEO"
-				},
-				{
-					"type": "click",
-					"name": "卡券",
-					"key": "TONE_COUPON"
 				},
 				{
 					"type": "view",
