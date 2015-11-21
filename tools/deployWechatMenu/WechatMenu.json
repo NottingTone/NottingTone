@@ -34,9 +34,9 @@
 			"name": "有腔调",
 			"sub_button": [
 				{
-					"type": "click",
+					"type": "view",
 					"name": "Podcast",
-					"url": "http://goo.gl/pjByIB"
+					"url": "http://mp.weixin.qq.com/s?__biz=MzA4MDMyNDIxMg==&mid=400921796&idx=1&sn=973661b52b7a1222ff226ae9dcc32f34&scene=0"
 				},
 				{
 					"type": "click",
