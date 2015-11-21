@@ -125,7 +125,11 @@ function nonY1getActivityListByStuId(_this) {
 			url: url,
 			timeout: 10000
 		}, function(err, res, body) {
-			try {
+			if (err) {
+				reject('net error');
+			} else if (res.statusCode !== 200) {
+				reject('no data');
+			} else {
 				var activityList = [];
 				var table = body.match(/<table  cellspacing='0' cellpadding='2%' border='1'>([\s\S]*?)<\/table>/)[1];
 				var regex_tr = /<tr>([\s\S]*?)<\/tr>/g;
@@ -162,9 +166,6 @@ function nonY1getActivityListByStuId(_this) {
 					activityList.push(activity);
 				}
 				resolve(mergeActivities(activityList));
-			} catch (e) {
-				console.log(e);
-				reject(e);
 			}
 		});
 	});
@@ -210,8 +211,7 @@ function getActivityList (_this) {
 				});
 			})
 			.then(null, reject);
-		})
-		.then(null, reject);
+		});
 	});
 }
 
@@ -288,13 +288,19 @@ function timetable () {
 			_this.sendNewsResponse(result);
 
 		})
-		.then (null, function (err) {
+		.then(null, function (err) {
 			if (err !== 'hand over') {
 				_this.log({
 					stuId: _this.user.info.stuId,
 					subGroup: _this.user.info.subGroup
 				}, 'failure, ' + (typeof err === 'string' ? err : err.message));
-				_this.sendTemplateResponse('exception');
+				if (err === 'net error') {
+					_this.sendTextResponse('网络错误');
+				} else if (err === 'no data') {
+					_this.sendTextResponse('没有查询到该生的课表');
+				} else {
+					_this.sendTemplateResponse('exception');
+				}
 			}
 		})
 	}
