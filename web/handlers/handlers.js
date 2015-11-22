@@ -10,7 +10,7 @@ var handlers = {
 	TONE_PODCAST      : require('./simpleNews/simpleNews'),
 	TONE_PHOTO        : require('./simpleNews/simpleNews'),
 	ABOUT_TEAM        : require('./simpleNews/simpleNews'),
-	ABOUT_CONTACT     : require('./simpleNews/simpleNews'),
+	ABOUT_CONTACT     : require('./contact/contact'),
 	ABOUT_BELIEF      : require('./simpleNews/simpleNews'),
 	REQUIRE_STUID     : require('./input/stuId').requireStuId,
 	INPUT_STUID       : require('./input/stuId').inputStuId,
