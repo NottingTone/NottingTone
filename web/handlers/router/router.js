@@ -16,11 +16,19 @@ function router () {
 			break;
 		case 'event':
 			switch (this.wxEvent.event) {
-				case 'SUBSCRIBE':
+				case 'subscribe':
+					this.log('subscribe', '');
 					this.sendTemplateResponse('subscribe');
+					break;
+				case 'unsubscribe':
+					this.log('unsubscribe', '');
+					this.sendEmptyResponse();
 					break;
 				case 'CLICK':
 					this.handOver(this.wxEvent.eventKey);
+					break;
+				case 'VIEW':
+					this.log({view: this.wxEvent.eventKey}, '');
 					break;
 				default:
 					// 忽略事件
