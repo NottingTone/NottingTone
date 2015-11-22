@@ -9,8 +9,6 @@ var handlers = {
 	QUERY_UNBIND      : require('./unbind/unbind'),
 	TONE_PODCAST      : require('./simpleNews/simpleNews'),
 	TONE_PHOTO        : require('./simpleNews/simpleNews'),
-	//TONE_VIDEO        : require('./video/video'),
-	//TONE_COUPON       : require('./coupon/coupon')
 	ABOUT_TEAM        : require('./simpleNews/simpleNews'),
 	ABOUT_CONTACT     : require('./simpleNews/simpleNews'),
 	ABOUT_BELIEF      : require('./simpleNews/simpleNews'),

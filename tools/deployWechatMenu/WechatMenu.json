@@ -41,7 +41,7 @@
 				{
 					"type": "click",
 					"name": "影像",
-					"key": "TONE_VIDEO"
+					"key": "TONE_PHOTO"
 				},
 				{
 					"type": "view",
