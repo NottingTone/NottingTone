@@ -23,7 +23,7 @@ var Handler = (function() {
 
 	Handler.prototype.setResponseTimeout = function (time) {
 		this.timeout = setTimeout((function() {
-			this.sendEmptyResponse();
+			this.sendTemplateResponse('longWait');
 		}).bind(this), time);
 	}
 
