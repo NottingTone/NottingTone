@@ -29,6 +29,7 @@ function router () {
 					break;
 				case 'VIEW':
 					this.log({view: this.wxEvent.eventKey}, '');
+					this.sendEmptyResponse();
 					break;
 				default:
 					// 忽略事件
