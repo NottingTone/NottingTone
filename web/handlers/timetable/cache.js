@@ -4,7 +4,8 @@ var crypto    = require('crypto');
 
 var db        = require('../../db');
 
-function generateToken (stuId) {
+function generateToken (key) {
+	var stuId = key.split('/')[0];
 	return new Promise (function (resolve, reject) {
 		var sha1sum = crypto.createHash('sha1');
 		crypto.randomBytes(128, function (ex, buf) {
@@ -17,14 +18,18 @@ function generateToken (stuId) {
 			for (var i = 0; i < 5; ++i) {
 				token[token[i * 8].charCodeAt(0) % 7 + i * 8 + 1] = hexStuId[i];
 			}
-			resolve(token.join(''));
+			token = token.join('');
+			if (key.indexOf('/') !== -1) {
+				token += key.split('/')[1];
+			}
+			resolve(token);
 		});
 	});
 }
 
-function get (stuId) {
+function get (key) {
 	return new Promise (function (resolve, reject) {
-		db.timetable.get(stuId, function (err, ret) {
+		db.timetable.get(key, function (err, ret) {
 			if (err) {
 				reject();
 			} else {
@@ -49,7 +54,13 @@ function getByToken (token) {
 			hexStuId += token[token.charCodeAt(i * 8) % 7 + i * 8 + 1];
 		}
 		var stuId = (6500000 + parseInt(hexStuId, 16)).toString();
-		get(stuId)
+		var key;
+		if (token.length > 40) {
+			key = stuId + '/' + token.slice(40);
+		} else {
+			key = stuId;
+		}
+		get(key)
 		.then(function (ret) {
 			if (ret.token === token) {
 				resolve(ret);
@@ -60,11 +71,11 @@ function getByToken (token) {
 	});
 }
 
-function put (stuId, data) {
+function put (key, data) {
 	return new Promise (function (resolve, reject) {
-		generateToken(stuId)
+		generateToken(key)
 		.then(function (token) {
-			db.timetable.put(stuId, JSON.stringify({
+			db.timetable.put(key, JSON.stringify({
 				data: data,
 				expiration: (Date.now()/1000|0) + 86400,
 				token: token

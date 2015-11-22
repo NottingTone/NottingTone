@@ -190,8 +190,9 @@ function _getActivityList (_this) {
 }
 
 function getActivityList (_this) {
+	var key = _this.user.info.subGroup ? _this.user.info.stuId + '/' + _this.user.info.subGroup : _this.user.info.stuId;
 	return new Promise (function (resolve, reject) {
-		cache.get(_this.user.info.stuId)
+		cache.get(key)
 		.then(function (ret) {
 			_this.log({
 				stuId: _this.user.info.stuId
@@ -202,7 +203,7 @@ function getActivityList (_this) {
 			_getActivityList(_this)
 			.then(function (ret) {
 				list = ret;
-				return cache.put(_this.user.info.stuId, ret);
+				return cache.put(key, ret);
 			})
 			.then(function (token) {
 				resolve({
