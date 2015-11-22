@@ -36,7 +36,7 @@
 				{
 					"type": "click",
 					"name": "Podcast",
-					"url": "TONE_PODCAST"
+					"key": "TONE_PODCAST"
 				},
 				{
 					"type": "click",
