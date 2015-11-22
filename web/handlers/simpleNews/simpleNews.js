@@ -3,8 +3,8 @@
 var lists = require('./lists');
 
 function simpleNews () {
-	if (lists.length === 0) {
-		this.sendNewsResponse('unsupported');
+	if (lists[this.current].length === 0) {
+		this.sendTemplateResponse('unsupported');
 	} else {
 		this.sendNewsResponse(lists[this.current]);
 	}
