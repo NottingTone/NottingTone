@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>编辑列表<%=list%></title>
+	<style>
+.item { border: 2px solid #aaa; margin: 10px; padding: 10px; box-sizing: border-box; width: 40%; float: left; }
+textarea { width: 40%; padding: 4px; box-sizing: border-box; }
+	</style>
+</head>
+<body>
+<h1><%=list%></h1>
+<form method="POST" action="push">
+<%
+for (var i = 0; i < 10; ++i) { 
+%>
+<div class="item">
+<textarea name="<%=i%>.title" placeholder="TITLE"><%=data[i] && data[i].title%></textarea>
+<textarea name="<%=i%>.description" placeholder="DESCRIPTION"><%=data[i] && data[i].description%></textarea>
+<textarea name="<%=i%>.picurl" placeholder="PICTURE URL"><%=data[i] && data[i].picurl%></textarea>
+<textarea name="<%=i%>.url" placeholder="URL"><%=data[i] && data[i].url%></textarea>
+</div>
+<%
+}
+%>
+<input type="submit">
+</form>
+</body>
+</html>
+
+<form>
+</form>

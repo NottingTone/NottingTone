@@ -7,13 +7,13 @@ var handlers = {
 	QUERY_EXERCISE    : require('./exercise/exercise'),
 	QUERY_READING     : require('./reading/reading'),
 	QUERY_UNBIND      : require('./unbind/unbind'),
-	//TONE_PODCAST      : require('./podcast/podcast'),
-	//TONE_PHOTO        : require('./photo/photo'),
+	TONE_PODCAST      : require('./simpleNews/simpleNews'),
+	TONE_PHOTO        : require('./simpleNews/simpleNews'),
 	//TONE_VIDEO        : require('./video/video'),
 	//TONE_COUPON       : require('./coupon/coupon')
-	//ABOUT_TEAM        : require('./team/team'),
-	//ABOUT_CONTACT     : require('./contact/contact'),
-	//ABOUT_BELIEF      : require('./belief/belief')
+	ABOUT_TEAM        : require('./simpleNews/simpleNews'),
+	ABOUT_CONTACT     : require('./simpleNews/simpleNews'),
+	ABOUT_BELIEF      : require('./simpleNews/simpleNews'),
 	REQUIRE_STUID     : require('./input/stuId').requireStuId,
 	INPUT_STUID       : require('./input/stuId').inputStuId,
 	REQUIRE_DORM      : require('./input/dorm').requireDorm,

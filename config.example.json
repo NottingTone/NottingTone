@@ -20,5 +20,9 @@
 	"log": {
 		"path": "logs/"
 	},
+	"admin": {
+		"username": "username",
+		"password": "******"
+	},
 	"firstWeek": ""
 }
