@@ -75,7 +75,8 @@ def performQueryForRoomList():
 	while room:
 		if not checkTodayExistByRid(room[0]):
 			ret = performQuery(room[1], room[2])
-			saveResultByRid(room[0], ret)
+			if ret:
+				saveResultByRid(room[0], ret)
 		room = roomCursor.fetchone()
 
 def performQuery(build, room):
