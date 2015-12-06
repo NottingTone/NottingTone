@@ -47,6 +47,11 @@
 					"type": "view",
 					"name": "生活馆",
 					"url": "http://detail.koudaitong.com/show/goods?alias=2g06exm609gvd"
+				},
+				{
+					"type": "click",
+					"name": "海外公寓",
+					"key": "TONE_APARTMENT"
 				}
 			]
 		},
