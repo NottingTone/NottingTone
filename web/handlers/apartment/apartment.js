@@ -9,7 +9,7 @@ function apartment () {
 
 	this.user.save(function () {
 		_this.log({}, '');
-		this.handOver('TONE_APARTMENT_N');
+		_this.handOver('TONE_APARTMENT_N');
 	});
 }
 
