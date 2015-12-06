@@ -9,7 +9,7 @@ function inputApartment () {
 
 	this.user.save(function () {
 		_this.log({}, '');
-		this.sendTemplateResponse('customer');
+		_this.sendTemplateResponse('customer');
 	});
 }
 
