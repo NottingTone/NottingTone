@@ -169,6 +169,10 @@ var Handler = (function() {
 		logger(info);
 	}
 
+	Handler.prototype.inKfMode = function () {
+		return this.user.info.context && this.user.info.context.handler === 'INPUT_APARTMENT';
+	}
+
 	return Handler;
 
 })();
