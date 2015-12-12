@@ -119,7 +119,7 @@ function coal () {
 					}, function (e) {
 						var msg = typeof e === 'string' ? e : e.message;
 						if (e === 'net error') {
-							_this.sendTextResponse('网络错误');
+							_this.sendTemplateResponse('neterror');
 						} else if (e === 'no room') {
 							_this.sendTextResponse('找不到该寝室');
 						} else {

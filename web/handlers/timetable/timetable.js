@@ -296,7 +296,7 @@ function timetable () {
 					subGroup: _this.user.info.subGroup
 				}, 'failure, ' + (typeof err === 'string' ? err : err.message));
 				if (err === 'net error') {
-					_this.sendTextResponse('网络错误');
+					_this.sendTemplateResponse('neterror');
 				} else if (err === 'no data') {
 					_this.sendTextResponse('没有查询到该生的课表');
 				} else {

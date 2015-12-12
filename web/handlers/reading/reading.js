@@ -23,10 +23,14 @@ function reading () {
 			_this.sendNewsResponse(data);
 		})
 		.then(null, function (err) {
+			if (err === 'net error') {
+				_this.sendTemplateResponse('neterror');
+			} else {
+				_this.sendTemplateResponse('exception');
+			}
 			_this.log({
 				courdeId: _this.user.courseId
-			}, 'failure');
-			_this.sendTemplateResponse('exception');
+			}, 'failure, ' + (typeof err === 'string' ? err : err.message));
 		});
 	}
 }
@@ -50,7 +54,7 @@ function _getCourse (campus, courseId) {
 		}[campus] + courseId;
 		request(url, { timeout: 10000 }, function (error, response, body) {
 			if (error || response.statusCode !== 200) {
-				reject();
+				reject('net error');
 			} else {
 				var now = new Date();
 				var year = now.getFullYear();
@@ -78,7 +82,7 @@ function getCourseReadingList (url, name) {
 		
 		request(url, {timeout: 10000}, function (error, response, body) {
 			if (error || response.statusCode !== 200) {
-				reject();
+				reject('net error');
 			} else {
 				var articles = [{
 					title         : name,

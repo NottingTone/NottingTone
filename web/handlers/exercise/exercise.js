@@ -97,10 +97,14 @@ function exercise (req, res) {
 			_this.sendTemplateResponse('exercise', result);
 		})
 		.then(null, function (err) {
+			if (err === 'net error') {
+				_this.sendTemplateResponse('neterror');
+			} else {
+				_this.sendTemplateResponse('exception');
+			}
 			_this.log({
 				stuId: _this.user.info.stuId
 			}, 'failure, ' + (typeof err === 'string' ? err : err.message));
-			_this.sendTemplateResponse('exception');
 		});
 	}
 }
