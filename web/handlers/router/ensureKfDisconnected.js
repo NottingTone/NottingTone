@@ -3,16 +3,19 @@
 var request = require('request');
 
 var config  = require('../../../common').config;
+var logger  = require('../../../common').logger;
 
 function getKfAccount (token, openid) {
 	return new Promise(function (resolve, reject) {
 		var urlGetStatus = 'https://api.weixin.qq.com/customservice/kfsession/getsession?access_token=' + token + '&openid=' + openid;
 		request.get(urlGetStatus, function (err, res, body) {
 			if (err || res.statusCode != 200) {
+				logger('ensureKfDisconnected; failure; getKfAccount; network error');
 				reject('exit error');
 			} else {
 				var ret = JSON.parse(body);
 				if (ret.errcode !== 0) {
+					logger('ensureKfDisconnected; failure; getKfAccount; errcode: ' + ret.errcode + '; errmsg: ' + ret.errmsg);
 					reject('exit error');
 				} else {
 					if (ret.kf_account === '') {
@@ -35,10 +38,12 @@ function disconnectKfAccount (token, openid, kfAccount) {
 			"text" : "会话超时或用户退出"
 		})}, function (err, res, body) {
 			if (err || res.statusCode != 200) {
+				logger('ensureKfDisconnected; failure; disconnectKfAccount; network error');
 				reject('exit error');
 			} else {
 				var ret = JSON.parse(body);
 				if (ret.errcode !== 0) {
+					logger('ensureKfDisconnected; failure; disconnectKfAccount; errcode: ' + ret.errcode + '; errmsg: ' + ret.errmsg);
 					reject('exit error');
 				} else {
 					resolve();
