@@ -48,7 +48,7 @@ function _getCourse (campus, courseId) {
 			'unnc': 'http://readinglists.nottingham.edu.cn/search.html?q=',
 			'unuk': 'http://readinglists.nottingham.ac.uk/search.html?q='
 		}[campus] + courseId;
-		request(url, function (error, response, body) {
+		request(url, { timeout: 10000 }, function (error, response, body) {
 			if (error || response.statusCode !== 200) {
 				reject();
 			} else {
@@ -76,7 +76,7 @@ function _getCourse (campus, courseId) {
 function getCourseReadingList (url, name) {
 	return new Promise (function (resolve, reject) {
 		
-		request(url, function (error, response, body) {
+		request(url, {timeout: 10000}, function (error, response, body) {
 			if (error || response.statusCode !== 200) {
 				reject();
 			} else {

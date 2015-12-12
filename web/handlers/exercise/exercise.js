@@ -19,6 +19,7 @@ function getExerciseNumber (stuId, term, type) {
 		}[term] + "?types=" + TYPEID[type];
 		request.get({
 			url: url,
+			timeout: 10000,
 			encoding: null,
 			headers: {
 				Cookie: "C%5FStudent%5FNo=" + stuId
@@ -50,7 +51,7 @@ function getCredit (stuId) {
 
 		var urlCredit = "http://nottingham.coding.io/ajax/getCredits.php?student_no=" + stuId;
 
-		request.get(urlCredit, function (err, res, body) {
+		request.get(urlCredit, { timeout: 10000 }, function (err, res, body) {
 			if (err || res.statusCode != 200) {
 				reject('net error');
 			} else {

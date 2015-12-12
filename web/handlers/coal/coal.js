@@ -20,6 +20,7 @@ function performQuery(build, room) {
 	return new Promise(function (resolve, reject) {
 		request.post(URL_QUERY, {
 			encoding   : null,
+			timeout    : 10000,
 			form       : {
 				build   : build,
 				room    : room,
