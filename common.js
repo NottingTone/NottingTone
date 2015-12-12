@@ -49,5 +49,5 @@ setInterval(grantToken, 1 * 60 * 60 * 1000);
 
 module.exports = {
 	config    : config,
-	log       : log
+	logger    : log
 };
