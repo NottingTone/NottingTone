@@ -4,9 +4,9 @@ var path      = require('path');
 var moment    = require('moment');
 var uuid      = require('node-uuid');
 
-var config    = require('../../../config');
+var config    = require('../../../common').config;
 var cache     = require('./cache');
-var logger    = require('../../logger');
+var logger    = require('../../../common').logger;
 
 function getDateTime (week, day, time) {
 	var date = moment(config.firstWeek).add(week - 1, 'week').day(day);

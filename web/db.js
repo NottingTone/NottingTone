@@ -4,7 +4,7 @@ var path       = require('path');
 var level      = require('level');
 var sqlite3    = require('sqlite3');
 
-var config     = require('../config');
+var config     = require('../common').config;
 
 function dbGetAbsPath(relPath) {
 	return path.resolve(__dirname, '..', config.db.path, relPath);

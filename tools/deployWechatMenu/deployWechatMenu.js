@@ -6,7 +6,7 @@ var request  = require('request');
 var url      = require('url');
 var process  = require('process');
 
-var config   = require('../../config');
+var config   = require('../../common').config;
 
 // 处理配置文件中的URL，加上前缀
 var urlProcess = function (URL) {

@@ -11,6 +11,7 @@
     "gulp-uglifycss": "^1.0.4"
   },
   "dependencies": {
+    "moment": "^2.10.6",
     "request": "^2.65.0"
   }
 }

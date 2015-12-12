@@ -7,9 +7,9 @@ var ejs        = require('ejs');
 var request    = require('request');
 var mime       = require('mime');
 
-var config     = require('../config');
+var config     = require('../common').config;
 var db         = require('./db');
-var logger     = require('./logger');
+var logger     = require('../common').logger;
 
 var handlers   = require('./handlers/handlers')
 

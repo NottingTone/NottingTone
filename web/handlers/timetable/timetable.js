@@ -6,7 +6,7 @@ var COLUMN_NEEDED = [0, 1, 2, 3, 4, 5, 7, 9, 10, 11];
 var request    = require('request');
 var moment     = require('moment')
 
-var config     = require('../../../config');
+var config     = require('../../../common').config;
 var db         = require('../../db');
 
 var cache      = require('./cache');

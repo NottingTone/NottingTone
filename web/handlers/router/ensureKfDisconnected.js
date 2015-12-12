@@ -2,7 +2,7 @@
 
 var request = require('request');
 
-var config  = require('../../../config');
+var config  = require('../../../common').config;
 
 function getKfAccount (token, openid) {
 	return new Promise(function (resolve, reject) {

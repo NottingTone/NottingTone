@@ -2,7 +2,7 @@
 
 var xmlparser    = require('express-xml-bodyparser');
 var crypto       = require('crypto');
-var config       = require('../../config');
+var config       = require('../../common').config;
 var handler      = require('../handler');
 
 var router = require('express').Router();

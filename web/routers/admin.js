@@ -5,7 +5,7 @@ var router       = require('express').Router();
 var fs           = require('fs');
 var path         = require('path');
 
-var config       = require('../../config');
+var config       = require('../../common').config;
 var lists        = require('../handlers/simpleNews/lists');
 
 var fields = [

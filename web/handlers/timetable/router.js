@@ -7,8 +7,8 @@ var router    = require('express').Router();
 
 var cache     = require('./cache');
 var calendar  = require('./calendar');
-var config    = require('../../../config');
-var logger    = require('../../logger');
+var config    = require('../../../common').config;
+var logger    = require('../../../common').logger;
 
 router.get('/:token/view.html', function (req, res) {
 	var ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
