@@ -1,0 +1,40 @@
+{
+	"cookie": {
+		"secret": ""
+	},
+	"wechat": {
+		"appid": "",
+		"appsecret": "",
+		"token": "",
+		"responseTimeout": 4000,
+	},
+	"telegram": {},
+	"db": {
+		"users": "db/users",
+		"dorms": "db/dorms",
+		"buildings": "db/buildings",
+		"wechat_public_account": "db/wechat_pa",
+		"wechat_mini_program": "db/wechat_mp",
+		"lsmart_bind": "db/lsmart_bind",
+		"tomatotabling_session": "db/tomatotabling_session",
+		"timetable_unnc": "db/timetable_unnc.db",
+		"timetable_unuk": "db/timetable_unuk.db"
+	},
+	"tomatotabling": {
+		"unnc": {
+			"week0": "1970-01-01",
+			"semester": "1-20"
+		},
+		"unuk": {
+			"week0": "1970-01-01",
+			"semester": "1-20"
+		}
+	},
+	"log": {
+		"koa": "logs/koa",
+		"http": "logs/http",
+		"services": "logs/services",
+		"wechat": "logs/wechat"
+	},
+	"urlPrefix": "http://127.0.0.1:3000"
+}
