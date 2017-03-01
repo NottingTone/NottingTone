@@ -1,0 +1,7 @@
+{
+	"name": "QUERY_CARD",
+	"entrance": {
+		"menu": ["QUERY_CARD"],
+		"text": ["balance", "(campus )?card( balance)?", "(校园卡|一卡通|饭卡)(余额)?"]
+	}
+}
