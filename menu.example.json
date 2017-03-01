@@ -1,0 +1,39 @@
+{
+	"button":[
+		{
+			"name": "Utilities",
+			"sub_button": [
+				{
+					"type": "click",
+					"name": "Timetable",
+					"key": "QUERY_TIMETABLE"
+				},
+				{
+					"type": "click",
+					"name": "Electricity",
+					"key": "QUERY_COAL"
+				},
+				{
+					"type": "click",
+					"name": "Card",
+					"key": "QUERY_CARD"
+				},
+				{
+					"type": "click",
+					"name": "Exercise",
+					"key": "QUERY_EXERCISE"
+				}
+			]
+		},
+		{
+			"type": "view",
+			"name": "🍅📅",
+			"url": ""
+		},
+		{
+			"type": "view",
+			"name": "About Us",
+			"url": ""
+		}
+	]
+}

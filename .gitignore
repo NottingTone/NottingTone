@@ -44,6 +44,7 @@ jspm_packages
 *.tgz
 
 /config.json
+/menu.json
 /db
 /logs
 /dist
