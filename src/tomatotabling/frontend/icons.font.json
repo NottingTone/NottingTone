@@ -1,0 +1,34 @@
+{
+	"files": [
+		"icons/timetable.svg",
+		"icons/more.svg",
+
+		"icons/student.svg",
+		"icons/program.svg",
+		"icons/staff.svg",
+		"icons/module.svg",
+		"icons/room.svg",
+		"icons/y1group.svg",
+		"icons/exam.svg",
+
+		"icons/lecture.svg",
+		"icons/seminar.svg",
+		"icons/tutorial.svg",
+		"icons/computing.svg",
+		"icons/practical.svg",
+		"icons/fieldwork.svg",
+		"icons/workshop.svg",
+
+		"icons/clock.svg"
+	],
+	"fontName": "tt-icons",
+	"classPrefix": "tti-",
+	"baseClass": "tti",
+	"fixedWidth": true,
+	"types": ["eot", "woff", "ttf", "svg"],
+	"formatOptions": {
+		"ttf": {
+			"ts": 0
+		}
+	}
+}
