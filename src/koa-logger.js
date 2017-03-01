@@ -17,18 +17,34 @@ const logger = new winston.Logger({
 
 export default async (ctx, next) => {
 	const start = Date.now();
-	await next();
-	let level = 'info';
-	if (ctx.status >= 500) {
-		level = 'error';
-	} else if (ctx.status >= 400) {
-		level = 'warn';
-	}
-	logger.log(level, {
+	const log = {
+		level: 'info',
 		method: ctx.method,
 		url: ctx.href,
 		status: ctx.status,
-		duration: Date.now() - start,
-		ip: ctx.get('X-Real-IP') || ctx.ip,		// trust 1 proxy
-	});
+		ip: ctx.get('X-Real-IP') || ctx.ip,
+	};
+	try {
+		await next();
+	} catch (e) {
+		if (e.name === 'AssertionError') {
+			log.level = 'warn';
+			log.message = e.message;
+			ctx.status = 400;
+			if (process.env.NODE_ENV === 'dev') {
+				console.error(e);
+			}
+		} else {
+			log.level = 'error';
+			log.message = e.message;
+			if (!ctx.headerSent) {
+				ctx.status = 500;
+			}
+
+		}
+	}
+	const level = log.level;
+	delete log.level;
+	log.duration = Date.now() - start,
+	logger.log(level, log);
 };
