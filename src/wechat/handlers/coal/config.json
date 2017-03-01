@@ -1,0 +1,7 @@
+{
+	"name": "QUERY_COAL",
+	"entrance": {
+		"menu": ["QUERY_COAL"],
+		"text": ["electricity", "bill", "电费", "电费余额"]
+	}
+}
