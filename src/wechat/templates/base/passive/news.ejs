@@ -1,0 +1,17 @@
+<xml>
+<ToUserName><![CDATA[<%- toUser %>]]></ToUserName>
+<FromUserName><![CDATA[<%- fromUser %>]]></FromUserName>
+<CreateTime><%- timestamp %></CreateTime>
+<MsgType><![CDATA[news]]></MsgType>
+<ArticleCount><%- articles.length %></ArticleCount>
+<Articles>
+<% articles.forEach(function (article) { %>
+<item>
+<Title><![CDATA[<%- article.title || '' %>]]></Title> 
+<Description><![CDATA[<%- article.description || '' %>]]></Description>
+<PicUrl><![CDATA[<%- article.picurl || '' %>]]></PicUrl>
+<Url><![CDATA[<%- article.url || '' %>]]></Url>
+</item>
+<% }); %>
+</Articles>
+</xml>
