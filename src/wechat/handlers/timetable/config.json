@@ -1,0 +1,7 @@
+{
+	"name": "QUERY_TIMETABLE",
+	"entrance": {
+		"menu": ["QUERY_TIMETABLE"],
+		"text": ["timetable", "timetabling", "(我的)?课程?表"]
+	}
+}
