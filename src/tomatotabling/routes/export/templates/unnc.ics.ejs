@@ -1,0 +1,36 @@
+BEGIN:VCALENDAR
+METHOD:PUBLISH
+VERSION:2.0
+X-WR-CALNAME:Teaching Timetable
+PRODID:-//NottingTone//tomatotabling//EN
+X-APPLE-CALENDAR-COLOR:#CC73E1
+X-WR-TIMEZONE:Asia/Shanghai
+CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:Asia/Shanghai
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+DTSTART:20000000T000000
+TZNAME:GMT+8
+TZOFFSETTO:+0800
+END:STANDARD
+END:VTIMEZONE
+<% events.forEach(function (event) { %>
+BEGIN:VEVENT
+	CREATED:<%- now %>
+	UID:<%- event.uid %>
+	DTEND;TZID=Asia/Shanghai:<%- event.end %>
+	SUMMARY:<%- event.name %>
+	DTSTART;TZID=Asia/Shanghai:<%- event.start %>
+	DTSTAMP:<%- now %>
+	LOCATION:<%- event.location %>
+	TRANSP:OPAQUE
+	<% if (alarm !== 'no') { %>
+	BEGIN:VALARM
+		TRIGGER:-PT<%=-parseInt(alarm)%>M
+		ACTION:DISPLAY
+	END:VALARM
+	<% } %>
+END:VEVENT
+<% }); %>
+END:VCALENDAR
