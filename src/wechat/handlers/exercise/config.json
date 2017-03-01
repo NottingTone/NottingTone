@@ -1,0 +1,7 @@
+{
+	"name": "QUERY_EXERCISE",
+	"entrance": {
+		"menu": ["QUERY_EXERCISE"],
+		"text": ["run", "exercise", "(体育|锻炼|跑步)?(打卡|刷卡)", "体育锻炼", "体育卡", "跑步"]
+	}
+}
