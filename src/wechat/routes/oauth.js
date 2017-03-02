@@ -12,9 +12,9 @@ export default async function (ctx) {
 		assert(ctx.query.state === ctx.session.wxState);
 		assert(ctx.query.code);
 		assert(encodeURIComponent(ctx.query.code) === ctx.query.code);
-		const unionid = await getUnionid(ctx.query.code);
-		if (unionid) {
-			ctx.session.userid = `wechat_${unionid}`;
+		const openid = await getOpenid(ctx.query.code);
+		if (openid) {
+			ctx.session.userid = `wechat_${openid}`;
 			ctx.redirect(ctx.session.loginRedirect);
 			delete ctx.session.loginRedirect;
 		} else {
@@ -33,7 +33,7 @@ export default async function (ctx) {
 	}
 };
 
-async function getUnionid(code) {
+async function getOpenid(code) {
 	const urlGrantId =
 		`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.wechat.appid}` +
 		`&secret=${config.wechat.appsecret}` +
@@ -42,5 +42,5 @@ async function getUnionid(code) {
 		url: urlGrantId,
 		json: true,
 	});
-	return body.unionid;
+	return body.openid;
 }

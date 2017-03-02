@@ -2,7 +2,6 @@ import xml2js from 'xml2js-es6-promise';
 import changeCase from 'change-case';
 
 import config from '../../../config';
-import getUnionid from '../../unionid';
 import Session from '../../session';
 
 async function parseEvent(xmlText) {
@@ -16,7 +15,7 @@ async function parseEvent(xmlText) {
 
 export default async (ctx, next) => {
 	const event = await parseEvent(ctx.request.body);
-	const unionid = await getUnionid(event.fromUserName);
-	const session = new Session(event, unionid, ctx.response, next);
+	const openid = event.fromUserName;
+	const session = new Session(event, openid, ctx.response, next);
 	await session.process();
 };
