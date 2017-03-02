@@ -15,6 +15,7 @@ async function queryByOpenid(openid) {
 		url: `http://wxschool.lsmart.cn/card/queryAcc_queryAccount.shtml?wxArea=16301&openId=${openid}`,
 		followRedirect: false,
 		resolveWithFullResponse: true,
+		simple: false,
 	});
 	if (resp.statusCode === 302) {
 		if (resp.headers['location'].startsWith('http://wxschool.lsmart.cn/card/ykt_toBind.shtml')) {
@@ -47,7 +48,7 @@ async function bindStudent(openid, stuName, stuId) {
 
 async function randomOpenid() {
 	const buf = await crypto.randomBytes(21);
-	return buf.toString('base64').replace(/\//g, '_');
+	return buf.toString('base64').replace(/[+\/]/g, '_');
 }
 
 export async function fetchCardByStuId(stuId) {
@@ -55,7 +56,7 @@ export async function fetchCardByStuId(stuId) {
 	try {
 		bindInfo = await lsmartBind.get(stuId);
 	} catch(e) {
-		throw new Error('NO_BIND_INFO');
+		assert(false, 'NO_BIND_INFO');
 	}
 	let result;
 	try {
