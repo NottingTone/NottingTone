@@ -27,7 +27,7 @@ export default function wrap(func, options) {
 	return async function (...args) {
 		const start = Date.now();
 		const argMap = {};
-		for (const [idx, param] of options.params) {
+		for (const [idx, param] of options.params.entries()) {
 			argMap[param] = args[idx];
 		}
 		const log = {
@@ -36,13 +36,13 @@ export default function wrap(func, options) {
 			level: 'info',
 			message: 'success',
 		}
-		let ret, incLog;
+		let ret, incLog, error;
 		if (options.cache) {
 			[incLog, ret] = await getCache(cacheStore, argMap[options.cache.key]);
 			Object.assign(log, incLog);
 		}
 		if (ret === undefined) {
-			[incLog, ret] = await getDirect(func, args);
+			[incLog, ret, error] = await getDirect(func, args);
 			Object.assign(log, incLog);
 		}
 		if (ret !== undefined && options.cache) {
@@ -51,6 +51,10 @@ export default function wrap(func, options) {
 		const level = log.level;
 		delete log.level;
 		log.duration = Date.now() - start;
+		logger.log(level, log);
+		if (error) {
+			throw error;
+		}
 		return ret;
 	}
 };
@@ -58,13 +62,13 @@ export default function wrap(func, options) {
 async function getCache(store, key) {
 	try {
 		const data = await store.get(key);
+		if (data.expiration === -1 || data.expiration * 1000 < Date.now()) {
+			return [{ cached: 'expired' }];
+		}
+		return [{ cached: 'hit' }, data.data];
 	} catch (e) {
-		return [{ cached: 'miss' }, null];
+		return [{ cached: 'miss' }];
 	}
-	if (data.expiration === -1 || data.expiration * 1000 < Date.now()) {
-		return [{ cached: 'expired' }, null];
-	}
-	return [{ cached: 'hit' }, data.data];
 }
 
 async function getDirect(func, args) {
@@ -73,9 +77,9 @@ async function getDirect(func, args) {
 		return [{ message: 'success' }, ret];
 	} catch (e) {
 		if (e.name === 'AssertionError') {
-			return [{ level: 'warn', message: e.message }, null];
+			return [{ level: 'warn', message: e.message }, undefined, e];
 		}
-		return [{ level: 'error', message: e.message }, null];
+		return [{ level: 'error', message: e.message }, undefined, e];
 	}
 }
 
