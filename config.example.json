@@ -6,7 +6,7 @@
 		"appid": "",
 		"appsecret": "",
 		"token": "",
-		"responseTimeout": 4000,
+		"responseTimeout": 4000
 	},
 	"telegram": {},
 	"db": {
