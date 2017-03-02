@@ -152,7 +152,7 @@ export default class Session {
 		} else {
 			await this.sendTemplateResponse('wait');
 		}
-		activeUsers.delete(this.user.id);
+		activeUsers.delete(this.userid);
 	}
 };
 
