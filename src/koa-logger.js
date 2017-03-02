@@ -21,11 +21,15 @@ export default async (ctx, next) => {
 		level: 'info',
 		method: ctx.method,
 		url: ctx.href,
-		status: ctx.status,
 		ip: ctx.get('X-Real-IP') || ctx.ip,
 	};
 	try {
 		await next();
+		if (ctx.status >= 500) {
+			log.level = 'error';
+		} else if (ctx.status >= 400) {
+			log.level = 'warn';
+		}
 	} catch (e) {
 		if (e.name === 'AssertionError') {
 			log.level = 'warn';
@@ -45,6 +49,7 @@ export default async (ctx, next) => {
 	}
 	const level = log.level;
 	delete log.level;
-	log.duration = Date.now() - start,
+	log.duration = Date.now() - start;
+	log.status = ctx.status;
 	logger.log(level, log);
 };
