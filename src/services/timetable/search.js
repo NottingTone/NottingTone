@@ -25,8 +25,8 @@ export async function search(settings, type, key) {
 	}
 	case 'y1group': {
 		assert(key.length >= 1 && key.length < 15, 'INVALID_KEY_LENGTH');
-		const significant = key.replace(/[^A-Z0-9]/, '');
-		const y1groups = await db.all('SELECT * FROM y1groups WHERE INSTR(lower(name),lower(?))<>0 LIMIT 20', [significant]);
+		const significant = key.replace(/[^A-Z0-9]/i, '');
+		const y1groups = await db.all('SELECT * FROM y1groups WHERE INSTR(lower(key),lower(?))<>0 LIMIT 20', [significant]);
 		return y1groups.map(x => ({
 			id: x.id,
 			name: x.name,
