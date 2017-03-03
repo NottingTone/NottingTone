@@ -79,7 +79,7 @@ export default {
 		},
 		onResize(idx, height) {
 			if (this.showBars) {
-				this.setHeight(window.innerHeight - 62 - 55);
+				this.setHeight(window.innerHeight - 62 - 50);
 			} else {
 				this.setHeight(window.innerHeight);
 			}
