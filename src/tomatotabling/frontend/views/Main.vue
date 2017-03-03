@@ -6,16 +6,16 @@
 			<router-view @show-bars="showBars"></router-view>
 		</keep-alive>
 		<tabbar v-show="isMain && shownTabbar" slot="bottom">
-			<tabbar-item link="/timetable" :selected="!!$route.path.match(/^\/timetable(\/|$)/)" icon-class="tti tti-timetable">
-				<div slot="icon"></div>
+			<tabbar-item link="/timetable" :selected="!!$route.path.match(/^\/timetable(\/|$)/)">
+				<div slot="icon" class="tti tabbar-icon tti-timetable"></div>
 				<span slot="label">Timetable</span>
 			</tabbar-item>
-			<tabbar-item link="/modules" :selected="!!$route.path.match(/^\/modules(\/|$)/)" icon-class="tti tti-module">
-				<div slot="icon"></div>
+			<tabbar-item link="/modules" :selected="!!$route.path.match(/^\/modules(\/|$)/)">
+				<div slot="icon" class="tti tabbar-icon tti-module"></div>
 				<span slot="label">Modules</span>
 			</tabbar-item>
-			<tabbar-item link="/more" :selected="!!$route.path.match(/^\/more(\/|$)/)" icon-class="tti tti-more">
-				<div slot="icon"></div>
+			<tabbar-item link="/more" :selected="!!$route.path.match(/^\/more(\/|$)/)">
+				<div slot="icon" class="tti tabbar-icon tti-more"></div>
 				<span slot="label">More</span>
 			</tabbar-item>
 		</tabbar>
@@ -119,5 +119,10 @@ i.tti {
 	position: absolute;
 	top: 50px;
 	right: 80px;
+}
+.tabbar-icon {
+	font-size: 22px;
+	position: relative;
+	top: 4px;
 }
 </style>

@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style>
-.tt-button>div.weui_cell_primary>p {
-	color: #fe0047;
+.tt-button {
+	color: #fe0047 !important;
 }
 </style>

@@ -30,6 +30,10 @@
     "request-promise-native": "^1.0.3",
     "sqlite": "^2.3.0",
     "then-levelup": "^1.0.2",
+    "vue": "^2.2.1",
+    "vue-resource": "^1.2.1",
+    "vue-router": "^2.3.0",
+    "vux": "^2.1.0",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.4",
     "xml2js-es6-promise": "^1.1.1"
@@ -59,12 +63,12 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "vue": "^2.1.10",
-    "vue-loader": "^11.0.0",
+    "vue-loader": "^11.1.3",
     "vue-resource": "^1.2.0",
     "vue-router": "^2.2.1",
-    "vue-template-compiler": "^2.1.10",
+    "vue-template-compiler": "^2.2.1",
     "vux": "^2.1.0-rc.51",
-    "vux-loader": "^1.0.35",
+    "vux-loader": "^1.0.46",
     "webpack": "^2.2.1"
   }
 }
