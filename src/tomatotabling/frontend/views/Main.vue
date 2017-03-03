@@ -110,10 +110,9 @@ i.tti {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: url(../imgs/wx.png) top 20px right 20px no-repeat #000;
-	opacity: .6;
+	background: url(../imgs/wx.png) top 20px right 20px no-repeat rgba(0,0,0,.6);
 	color: #fff;
-	z-index: 101; /* tabbar = 100 */
+	z-index: 501; /* tabbar = 500 */
 }
 .export > .text {
 	position: absolute;
