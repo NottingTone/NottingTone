@@ -7,6 +7,7 @@ const ABBRS = {
 
 export function getAcronym(module) {
 	return module
+		.replace(/\(.*?\)/g, '')
 		.split(/\b\s*/)
 		.map(x => ABBRS[x] ? ABBRS[x] : x.slice(0, 1))	// '' => ''; 'a' ==> 'a'; 'ab' ==> 'a'
 		.join('');
