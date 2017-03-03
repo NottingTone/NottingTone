@@ -212,6 +212,11 @@ export default {
 						};
 						this.reloadModules();
 					}
+				}).catch((resp) => {
+					this.$vux.alert.show({
+						title: 'Error',
+						content: 'Incorrect filter',
+					});
 				});
 			}
 		},
