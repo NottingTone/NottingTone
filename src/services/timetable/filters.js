@@ -271,6 +271,6 @@ const getActivityIdsByStuId = wrap(fetchActivityIdsByStuId_, {
 	params: ['campus_stuId'],
 	cache: {
 		expiration: 86400,
-		key: 'stuId',
+		key: 'campus_stuId',
 	},
 });
