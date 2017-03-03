@@ -284,12 +284,12 @@ table td {
 }
 .rooms-placeholder, .weeks-placeholder {
 	visibility: hidden;
+	white-space: nowrap;
 }
 .rooms, .weeks {
 	position: absolute;
 	width: 100%;
 	left: 0;
-	word-wrap: break-word;
 	padding: 6px;
 }
 .rooms {
