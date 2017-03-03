@@ -106,10 +106,11 @@ export default {
 			}
 			for (const activity of data.activities.values()) {
 				const thisWeek = activity.weeks.includes(this.week);
-				const activitySet = data.select._getActivity(activity.id);
+				const activitySet = data.select.getActivity(activity.id);
+				const _activitySet = data.select._getActivity(activity.id);
 				const classSet = data.select.getClass(activity.id, this.week);
 				const active = thisWeek && (classSet === null && activitySet || classSet);
-				if (activitySet || active) {
+				if (this.showAll ? activitySet : active) {
 					const moduleIds = data.getModuleIdsByActivityIds([activity.id]);
 					const day = moment(activity.day, 'dddd').day() - 1;
 					activityGrid[day].addActivity({
@@ -198,7 +199,7 @@ export default {
 			immediate: true,
 		},
 		showAll() {
-			this.resize();
+			this.reload();
 		},
 	},
 };
