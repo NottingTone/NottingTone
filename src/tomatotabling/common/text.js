@@ -7,8 +7,8 @@ const ABBRS = {
 
 export function getAcronym(module) {
 	return module
-		.split(/\s+/)
-		.map(x => ABBRS[x] ? ABBRS[x] : x[0])
+		.split(/\b\s*/)
+		.map(x => ABBRS[x] ? ABBRS[x] : x.slice(0, 1))	// '' => ''; 'a' ==> 'a'; 'ab' ==> 'a'
 		.join('');
 };
 
