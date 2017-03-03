@@ -16,10 +16,12 @@
 						<i class="tti" :class="class_.type.icon" :style="{ color: class_.type.color }"></i>
 						<span class="monospace">{{class_.code}}</span>
 					</div>
-					<div v-for="module in class_.modules" class="text-module">
-						<template v-if="settings.module === 'code'">{{module.code}}</template>
-						<template v-else-if="settings.module === 'acronym'">{{module.acronym}}</template>
-						<template v-else>{{module.name}}</template>
+					<div class="modules">
+						<div v-for="module in class_.modules" class="text-module">
+							<template v-if="settings.module === 'code'">{{module.code}}</template>
+							<template v-else-if="settings.module === 'acronym'">{{module.acronym}}</template>
+							<template v-else>{{module.name}}</template>
+						</div>
 					</div>
 					<div class="small">
 						<div class="time">
@@ -183,8 +185,10 @@ export default {
 	font-size: 12px;
 	color: #666;
 }
+.modules {
+	margin: 2px 0 6px;
+}
 .text-module {
-	margin: 0 0 6px;
 	font-weight: 500;
 	color: #222;
 	font-size: 17px;
