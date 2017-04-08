@@ -196,7 +196,7 @@ class FilterProcessor {
 		const date = moment(exam.date);
 		const ret = {
 			id: activityId,
-			code: exam.code,
+			code: exam.group,
 			type: 'Exam',
 			day: date.format('dddd'),
 			start: exam.start,
