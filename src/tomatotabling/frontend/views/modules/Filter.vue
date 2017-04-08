@@ -144,7 +144,9 @@ export default {
 		onDelete() {
 			this.$timetable.select.unsetFilter(parseInt(this.$route.params.filter));
 			clearTimeout(this.$timetable.select.timer);
-			this.$http.post(`filters/${this.$route.params.filter}/delete`, this.$timetable.select.journal)
+			this.$http.post(`filters/${this.$route.params.filter}/delete`, {
+				select: this.$timetable.select.journal
+			})
 			.then((resp) => {
 				this.$timetable.filters.splice(this.$route.params.filter, 1);
 				this.$router.back();
