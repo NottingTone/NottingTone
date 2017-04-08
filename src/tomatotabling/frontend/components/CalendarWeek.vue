@@ -88,7 +88,7 @@ export default {
 		prepareVaxis() {
 			const times = [];
 			const time = moment('09:00', 'HH:mm');
-			for (let i = 0; i < 19; ++i) {
+			for (let i = 0; i < 25; ++i) {
 				times.push({
 					time: time.format('HH:mm'),
 					height: 0,
@@ -101,7 +101,7 @@ export default {
 			const dayStart = moment('09:00', 'HH:mm');
 			const data = this.$timetable;
 			const activityGrid = [];
-			for (let i = 0; i < 5; ++i) {
+			for (let i = 0; i < 6; ++i) {
 				activityGrid.push(new GridDay());
 			}
 			for (const activity of data.activities.values()) {
@@ -137,7 +137,7 @@ export default {
 					column.startRead();
 				}
 			}
-			for (let i = 0; i < 18; ++i) {
+			for (let i = 0; i < 24; ++i) {
 				const tds = [];
 				for (const day of activityGrid) {
 					for (const column of day.rows) {
@@ -155,7 +155,7 @@ export default {
 			const monday = moment(data.week0[data.settings.campus])
 				.add(this.week, 'week')
 				.day('Mon');
-			for (let i = 0; i < 5; ++i) {
+			for (let i = 0; i < 6; ++i) {
 				const date = moment(monday).add(i, 'day');
 				days.push({
 					day: date.format('ddd'),
