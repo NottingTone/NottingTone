@@ -36,7 +36,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="small staff">
+					<div class="small staff" v-if="class_.staffs">
 						<i class="tti tti-staff"></i>
 						<div class="middle">{{class_.staffs}}</div>
 					</div>
