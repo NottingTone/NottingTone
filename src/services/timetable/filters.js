@@ -1,5 +1,6 @@
 import { assert	} from 'chai';
 import request from 'request-promise-native';
+import moment from 'moment';
 
 import dbs from './db';
 import { mergeSettings } from './settings';
@@ -69,7 +70,7 @@ class FilterProcessor {
 				if (set === 1 && !data.activities.has(activityId)) {
 					extraActivityIds.add(activityId);
 				} else if (set === 0) {
-					data.activities.get(activityId).weeks = new Set();
+					activities.get(activityId).weeks = new Set();
 				}
 			}
 		}
@@ -101,7 +102,13 @@ class FilterProcessor {
 	async getModuleIdsByActivityIds(activityIds) {
 		const ret = [];
 		for (const activityId of activityIds) {
-			const moduleIds = await this.db.all('SELECT module_id FROM module_activity WHERE activity_id=?', [activityId]);
+			let moduleIds;
+			if (activityId.toString().startsWith('9999999')) {
+				const id = parseInt(activityId.toString().slice(7));
+				moduleIds = await this.db.all('SELECT module_id FROM exams WHERE id=?', [id]);
+			} else {
+				moduleIds = await this.db.all('SELECT module_id FROM module_activity WHERE activity_id=?', [activityId]);
+			}
 			ret.push(...moduleIds.map(x => x.module_id));
 		}
 		return ret;
@@ -118,6 +125,9 @@ class FilterProcessor {
 					group: activityIds[idx].group,
 				});
 			}
+			const examIds = await this.db.all('SELECT id FROM exams WHERE module_id=?', [moduleId]);
+			const exams = await this.getActivitiesByIds(examIds.map(x => parseInt(`9999999${x.id}`)));
+			activities.push(...exams);
 			const classifiedActivities = classify(activities, 'type');
 			for (const type_ of Object.keys(classifiedActivities)) {
 				classifiedActivities[type_] = classify(classifiedActivities[type_], 'group', true);
@@ -135,7 +145,11 @@ class FilterProcessor {
 	async getActivitiesByIds(activityIds) {
 		const ret = [];
 		for (const activityId of activityIds) {
-			ret.push(await this.getActivityById(activityId));
+			if (activityId.toString().startsWith('9999999')) {
+				ret.push(await this.getExamActivityById(activityId));
+			} else {
+				ret.push(await this.getActivityById(activityId));
+			}
 		}
 		return ret;
 	}
@@ -171,6 +185,34 @@ class FilterProcessor {
 		return ret;
 	}
 
+	async getExamActivityById(activityId) {
+		const examId = parseInt(activityId.toString().slice(7));
+		if (this.activities.has(activityId)) {
+			return this.activities.get(activityId);
+		}
+		const exam = await this.db.get('SELECT * FROM exams WHERE id=?', [examId]);
+		const room = await this.db.get('SELECT * FROM rooms WHERE id=?', [exam.room_id]);
+		const sun0 = moment(config.tomatotabling[this.settings.campus].week0).day('Sun');
+		const date = moment(exam.date);
+		const ret = {
+			id: activityId,
+			code: exam.code,
+			type: 'Exam',
+			day: date.format('dddd'),
+			start: exam.start,
+			end: exam.end,
+			weeks: [date.diff(sun0, 'week')],
+			group: exam.group,
+			rooms: [{
+				name: room.name,
+				alias: room.alias,
+			}],
+			staffs: [],
+		};
+		this.activities.set(activityId, ret);
+		return ret;
+	}
+
 	async getFilterInfoByFilter(filter) {
 		let rows;
 		switch (filter.type) {
@@ -185,6 +227,7 @@ class FilterProcessor {
 		case 'room':
 			return this.db.get('SELECT name, alias FROM rooms WHERE id=?', [filter.id]);
 		case 'exam':
+			return {};
 		case 'student':
 			return {};
 		default:
@@ -210,7 +253,10 @@ class FilterProcessor {
 		case 'room':
 			sql = 'SELECT activity_id FROM room_activity WHERE room_id=?';
 			return await this.getActivityIdsBySql(sql, [filter.id]);
-		//case 'exam':
+		case 'exam':
+			sql = 'SELECT exam_id FROM student_exam WHERE student_id=?';
+			const exams = await this.db.all(sql, [filter.id]);
+			return exams.map(x => parseInt(`9999999${x.exam_id}`));
 		case 'student':
 			return await this.getActivityIdsByStuId(filter.id);
 		default:

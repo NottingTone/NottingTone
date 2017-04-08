@@ -1,5 +1,12 @@
 import moment from 'moment';
 
+function fitActivtyInCell(activity) {
+	const ret = { ...activity };
+	ret.start = Math.floor(ret.start);
+	ret.end = Math.ceil(ret.end);
+	return ret;
+}
+
 class GridDayRow {
 	constructor() {
 		this.activities = [];
@@ -16,8 +23,7 @@ class GridDayRow {
 	}
 
 	_addActivity(activity) {
-		const dayStart = moment('09:00', 'HH:mm');
-		this.activities.push(activity);
+		this.activities.push(fitActivtyInCell(activity));
 	}
 
 	startRead() {

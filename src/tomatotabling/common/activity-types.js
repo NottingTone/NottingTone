@@ -34,6 +34,11 @@ const TYPES = {
 		"text": "W",
 		"color": "#e91e63"
 	},
+	"exam": {
+		"icon": "tti-exam",
+		"text": "E",
+		"color": "#37473F",
+	},
 	"unknown": {
 		"icon": "tti-unknown",
 		"text": "?",
