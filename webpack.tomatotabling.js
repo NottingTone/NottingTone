@@ -36,25 +36,12 @@ const webpackConfig = {
 			test: /\.vue$/,
 			loader: 'vue-loader',
 			options: {
-				loaders: {
-					css: ExtractTextPlugin.extract({
-						fallback: 'vue-style-loader',
-						use: 'css-loader',
-					}),
-					less: ExtractTextPlugin.extract({
-						fallback: 'vue-style-loader',
-						use: [
-							'css-loader',
-							'less-loader',
-						],
-					}),
-					js: {
-						loader: 'babel-loader',
-						options: {
-							presets: ['es2015'],
-						},
-					},
-				},
+				postcss: [
+					autoprefixer({
+						browsers: ['iOS >= 7', 'Android >= 4.1'],
+					})
+				],
+				extractCSS: true,
 			},
 		}, {
 			test: /\.js$/,
@@ -66,14 +53,6 @@ const webpackConfig = {
 			}],
 			exclude: /node_modules/,
 		}, {
-			test: /vux.src.*?js$/,
-			use: [{
-				loader: 'babel-loader',
-				options: {
-					presets: ['es2015'],
-				},
-			}],
-		}, {
 			test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 			loader: 'url-loader',
 			query: {
@@ -84,15 +63,6 @@ const webpackConfig = {
 	},
 	plugins: [
 		new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-		new webpack.LoaderOptionsPlugin({
-			vue: {
-				postcss: [
-					autoprefixer({
-						browsers: ['iOS >= 7', 'Android >= 4.1'],
-					}),
-				],
-			},
-		}),
 		new ExtractTextPlugin('css/app.bundle.css'),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
@@ -123,10 +93,5 @@ const webpackConfig = {
 };
 
 module.exports = vuxLoader.merge(webpackConfig, {
-	options: {},
-	plugins: [{
-		name: 'vux-ui',
-	}, {
-		name: 'duplicate-style',
-	}],
+	plugins: ['vux-ui', 'duplicate-style'],
 });
