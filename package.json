@@ -3,6 +3,7 @@
   "scripts": {
     "webpack-build": "webpack -p",
     "webpack-watch": "webpack --watch --devtool \\#cheap-module-eval-source-map",
+    "webpack-analyze": "webpack -p --profile --json > stats.json",
     "dev": "babel-node src/app.js",
     "build": "babel src --out-dir dist --copy-files --ignore src/tomatotabling/frontend",
     "start": "node dist/app.js",
