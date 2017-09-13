@@ -21,7 +21,7 @@ export async function fetchElectricity(dorm) {
 			roomNo: roomCode,
 		},
 	});
-	const match = html.match(/<div class="w_n_lis2">\s*<h2>剩余量<\/h2>\s*<p>\s*(\S*)\s*<\/p>\s*<div class="cl"><\/div>\s*<\/div>/);
+	const match = html.match(/<div class="w_n_lis2">\s*<h2>剩余金额<\/h2>\s*<p>(.*?)<\/p>/);
 	assert(match, 'ERROR_PARSING_SERVER_RESPONSE');
 	return parseFloat(match[1]);
 }
