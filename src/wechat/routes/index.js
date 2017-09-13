@@ -7,8 +7,8 @@ import sessionTomatotabling from '../../tomatotabling/routes/session';
 
 const router = new Router();
 
-router.get('/coal/recharge', async (ctx) => ctx.redirect('http://wxschool.lsmart.cn/grids/next.shtml?code=2001&wxArea=16301'));
-router.get('/card/recharge', async (ctx) => ctx.redirect('http://wxschool.lsmart.cn/grids/next.shtml?code=1001&wxArea=16301'));
+router.get('/coal/recharge', async (ctx) => ctx.redirect('http://weixin.wljyhq.com/app/index.php?i=3&c=entry&eid=1'));
+router.get('/card/recharge', async (ctx) => ctx.redirect('http://weixin.wljyhq.com/app/index.php?i=3&c=entry&eid=1'));
 
 router.use('/webhook', webhook);
 router.get('/oauth/tomatotabling', sessionTomatotabling, oauth);
