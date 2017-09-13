@@ -7,7 +7,7 @@ export const getElectricity = wrap(fetchElectricity, {
 	func: 'getElectricity',
 	params: ['dorm'],
 	cache: {
-		expiration: 60,
+		ttl: 60,
 		key: 'dorm',
 	},
 });

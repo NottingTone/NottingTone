@@ -7,7 +7,7 @@ export const getCardByStuId = wrap(fetchCardByStuId, {
 	params: ['stuId'],
 	cache: {
 		key: 'stuId',
-		expiration: 20,
+		ttl: 20,
 	},
 });
 

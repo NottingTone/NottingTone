@@ -3,12 +3,11 @@ import crypto from 'mz/crypto';
 import { assert } from 'chai';
 import request from 'request-promise-native';
 import level from 'level';
-import promisify from 'then-levelup';
 
 import config from '../../config';
 
 const lsmartBindPath = path.join(__dirname, '../../..', config.db.lsmart_bind);
-const lsmartBind = promisify(level(lsmartBindPath, { valueEncoding: 'json' }));
+const lsmartBind = level(lsmartBindPath);
 
 async function queryByOpenid(openid) {
 	const resp = await request.get({
@@ -54,7 +53,7 @@ async function randomOpenid() {
 export async function fetchCardByStuId(stuId) {
 	let bindInfo;
 	try {
-		bindInfo = await lsmartBind.get(stuId);
+		bindInfo = JSON.parse(await lsmartBind.get(stuId));
 	} catch(e) {
 		assert(false, 'NO_BIND_INFO');
 	}
@@ -71,10 +70,10 @@ export async function fetchCardByStuId(stuId) {
 export async function fetchCardByStuIdName(stuId, stuName) {
 	const openid = await randomOpenid();
 	assert(await bindStudent(openid, stuName, stuId), 'ERROR_IN_BINDING');
-	await lsmartBind.put(stuId, {
+	await lsmartBind.put(stuId, JSON.stringify({
 		openid,
 		stuName,
-	});
+	}));
 	const ret = await queryByOpenid(openid);
 	assert(ret.stuId === stuId, 'STUID_MISMATCH');
 	return ret.balance;

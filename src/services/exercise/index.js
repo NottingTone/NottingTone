@@ -6,7 +6,7 @@ export const getOverview = wrap(fetchOverview, {
 	func: 'getOverview',
 	params: ['stuId'],
 	cache: {
-		expiration: 43200,
+		ttl: 43200,
 		key: 'stuId',
 	},
 });

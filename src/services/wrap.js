@@ -1,7 +1,7 @@
 import path from 'path';
 import winston from 'winston';
 import level from 'level';
-import promisify from 'then-levelup';
+import ttl from 'level-ttl';
 
 import config from '../config';
 
@@ -22,7 +22,7 @@ export default function wrap(func, options) {
 	let cacheStore;
 	if (options.cache) {
 		const storePath = path.join(__dirname, '../../db/', name);
-		cacheStore = promisify(level(storePath, { valueEncoding: 'json' }));
+		cacheStore = ttl(level(storePath));
 	}
 	return async function (...args) {
 		const start = Date.now();
@@ -35,7 +35,7 @@ export default function wrap(func, options) {
 			args: argMap,
 			level: 'info',
 			message: 'success',
-		}
+		};
 		let ret, incLog, error;
 		if (options.cache) {
 			[incLog, ret] = await getCache(cacheStore, argMap[options.cache.key]);
@@ -46,7 +46,7 @@ export default function wrap(func, options) {
 			Object.assign(log, incLog);
 		}
 		if (ret !== undefined && options.cache) {
-			await saveCache(cacheStore, argMap[options.cache.key], ret, options.cache.expiration);
+			await saveCache(cacheStore, argMap[options.cache.key], ret, options.cache.ttl);
 		}
 		const level = log.level;
 		delete log.level;
@@ -61,11 +61,8 @@ export default function wrap(func, options) {
 
 async function getCache(store, key) {
 	try {
-		const data = await store.get(key);
-		if (data.expiration === -1 || data.expiration * 1000 < Date.now()) {
-			return [{ cached: 'expired' }];
-		}
-		return [{ cached: 'hit' }, data.data];
+		const data = JSON.parse(await store.get(key));
+		return [{ cached: 'hit' }, data];
 	} catch (e) {
 		return [{ cached: 'miss' }];
 	}
@@ -83,9 +80,6 @@ async function getDirect(func, args) {
 	}
 }
 
-async function saveCache(store, key, data, expiration) {
-	await store.put(key, {
-		data,
-		expiration: expiration === -1 ? -1 : parseInt(Date.now() / 1000) + expiration,
-	});
+async function saveCache(store, key, data, ttl) {
+	await store.put(key, JSON.stringify(data), ttl === -1 ? {} : { ttl: ttl * 1000 });
 }

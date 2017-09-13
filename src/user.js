@@ -1,13 +1,12 @@
 import path from 'path';
 import level from 'level';
-import promisify from 'then-levelup';
 import { assert } from 'chai';
 
 import config from './config';
 
 const dbPath = path.join(__dirname, '..', config.db.users);
 
-const db = promisify(level(dbPath, { valueEncoding: 'json' }));
+const db = level(dbPath);
 
 class User {
 	constructor(id) {
@@ -17,7 +16,7 @@ class User {
 	}
 	async load(createIfNotExist) {
 		try {
-			this.data = await db.get(this.id);
+			this.data = JSON.parse(await db.get(this.id));
 		} catch (e) {
 			assert(createIfNotExist, 'USER_NOT_FOUND');
 			this.data = {};
@@ -27,7 +26,7 @@ class User {
 			...this.data.info,
 		};
 
-		if (this.data.context && this.data.context.expiration * 1000 > Date.now()) {
+		if (this.data.context && (this.data.context.expiration === -1 || this.data.context.expiration * 1000 > Date.now())) {
 			this.context = this.data.context.data;
 		} else {
 			this.context = {
@@ -39,16 +38,16 @@ class User {
 			};
 		}
 	}
-	async save(contextTimeout) {
-		const context = contextTimeout === undefined ? this.data.context : {
+	async save(ctxTtl) {
+		const context = {
 			data: Object.assign({}, this.context, { last: parseInt(Date.now() / 1000) }),
-			expiration: parseInt(Date.now() / 1000) + contextTimeout,
+			expiration: ctxTtl === undefined ? -1 : parseInt(Date.now() / 1000) + ctxTtl,
 		};
 		const data = {
 			info: this.info,
 			context,
 		};
-		await db.put(this.id, data);
+		await db.put(this.id, JSON.stringify(data));
 	}
 };
 

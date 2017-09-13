@@ -316,7 +316,7 @@ const getActivityIdsByStuId = wrap(fetchActivityIdsByStuId_, {
 	func: 'getActivityIdsByStuId',
 	params: ['campus_stuId'],
 	cache: {
-		expiration: 86400,
+		ttl: 86400,
 		key: 'campus_stuId',
 	},
 });
