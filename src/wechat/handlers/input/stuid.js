@@ -1,9 +1,9 @@
 export default async function () {
 	if (this.isRestoredHandler()) {
 		const input = this.takeTextInput();
-		const match = input && input.match(/^(?:zy|zx|65)(\d{5})$/);
-		if (match) {
-			return this.user.info.stuId = `65${match[1]}`;
+		const stuId = input && input.replace(/^(zy|zx)(\d{5})$/, '65$2');
+		if (/^(65|200)\d{5}$/.test(stuId)) {
+			return this.user.info.stuId = stuId;
 		} else {
 			await this.sendTemplateResponse('input/invalid');
 			this.interrupt('INPUT', true);
