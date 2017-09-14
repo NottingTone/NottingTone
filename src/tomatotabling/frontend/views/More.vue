@@ -8,11 +8,11 @@
 
 	<group title="EXPORT AS ICAL">
 		<tt-selector title="Alarm" :options="options.alarm" v-model="settings.alarm" @input="saveSettings"></tt-selector>
-		<tt-button title="Export" @click.native="onExportIcal"></tt-button>
+		<tt-button title="Export" @click.native="onExport('ics')"></tt-button>
 	</group>
 
 	<group title="EXPORT AS PDF">
-		<tt-button title="Export" @click.native="onExportPdf"></tt-button>
+		<tt-button title="Export" @click.native="onExport('pdf')"></tt-button>
 	</group>
 </div>
 </template>
@@ -101,15 +101,14 @@ export default {
 				});
 			}
 		},
-		onExportIcal() {
+		onExport(type) {
 			this.$router.replace({ query: { export: true } });
 			++this.$parent.loading;
-			window.location.href = `${window.location.pathname}?export=ics&uid=${this.$timetable.uid}${window.location.hash}`;
-		},
-		onExportPdf() {
-			this.$router.replace({ query: { export: true } });
-			++this.$parent.loading;
-			window.location.href = `${window.location.pathname}?export=pdf&uid=${this.$timetable.uid}${window.location.hash}`;
+			const query = `?export=${type}&uid=${this.$timetable.uid}`;
+			history.replaceState({}, document.title, query + window.location.hash);
+			if (window.location.search !== query) { // wechat bug hotfix
+				window.location.href = `${query}&simple`;
+			}
 		},
 	},
 };

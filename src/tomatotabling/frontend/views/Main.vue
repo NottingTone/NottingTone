@@ -20,7 +20,7 @@
 			</tabbar-item>
 		</tabbar>
 	</view-box>
-	<div class="export" v-show="$route.query.export && loading === 0" @click="$router.replace({})">
+	<div class="export" v-show="$route.query.export && loading === 0" @click="onCancelExport">
 		<div class="text">Click the menu and open in browser</div>
 	</div>
 </div>
@@ -65,6 +65,10 @@ export default {
 		showBars(shown) {
 			this.shownTabbar = shown;
 		},
+		onCancelExport() {
+			this.$router.replace({});
+			history.replaceState({}, document.title, `?${window.location.hash}`);
+		}
 	},
 };
 </script>
