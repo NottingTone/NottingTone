@@ -9,7 +9,7 @@ import config from '../../config';
 
 const URL_SCIENTIA = {
 	'unnc': 'http://timetablingunnc.nottingham.ac.uk:8017',
-	'unuk': 'http://uiwwwsylp01.nottingham.ac.uk:8001',
+	'unuk': 'http://uiwwwsylp01.nottingham.ac.uk:8004',
 };
 
 export async function getDataByFilters(settings, filters) {
