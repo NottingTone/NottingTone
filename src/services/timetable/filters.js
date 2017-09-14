@@ -294,7 +294,8 @@ async function fetchActivityIdsByStuId_(stuInfo) {
 	try {
 		html = await request.get(url);
 	} catch (e) {
-		assert(false, 'ERROR_FETCHING_TIMETABLE');
+		return [];
+		// assert(false, 'ERROR_FETCHING_TIMETABLE');
 	}
 	const patternObject = /<!-- START OBJECT-CELL -->([\s\S]*?)<!-- END OBJECT-CELL -->/g;
 	let object;
