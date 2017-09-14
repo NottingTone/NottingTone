@@ -1,5 +1,5 @@
-import arrayFrom from 'array-from'
 import objectAssign from 'object-assign'
+const arrayFrom = (nodeList) => Array.prototype.slice.call(nodeList)
 
 class Swiper {
   constructor (options) {
@@ -53,7 +53,7 @@ class Swiper {
   }
 
   updateItemWidth () {
-    this._width = this.$box.offsetWidth
+    this._width = this.$box.offsetWidth || document.documentElement.offsetWidth
     this._distance = this._options.direction === 'horizontal' ? this._width : this._height
   }
 
@@ -71,22 +71,19 @@ class Swiper {
       setTimeout(() => {
         me.updateItemWidth()
         me._setOffset()
-        me._setTransfrom()
+        me._setTransform()
       }, 100)
     }
     window.addEventListener('orientationchange', this.resizeHandler, false)
   }
 
   _init () {
-    if (this._options.loop) {
-      this._loopTwoItems()
-    }
     this._height = this._options.height === 'auto' ? 'auto' : this._options.height - 0
     this.updateItemWidth()
     this._initPosition()
     this._activate(this._current)
     this._setOffset()
-    this._setTransfrom()
+    this._setTransform()
     if (this._loop()) {
       this._loopRender()
     }
@@ -127,7 +124,7 @@ class Swiper {
     })
   }
 
-  _setTransfrom (offset) {
+  _setTransform (offset) {
     const me = this
     offset = offset || 0
     arrayFrom(me.$items).forEach(function ($item, key) {
@@ -144,7 +141,7 @@ class Swiper {
   _bind () {
     const me = this
     me.touchstartHandler = (e) => {
-
+      /* PATCH START */
       const thisElem = this.$items[this._current]
       const child = thisElem.children[0]
       if (thisElem.children.length === 1 && child.classList.contains('scroller')) {
@@ -154,6 +151,7 @@ class Swiper {
         this.allowLeft = true
         this.allowRight = true
       }
+      /* PATCH END */
 
       me.stop()
       me._start.x = e.changedTouches[0].pageX
@@ -166,8 +164,10 @@ class Swiper {
       let distanceX = me._move.x - me._start.x
       let distanceY = me._move.y - me._start.y
 
+      /* PATCH START */
       if (!this.allowLeft && distanceX > 0) return
       if (!this.allowRight && distanceX < 0) return
+      /* PATCH END */
 
       let distance = distanceY
       let noScrollerY = Math.abs(distanceX) > Math.abs(distanceY)
@@ -175,7 +175,7 @@ class Swiper {
         distance = distanceX
       }
       if (((me._options.minMovingDistance && Math.abs(distance) >= me._options.minMovingDistance) || !me._options.minMovingDistance) && noScrollerY) {
-        me._setTransfrom(distance)
+        me._setTransform(distance)
       }
 
       noScrollerY && e.preventDefault()
@@ -190,8 +190,10 @@ class Swiper {
         distance = me._end.x - me._start.x
       }
 
+      /* PATCH START */
       if (!this.allowLeft && distance > 0) return
       if (!this.allowRight && distance < 0) return
+      /* PATCH END */
 
       distance = me.getDistance(distance)
       if (distance !== 0 && me._options.minMovingDistance && Math.abs(distance) < me._options.minMovingDistance) {
@@ -222,21 +224,6 @@ class Swiper {
     me.$items[1] && me.$items[1].addEventListener('webkitTransitionEnd', me.transitionEndHandler, false)
   }
 
-  _loopTwoItems () {
-    // issue #596 (support when onlt two)
-    if (this.count === 2) {
-      let div = document.createElement('div')
-      let $item
-      for (let i = this.$items.length - 1; i >= 0; i--) {
-        div.innerHTML = this.$items[i].outerHTML
-        $item = div.querySelector(this._options.item)
-        $item.classList.add(`${this._options.item.replace('.', '')}-clone`)
-        this.$container.appendChild($item)
-      }
-      this.realCount = 4
-    }
-  }
-
   _loopRender () {
     const me = this
     if (me._loop()) {
@@ -258,7 +245,7 @@ class Swiper {
     me.$items[1] && me.$items[1].addEventListener('webkitTransitionEnd', me.transitionEndHandler, false)
     me._movePosition(num)
     me._setOffset()
-    me._setTransfrom()
+    me._setTransform()
   }
 
   getDistance (distance) {
@@ -306,7 +293,7 @@ class Swiper {
     me._moveIndex(index)
     me._setOffset()
     me._setTransition()
-    me._setTransfrom()
+    me._setTransform()
     me._auto()
     return this
   }
@@ -333,14 +320,15 @@ class Swiper {
   }
 
   _itemDestoy () {
-    for (let item of this.$items) {
+    this.$items.length && arrayFrom(this.$items).forEach(item => {
       item.removeEventListener('webkitTransitionEnd', this.transitionEndHandler, false)
-    }
+    })
   }
+
   destroy () {
     this.stop()
     this._current = 0
-    this._setTransfrom(0)
+    this._setTransform(0)
     window.removeEventListener('orientationchange', this.resizeHandler, false)
     this.$container.removeEventListener('touchstart', this.touchstartHandler, false)
     this.$container.removeEventListener('touchmove', this.touchmoveHandler, false)
