@@ -62,6 +62,11 @@ import { getTypeStyle } from '../../common/activity-types';
 import { getAcronym, getWeeksText } from '../../common/text';
 import { GridDay } from '../../common/grid';
 
+const DAY_START = moment('09:00', 'HH:mm');
+const DAY_END = moment('18:00', 'HH:mm');
+const SLOTS = Math.ceil(DAY_END.diff(DAY_START, 'minutes') / 30);
+const WEEKDAYS = 5;
+
 export default {
 	props: {
 		week: Number,
@@ -87,8 +92,8 @@ export default {
 	methods: {
 		prepareVaxis() {
 			const times = [];
-			const time = moment('09:00', 'HH:mm');
-			for (let i = 0; i < 25; ++i) {
+			const time = moment(DAY_START);
+			for (let i = 0; i <= SLOTS; ++i) {
 				times.push({
 					time: time.format('HH:mm'),
 					height: 0,
@@ -98,10 +103,9 @@ export default {
 			this.times = times;
 		},
 		prepareData() {
-			const dayStart = moment('09:00', 'HH:mm');
 			const data = this.$timetable;
 			const activityGrid = [];
-			for (let i = 0; i < 6; ++i) {
+			for (let i = 0; i < WEEKDAYS; ++i) {
 				activityGrid.push(new GridDay());
 			}
 			for (const activity of data.activities.values()) {
@@ -122,8 +126,8 @@ export default {
 								code: x.code,
 								acronym: getAcronym(x.name),
 							})),
-						start: moment(activity.start, 'HH:mm').diff(dayStart, 'minutes') / 30,
-						end: moment(activity.end, 'HH:mm').diff(dayStart, 'minutes') / 30,
+						start: moment(activity.start, 'HH:mm').diff(DAY_START, 'minutes') / 30,
+						end: moment(activity.end, 'HH:mm').diff(DAY_START, 'minutes') / 30,
 						rooms: [...activity.rooms],
 						type: getTypeStyle(activity.type),
 						weeks: getWeeksText(activity.weeks),
@@ -137,7 +141,7 @@ export default {
 					column.startRead();
 				}
 			}
-			for (let i = 0; i < 24; ++i) {
+			for (let i = 0; i < SLOTS; ++i) {
 				const tds = [];
 				for (const day of activityGrid) {
 					for (const column of day.rows) {
@@ -155,7 +159,7 @@ export default {
 			const monday = moment(data.week0[data.settings.campus])
 				.add(this.week, 'week')
 				.day('Mon');
-			for (let i = 0; i < 6; ++i) {
+			for (let i = 0; i < WEEKDAYS; ++i) {
 				const date = moment(monday).add(i, 'day');
 				days.push({
 					day: date.format('ddd'),
