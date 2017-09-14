@@ -1,6 +1,6 @@
 <template>
 <group title="ACTIVITIES">
-	<card class="activity vux-tap-active" v-for="(activity,idx) in activities" @click.native="onClickActivity(activity.id)">
+	<card class="activity vux-tap-active" v-for="(activity,idx) in activities" @click.native="onClickActivity(activity.id)" :key="activity.id">
 		<cell slot="header" :title="activity.code" class="code" is-link>
 			<div slot="icon" class="check">
 				<tt-checkbox v-model="activity.selected" @input="onSelect(idx)"></tt-checkbox>

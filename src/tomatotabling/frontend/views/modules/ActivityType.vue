@@ -1,6 +1,6 @@
 <template>
 <group title="GROUPS">
-	<cell v-for="(group,idx) in groups" :title="group.name" :link="{ name: 'group', params: { group: group.name } }">
+	<cell v-for="(group,idx) in groups" :title="group.name" :link="{ name: 'group', params: { group: group.name } }" :key="group.name">
 		<div slot="icon" class="check">
 			<tt-checkbox v-model="group.selected" @input="onSelect(idx)"></tt-checkbox>
 		</div>

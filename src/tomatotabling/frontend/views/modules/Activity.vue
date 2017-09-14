@@ -1,6 +1,6 @@
 <template>
 <group title="CLASSES">
-	<cell v-for="(class_,idx) in classes" :title="class_.date">
+	<cell v-for="(class_,idx) in classes" :title="class_.date" :key="class_.week">
 		<div slot="icon" class="check">
 			<tt-checkbox v-model="class_.selected" @input="onSelect(idx)"></tt-checkbox>
 		</div>

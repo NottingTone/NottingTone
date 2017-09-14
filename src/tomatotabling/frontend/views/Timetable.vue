@@ -9,13 +9,13 @@
 
 	<div @click="toggleBars">
 		<swiper v-if="view === 0" :show-dots="false" :show-desc-mask="false" v-model="currentIdx" :height="height" :threshold="150">
-			<swiper-item v-for="(week,idx) in weeks" style="overflow-y: scroll">
+			<swiper-item v-for="(week,idx) in weeks" style="overflow-y: scroll" :key="week">
 				<list-week :week="week" :settings="settings" ref="weeks" v-if="Math.abs(idx-currentIdx) <= 1"></list-week>
 			</swiper-item>
 		</swiper>
 
 		<swiper v-if="view === 1 || view === 2" :show-dots="false" :show-desc-mask="false" v-model="currentIdx" :height="height" :threshold="150">
-			<swiper-item v-for="(week,idx) in weeks">
+			<swiper-item v-for="(week,idx) in weeks" :key="week">
 				<calendar-week :show-all="view === 2" :week="week" :settings="settings" ref="weeks" v-if="Math.abs(idx-currentIdx) <= 1"></calendar-week>
 			</swiper-item>
 		</swiper>

@@ -1,12 +1,12 @@
 <template>
 <div>
 	<group title="FILTERS">
-		<tt-filter v-for="(filter,idx) in filters" :filter="filter" :link="{ name: 'filter', params: { filter: idx.toString() } }"></tt-filter>
+		<tt-filter v-for="(filter,idx) in filters" :filter="filter" :link="{ name: 'filter', params: { filter: idx.toString() } }" :key="filter.type + filter.id"></tt-filter>
 		<tt-button :link="{ name: 'filter', params: { filter: '-1' } }" title="New Filter"></tt-button>
 	</group>
 
 	<group title="MODULES">
-		<tt-module v-for="module in modules" :module="module"></tt-module>
+		<tt-module v-for="module in modules" :module="module" :key="module.id"></tt-module>
 		<cell title="No Modules" style="text-align: center" v-if="!modules.length"></cell>
 	</group>
 

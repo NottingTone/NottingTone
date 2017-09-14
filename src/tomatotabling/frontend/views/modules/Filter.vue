@@ -12,7 +12,7 @@
 
 		</group>
 		<group title="MODULES">
-			<tt-module v-for="module in modules" :module="module"></tt-module>
+			<tt-module v-for="module in modules" :module="module" :key="module.id"></tt-module>
 			<cell title="No Modules" style="text-align: center" v-if="!modules.length"></cell>
 		</group>
 	</div>

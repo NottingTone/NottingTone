@@ -1,6 +1,6 @@
 <template>
 <group title="TYPES">
-	<cell v-for="(type,idx) in types" :title="type.name" :link="{ name: 'type', params: { type: type.name } }">
+	<cell v-for="(type,idx) in types" :title="type.name" :link="{ name: 'type', params: { type: type.name } }" :key="type.name">
 		<div slot="icon">
 			<tt-checkbox class="check" v-model="type.selected" @input="onSelect(idx)"></tt-checkbox>
 			<i class="tti type-icon" :class="type.style.icon" :style="{ color: type.style.color }"></i>
