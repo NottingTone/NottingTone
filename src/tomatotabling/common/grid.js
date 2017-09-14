@@ -46,7 +46,7 @@ class GridDayRow {
 				return {
 					type: 'empty',
 					start: time,
-					end: 24,
+					end: 18,
 				};
 			}
 		}

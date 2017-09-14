@@ -12,8 +12,8 @@ import { getTypeStyle } from '../../common/activity-types';
 import { getModulesByActivityId } from '../../common/data';
 import { GridDay } from '../../common/grid';
 
-const times = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'];
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const times = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'];
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 export default async function (ctx) {
 	const userData = ctx.state.user.info.timetable || {};
 	const settings = mergeSettings(userData.settings);
@@ -41,7 +41,7 @@ export default async function (ctx) {
 	const data = await getActiveData(settings, filters, select);
 
 	const activityGrid = [];
-	for (let i = 0; i < 6; ++i) {
+	for (let i = 0; i < 5; ++i) {
 		activityGrid.push(new GridDay());
 	}
 
@@ -74,7 +74,7 @@ export default async function (ctx) {
 				filledRow.push(activity);
 				last = activity.end;
 			}
-			while (last < 24) {
+			while (last < 18) {
 				filledRow.push(null);
 				++last;
 			}
