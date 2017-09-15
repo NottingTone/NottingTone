@@ -1,0 +1,13 @@
+<% articles = [{
+	title: 'My Timetable',
+	picurl: 'http://www.nottingham.edu.cn/en/Life/images-multimedia/Ningbo-central-business-district-Cropped-714x335.jpg',
+	url: `${urlPrefix}/tomatotabling/`,
+}, {
+	title: 'Export as iCal',
+	url: `${urlPrefix}/tomatotabling?export=ics&uid=${uid}`,
+}, {
+	title: 'Export as PDF',
+	url: '${urlPrefix}/tomatotabling?export=pdf&uid=${uid}',
+}]; %>
+
+<% include base/news %>

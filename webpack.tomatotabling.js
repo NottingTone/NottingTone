@@ -75,6 +75,16 @@ const webpackConfig = {
 			},
 			chunksSortMode: 'dependency',
 		}),
+		new HtmlWebpackPlugin({
+			filename: 'export.html',
+			template: './src/tomatotabling/frontend/export.html',
+			inject: false,
+			minify: {
+				removeComments: true,
+				collapseWhitespace: true,
+				removeAttributeQuotes: true,
+			},
+		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'vendor',
 			minChunks: function (module, count) {
