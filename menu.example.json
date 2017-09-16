@@ -1,7 +1,7 @@
 {
 	"button":[
 		{
-			"name": "Utilities",
+			"name": "Query",
 			"sub_button": [
 				{
 					"type": "click",
@@ -31,9 +31,9 @@
 			"url": ""
 		},
 		{
-			"type": "view",
-			"name": "About Us",
-			"url": ""
+			"type": "click",
+			"name": "Contact",
+			"key": "ABOUT_CONTACT"
 		}
 	]
 }

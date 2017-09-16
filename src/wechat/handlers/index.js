@@ -5,3 +5,4 @@ export * as timetable from './timetable';
 export * as inputDorm from './input/dorm';
 export * as inputName from './input/name';
 export * as inputStuId from './input/stuid';
+export * as contact from './contact';
