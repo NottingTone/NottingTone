@@ -34,7 +34,7 @@
 		"koa": "logs/koa",
 		"http": "logs/http",
 		"services": "logs/services",
-		"wechat": "logs/wechat"
+		"user": "logs/user"
 	},
 	"urlPrefix": "http://127.0.0.1:3000"
 }
