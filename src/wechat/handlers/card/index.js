@@ -4,7 +4,9 @@ import { getCardByStuId, getCardByStuIdName } from '../../../services/card';
 export config from './config';
 
 export default async function () {
+	this.log.func = 'card';
 	const stuId = await this.callHandler('INPUT_STUID');
+	this.log.args.stuId = stuId;
 	let balance;
 	try {
 		balance = await getCardByStuId(stuId);
@@ -13,6 +15,7 @@ export default async function () {
 			throw e;
 		}
 		const stuName = await this.callHandler('INPUT_NAME');
+		this.log.args.stuName = stuName;
 		try {
 			balance = await getCardByStuIdName(stuId, stuName);
 		} catch (e) {

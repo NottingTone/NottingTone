@@ -4,7 +4,9 @@ import { getOverview } from '../../../services/exercise';
 export config from './config';
 
 export default async function () {
+	this.log.func = 'exercise';
 	const stuId = await this.callHandler('INPUT_STUID');
+	this.log.args.stuId = stuId;
 	const overview = await getOverview(stuId);
 	let lastRecord;
 	if (overview.thisTerm.last === -1) {

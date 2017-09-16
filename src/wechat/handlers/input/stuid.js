@@ -1,5 +1,6 @@
 export default async function () {
 	if (this.isRestoredHandler()) {
+		this.log.func = 'input/stuid';
 		const input = this.takeTextInput();
 		const stuId = input && input.replace(/^(zy|zx)(\d{5})$/, '65$2');
 		if (/^(65|200)\d{5}$/.test(stuId)) {

@@ -1,12 +1,15 @@
 export config from './config';
 
 export default async function () {
+	this.log.func = 'timetable';
+
 	let userData = this.user.info.timetable;
 
 	if (!userData) {
 		if (this.isRestoredHandler()) {
 			const input = this.takeTextInput();
 			const stuId = input.replace(/^(zy|zx)(\d{5})$/, '65$2');
+			this.log.args.stuId = stuId;
 			if (/^(65|200)\d{5}$/.test(stuId)) { // UNNC
 				userData = this.user.info.timetable = {
 					filters: [{

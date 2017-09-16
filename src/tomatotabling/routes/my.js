@@ -1,6 +1,7 @@
 import { getDataByFilters } from '../../services/timetable';
 import { mergeSettings } from '../../services/timetable/settings';
 import config from '../../config';
+import logger from '../../user-logger';
 
 export default async function (ctx) {
 	const userData = ctx.state.user.info.timetable || {};
@@ -22,4 +23,10 @@ export default async function (ctx) {
 		uid: ctx.state.user.id,
 	});
 	ctx.body = data;
-}
+
+	logger.log('info', {
+		func: 'tomatotabling/my',
+		message: 'success',
+		uid: ctx.state.user.id,
+	});
+};

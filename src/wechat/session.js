@@ -2,11 +2,13 @@ import path from 'path';
 import fs from 'mz/fs';
 import ejs from 'ejs';
 import request from 'request-promise-native';
+import winston from 'winston';
 import { assert } from 'chai';
 
 import config from '../../config';
 import getUser from '../user';
 import * as unnamedHandlers from './handlers';
+import logger from '../user-logger';
 
 const handlers = new Map();
 
@@ -31,12 +33,31 @@ export default class Session {
 			interrupt: 'NORMAL',
 			restore: false,
 		};
+		this.log = {
+			func: 'pending',
+			args: {},
+			message: 'pending',
+			level: 'error',
+		};
 		this.isRestoredSession = false;
 	}
 
 	interrupt(data = 'NORMAL', restore = false) {
 		this.context.interrupt = data;
 		this.context.restore = restore;
+		switch (data) {
+		case 'NORMAL':
+			this.log.level = 'info';
+			this.log.message = 'success';
+			break;
+		case 'INPUT':
+			this.log.level = 'info';
+			this.log.message = 'input';
+			break;
+		default:
+			this.log.level = 'warn';
+			this.log.message = data;
+		}
 		throw new Error('INTERRUPT');
 	}
 
@@ -136,87 +157,127 @@ export default class Session {
 	async process() {
 		if (activeUsers.has(this.userid)) {
 			await this.sendTemplateResponse('too-frequent');
-			return;
-		}
-		activeUsers.add(this.userid);
-		this.user = await getUser(`wechat_${this.userid}`);
-		let finished = false;
-		let timer = null;
-		const dispatch = dispatchEvent.call(this).then(() => finished = true);
-		const timeout = new Promise((resolve, reject) => {
-			timer = setTimeout(resolve, config.wechat.responseTimeout);
-		});
-		await Promise.race([dispatch, timeout]);
-		if (finished) {
-			clearTimeout(timer);
+			this.log.level = 'warn';
+			this.log.message = 'TOO_FREQUENT';
 		} else {
-			await this.sendTemplateResponse('wait');
+			activeUsers.add(this.userid);
+			this.user = await getUser(`wechat_${this.userid}`);
+			let finished = false;
+			let timer = null;
+			const dispatch = this.dispatchEvent()
+				.then(() => {
+					this.commitLog();
+					finished = true;
+				});
+			const timeout = new Promise((resolve, reject) => {
+				timer = setTimeout(resolve, config.wechat.responseTimeout);
+			});
+			await Promise.race([dispatch, timeout]);
+			if (finished) {
+				clearTimeout(timer);
+			} else {
+				await this.wait();
+				this.commitLog();
+			}
+			activeUsers.delete(this.userid);
 		}
-		activeUsers.delete(this.userid);
 	}
-};
 
-async function dispatchEvent() {
-	try {
-		switch (this.event.msgType) {
-		case 'text':
-			// restore interrupted session
-			if (this.user.context.restore) {
-				this.isRestoredSession = true;
-				await this.callHandler(this.user.context.handlers[0]);
-				this.interrupt();
-			}
-			// text entrance
-			for (const [name, handler] of handlers.entries()) {
-				if (handler.config && handler.config.entrance && handler.config.entrance.text) {
-					for (const strPattern of handler.config.entrance.text) {
-						const pattern = new RegExp(`^${strPattern}$`, 'i');
-						if (pattern.test(this.event.content)) {
-							await this.callHandler(name);
-							this.interrupt();
-						}
-					}
+	async wait() {
+		this.log.level = 'warn';
+		this.log.message = 'wait';
+		await this.sendTemplateResponse('wait');
+	}
+
+	async ignore() {
+		this.log.level = 'info';
+		this.log.message = 'ignore';
+		await this.sendEmptyResponse();
+	}
+
+	async unsupported() {
+		this.log.level = 'warn';
+		this.log.message = 'unsupported';
+		await this.sendTemplateResponse('unsupported');
+	}
+
+	async error(message) {
+		this.log.level = 'error';
+		this.log.message = message;
+	}
+
+	commitLog() {
+		const level = this.log.level;
+		delete this.log.level;
+		logger.log(level, {
+			...this.log,
+			uid: this.user.id,
+			duration: Date.now() - this.start,
+		});
+	}
+
+	async dispatchEvent() {
+		try {
+			switch (this.event.msgType) {
+			case 'text':
+				// restore interrupted session
+				if (this.user.context.restore) {
+					this.isRestoredSession = true;
+					await this.callHandler(this.user.context.handlers[0]);
+					this.interrupt();
 				}
-			}
-			await this.sendTemplateResponse('unsupported');
-			break;
-		case 'event':
-			switch (this.event.event) {
-			case 'subscribe':
-				await this.sendTemplateResponse('subscribe');
-				break;
-			case 'unsubscribe':
-				await this.sendEmptyResponse();
-				break;
-			case 'CLICK':
-				// menu entrance
+				// text entrance
 				for (const [name, handler] of handlers.entries()) {
-					if (handler.config && handler.config.entrance && handler.config.entrance.menu) {
-						for (const menu of handler.config.entrance.menu) {
-							if (menu === this.event.eventKey) {
+					if (handler.config && handler.config.entrance && handler.config.entrance.text) {
+						for (const strPattern of handler.config.entrance.text) {
+							const pattern = new RegExp(`^${strPattern}$`, 'i');
+							if (pattern.test(this.event.content)) {
 								await this.callHandler(name);
 								this.interrupt();
 							}
 						}
 					}
 				}
-				await this.sendTemplateResponse('unsupported');
+				await this.unsupported();
+				break;
+			case 'event':
+				switch (this.event.event) {
+				case 'subscribe':
+					await this.sendTemplateResponse('subscribe');
+					break;
+				case 'unsubscribe':
+					await this.sendEmptyResponse();
+					break;
+				case 'CLICK':
+					// menu entrance
+					for (const [name, handler] of handlers.entries()) {
+						if (handler.config && handler.config.entrance && handler.config.entrance.menu) {
+							for (const menu of handler.config.entrance.menu) {
+								if (menu === this.event.eventKey) {
+									await this.callHandler(name);
+									this.interrupt();
+								}
+							}
+						}
+					}
+					await this.unsupported();
+					break;
+				default:
+					await this.ignore();
+				}
 				break;
 			default:
-				await this.sendEmptyResponse();
+				await this.unsupported();
 			}
-			break;
-		default:
-			await this.sendTemplateResponse('unsupported');
+			this.interrupt();
+		} catch (e) {
+			if (e.message !== 'INTERRUPT') {
+				await this.error(e.message);
+				this.context.interrupt = 'ERROR';
+				await this.sendTemplateResponse('error');
+			}
 		}
-		this.interrupt();
-	} catch (e) {
-		if (e.message !== 'INTERRUPT') {
-			console.error(e);
-			this.context.interrupt = 'ERROR';
-			await this.sendTemplateResponse('error');
-		}
+		this.user.context = this.context;
+		await this.user.save(300);
 	}
-	this.user.context = this.context;
-	await this.user.save(300);
-}
+};

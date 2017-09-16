@@ -9,6 +9,7 @@ import { mergeSettings } from '../../../services/timetable/settings';
 import config from '../../../config';
 import { getAcronym, getModuleText, getRoomText } from '../../common/text';
 import { getModulesByActivityId } from '../../common/data';
+import logger from '../../../user-logger';
 
 function getUid(activityId, date) {
 	const hash = crypto.createHash('sha1');
@@ -58,4 +59,13 @@ export default async function (ctx) {
 	ctx.type = 'text/calendar';
 	ctx.attachment('timetable.ics');
 	ctx.body = renderred;
+
+	logger.log('info', {
+		func: 'tomatotabling/export',
+		args: {
+			type: 'ics',
+		},
+		message: 'success',
+		uid: ctx.state.user.id,
+	});
 };

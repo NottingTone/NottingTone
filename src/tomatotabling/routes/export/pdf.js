@@ -11,6 +11,7 @@ import { getAcronym, getModuleText, getRoomText, getWeeksText } from '../../comm
 import { getTypeStyle } from '../../common/activity-types';
 import { getModulesByActivityId } from '../../common/data';
 import { GridDay } from '../../common/grid';
+import logger from '../../../user-logger';
 
 const times = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'];
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
@@ -99,4 +100,13 @@ export default async function (ctx) {
 	ctx.type = 'application/pdf';
 	ctx.attachment('timetable.pdf');
 	ctx.body = await html2pdf(renderred);
+
+	logger.log('info', {
+		func: 'tomatotabling/export',
+		args: {
+			type: 'pdf',
+		},
+		message: 'success',
+		uid: ctx.state.user.id,
+	});
 };
