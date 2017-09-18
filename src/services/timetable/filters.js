@@ -67,7 +67,7 @@ class FilterProcessor {
 		for (const [object, set] of Object.entries(select)) {
 			if (!object.includes('/')) {
 				const activityId = parseInt(object);
-				if (set === 1 && !data.activities.has(activityId)) {
+				if (set === 1 && !data.activities.includes(activityId)) {
 					extraActivityIds.add(activityId);
 				} else if (set === 0) {
 					activities.get(activityId).weeks = new Set();
