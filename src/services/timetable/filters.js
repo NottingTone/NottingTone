@@ -313,7 +313,7 @@ async function fetchActivityIdsByStuId_(stuInfo) {
 }
 
 const getActivityIdsByStuId = wrap(fetchActivityIdsByStuId_, {
-	name: 'timetable',
+	service: 'timetable',
 	func: 'getActivityIdsByStuId',
 	params: ['campus_stuId'],
 	cache: {
