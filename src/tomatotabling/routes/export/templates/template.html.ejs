@@ -64,7 +64,7 @@ td.activity, th {
 	font-weight: 400;
 	display: inline-block;
 	font-size: 12px;
-	-webkit-transform: translate3d(50%,0,0);
+	transform: translate3d(50%,0,0);
 }
 .time:first-child, .day {
 	width: <%=DAY_WIDTH%>px;
@@ -74,8 +74,8 @@ td.activity, th {
 	font-size: 16px;
 }
 .day>.text {
-	-webkit-writing-mode: vertical-lr;
-	-webkit-transform: rotate(180deg);
+	writing-mode: vertical-lr;
+	transform: rotate(180deg);
 }
 td.activity {
 	background: #ddd;
@@ -91,8 +91,8 @@ td.activity>.top {
 td.activity>.bottom {
 	position: absolute;
 	left: <%=CELL_PADDING%>px; bottom: <%=CELL_PADDING%>px; right: <%=CELL_PADDING%>px;
-	display: -webkit-flex;
-	-webkit-align-items: flex-end;
+	display: flex;
+	align-items: flex-end;
 }
 td.activity>.top>.code {
 	float: left;
@@ -104,7 +104,7 @@ td.activity>.bottom>.staffs {
 	text-align: right;
 }
 td.activity>.bottom>.flex {
-	-webkit-flex: 1 1;
+	flex: 1 1;
 }
 td.activity>.module {
 	text-align: center;
@@ -114,7 +114,7 @@ td.activity>.module {
 	top: 50%; left: 0; right: 0; bottom: 50%;
 }
 td.activity>.module>.text {
-	-webkit-transform: translate3d(0,-50%,0);
+	transform: translate3d(0,-50%,0);
 }
 .row {
 	height: <%=ROW_HEIGHT%>px;
@@ -145,11 +145,11 @@ td.activity>.module>.text {
 	background: #000;
 }
 .timeline>.cells {
-	display: -webkit-flex;
+	display: flex;
 	text-align: center;
 }
 .timeline>.cells>.week {
-	-webkit-flex: 7 0;
+	flex: 7 0;
 }
 .timeline>.cells>* {
 	box-sizing: border-box;
@@ -170,16 +170,16 @@ td.activity>.module>.text {
 <div class="timeline">
 	<div class="cells">
 		<% for (const month of months) { %>
-			<div style="-webkit-flex:<%=month.length%> 0"><%=month.month%></div>
+			<div style="flex:<%=month.length%> 0"><%=month.month%></div>
 		<% } %>
 	</div>
 	<div class="line"></div>
 	<div class="cells">
-		<div style="-webkit-flex:<%=paddings[0]%> 0; border-left: none"></div>
+		<div style="flex:<%=paddings[0]%> 0; border-left: none"></div>
 		<% for (let week = semester[0]; week <= semester[1]; ++week) { %>
 			<div class="week"><%=week%></div>
 		<% } %>
-		<div style="-webkit-flex:<%=paddings[1]%> 0; border: none"></div>
+		<div style="flex:<%=paddings[1]%> 0; border: none"></div>
 	</div>
 </div>
 
