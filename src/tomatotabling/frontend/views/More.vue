@@ -102,13 +102,7 @@ export default {
 			}
 		},
 		onExport(type) {
-			this.$router.replace({ query: { export: true } });
-			++this.$parent.loading;
-			const query = `?export=${type}&uid=${this.$timetable.uid}`;
-			history.replaceState({}, document.title, query + window.location.hash);
-			if (window.location.search !== query) { // wechat bug hotfix
-				window.location.href = `${query}&simple`;
-			}
+			this.$router.replace({ query: { export: type, uid: this.$timetable.uid } });
 		},
 	},
 };

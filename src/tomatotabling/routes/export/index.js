@@ -7,16 +7,14 @@ import pdf from './pdf';
 import getUser from '../../../user';
 
 export default async function (ctx, next) {
-	if (!ctx.query.export || !ctx.query.uid) {
-		return await next();
-	}
-
 	if (ctx.get('User-Agent').match(/micromessenger/i)) {
-		if (ctx.query.simple !== undefined) {
-			return await send(ctx, 'export.html', { root: path.join(__dirname, '../../frontend') });
+		if (ctx.query.export) {
+			return await send(ctx, 'export.wechat.html', { root: path.join(__dirname, '../../frontend') });
 		} else {
 			return await next();
 		}
+	} else if (!ctx.query.export) {
+		return await send(ctx, 'export.browser.html', { root: path.join(__dirname, '../../frontend') })
 	}
 
 	ctx.state.user = await getUser(ctx.query.uid, false);

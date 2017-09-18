@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+	const match = location.hash.match(/#\/more(\?.*)$/);
+	match && (location.href = match[1]);
+</script>
+</head>
+</html>

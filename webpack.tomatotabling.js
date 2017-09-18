@@ -76,8 +76,18 @@ const webpackConfig = {
 			chunksSortMode: 'dependency',
 		}),
 		new HtmlWebpackPlugin({
-			filename: 'export.html',
-			template: './src/tomatotabling/frontend/export.html',
+			filename: 'export.wechat.html',
+			template: './src/tomatotabling/frontend/export.wechat.html',
+			inject: false,
+			minify: {
+				removeComments: true,
+				collapseWhitespace: true,
+				removeAttributeQuotes: true,
+			},
+		}),
+		new HtmlWebpackPlugin({
+			filename: 'export.browser.html',
+			template: './src/tomatotabling/frontend/export.browser.html',
 			inject: false,
 			minify: {
 				removeComments: true,
