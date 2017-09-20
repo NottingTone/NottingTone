@@ -72,7 +72,7 @@ export default class Session {
 			return undefined;
 		} else {
 			this.textInputTaken = true;
-			return this.event.content;
+			return this.event.content.trim();
 		}
 	}
 
