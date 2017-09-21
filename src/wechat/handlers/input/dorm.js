@@ -4,6 +4,7 @@ export default async function () {
 	if (this.isRestoredHandler()) {
 		this.log.func = 'input/dorm';
 		const input = this.takeTextInput();
+		this.log.args.input = input;
 		const match = input && input.match(/^(\d{2})\D+(\d{3,4})$/);
 		if (!match) {
 			await this.sendTemplateResponse('input/invalid');
