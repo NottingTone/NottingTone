@@ -161,7 +161,7 @@ export default {
 		},
 		onSearchInput(input) {
 			if (['student', 'exam'].includes(this.filter.type)) {
-				if (/^[0-9]{7}$/.test(input)) {
+				if (/^(\d{7}|(165|200)\d{5})$/.test(input)) {
 					this.search.results = [{
 						id: input,
 						title: input,
