@@ -10,7 +10,7 @@ export default async function () {
 			const input = this.takeTextInput();
 			const stuId = input.replace(/^(zy|zx)(\d{5})$/, '65$2');
 			this.log.args.stuId = stuId;
-			if (/^(65|200)\d{5}$/.test(stuId)) { // UNNC
+			if (/^(165|200)\d{5}$/.test(stuId)) { // UNNC
 				userData = this.user.info.timetable = {
 					filters: [{
 						type: 'student',

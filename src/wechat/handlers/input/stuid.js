@@ -3,8 +3,8 @@ export default async function () {
 		this.log.func = 'input/stuid';
 		const input = this.takeTextInput();
 		this.log.args.input = input;
-		const stuId = input && input.replace(/^(zy|zx)(\d{5})$/, '65$2');
-		if (/^(65|200)\d{5}$/.test(stuId)) {
+		const stuId = input && input.replace(/^(zy|zx)(\d{5})$/, '165$2');
+		if (/^(165|200)\d{5}$/.test(stuId)) {
 			return this.user.info.stuId = stuId;
 		} else {
 			await this.sendTemplateResponse('input/invalid');
