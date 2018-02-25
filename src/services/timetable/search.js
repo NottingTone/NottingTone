@@ -11,8 +11,8 @@ export async function search(settings, type, key) {
 	case 'module': {
 		let sql;
 		assert(key.length >= 3 && key.length <= 100, 'INVALID_KEY_LENGTH');
-		if (/^[A-Z0-9]{3,6}$/i.test(key)) {
-			sql = 'SELECT * FROM modules WHERE INSTR(lower(code),lower(?))<>0 LIMIT 20';
+		if (/^[A-Z0-9]{3,8}$/i.test(key)) {
+			sql = 'SELECT * FROM modules WHERE INSTR(lower(code_search),lower(?))<>0 LIMIT 20';
 		} else {
 			sql = 'SELECT * FROM modules WHERE INSTR(lower(name),lower(?))<>0 LIMIT 20';
 		}
@@ -42,16 +42,10 @@ export async function search(settings, type, key) {
 	}
 	case 'program': {
 		assert(key.length >= 1 && key.length <= 100, 'INVALID_KEY_LENGTH');
-		let sql;
-		if (/^[A-Z0-9]{1,4}$/i.test(key)) {
-			sql = 'SELECT * FROM programs WHERE INSTR(lower(code),lower(?))<>0 LIMIT 20';
-		} else {
-			sql = 'SELECT * FROM programs WHERE INSTR(lower(name),lower(?))<>0 LIMIT 20';
-		}
+		const sql ='SELECT * FROM programs WHERE INSTR(lower(name),lower(?))<>0 LIMIT 20';
 		const programs = await db.all(sql, [key]);
 		return programs.map(x => ({
 			id: x.id,
-			code: x.code,
 			name: x.name,
 		}));
 	}

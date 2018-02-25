@@ -44,7 +44,7 @@ const PLACEHOLDERS = {
 	'module': 'Code / Name',
 	'y1group': 'Group',
 	'staff': 'Name',
-	'program': 'Code / Name',
+	'program': 'Name',
 	'room': 'Room',
 	'exam': 'Student ID',
 };
@@ -237,7 +237,7 @@ export default {
 			switch (this.filter.type) {
 			case 'module':
 			case 'program':
-				return { title: `${result.code} ${result.name}`, ...result };
+				return { title: result.name, ...result };
 			case 'y1group':
 			case 'staff':
 				return { title: result.name, ...result };

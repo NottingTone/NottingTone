@@ -223,7 +223,7 @@ class FilterProcessor {
 		case 'staff':
 			return this.db.get('SELECT name FROM staffs WHERE id=?', [filter.id]);
 		case 'program':
-			return this.db.get('SELECT code, name FROM programs WHERE id=?', [filter.id]);
+			return this.db.get('SELECT id, name FROM programs WHERE id=?', [filter.id]);
 		case 'room':
 			return this.db.get('SELECT name, alias FROM rooms WHERE id=?', [filter.id]);
 		case 'exam':
@@ -248,7 +248,7 @@ class FilterProcessor {
 			sql = 'SELECT activity_id FROM staff_activity WHERE staff_id=?';
 			return await this.getActivityIdsBySql(sql, [filter.id]);
 		case 'program':
-			sql = 'SELECT activity_id FROM program_level_activity WHERE program_level_id=?';
+			sql = 'SELECT activity_id FROM program_activity WHERE program_id=?';
 			return await this.getActivityIdsBySql(sql, [filter.id]);
 		case 'room':
 			sql = 'SELECT activity_id FROM room_activity WHERE room_id=?';

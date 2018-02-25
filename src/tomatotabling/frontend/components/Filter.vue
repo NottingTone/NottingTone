@@ -20,7 +20,7 @@ export default {
 		title() {
 			switch (this.filter.type) {
 			case 'program':
-				return `Level ${this.filter.level}`;
+				return '';
 			case 'student':
 			case 'exam':
 				return this.filter.id;
