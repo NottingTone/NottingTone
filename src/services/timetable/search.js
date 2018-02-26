@@ -9,14 +9,15 @@ export async function search(settings, type, key) {
 	assert(db, 'INVALID_CAMPUS');
 	switch (type) {
 	case 'module': {
-		let sql;
 		assert(key.length >= 3 && key.length <= 100, 'INVALID_KEY_LENGTH');
+		let modules;
 		if (/^[A-Z0-9]{3,8}$/i.test(key)) {
-			sql = 'SELECT * FROM modules WHERE INSTR(lower(code_search),lower(?))<>0 LIMIT 20';
+			const sql = 'SELECT * FROM modules WHERE INSTR(lower(code_search),lower(?))<>0 OR INSTR(lower(name),lower(?))<>0 LIMIT 20';
+			modules = await db.all(sql, [key, key]);
 		} else {
 			sql = 'SELECT * FROM modules WHERE INSTR(lower(name),lower(?))<>0 LIMIT 20';
+			modules = await db.all(sql, [key]);
 		}
-		const modules = await db.all(sql, [key]);
 		return modules.map(x => ({
 			id: x.id,
 			code: x.code,
