@@ -24,7 +24,7 @@ Vue.http.interceptors.push(function (req, next) {
 			status: 408,
 			statusText: 'Timeout',
 		}));
-	}, 5000);
+	}, 60000);
 	next((resp) => {
 		clearTimeout(timeout);
 		if (resp.status === 401) {
