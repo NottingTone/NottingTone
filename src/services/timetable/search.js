@@ -15,7 +15,7 @@ export async function search(settings, type, key) {
 			const sql = 'SELECT * FROM modules WHERE INSTR(lower(code_search),lower(?))<>0 OR INSTR(lower(name),lower(?))<>0 LIMIT 20';
 			modules = await db.all(sql, [key, key]);
 		} else {
-			sql = 'SELECT * FROM modules WHERE INSTR(lower(name),lower(?))<>0 LIMIT 20';
+			const sql = 'SELECT * FROM modules WHERE INSTR(lower(name),lower(?))<>0 LIMIT 20';
 			modules = await db.all(sql, [key]);
 		}
 		return modules.map(x => ({
