@@ -7,11 +7,6 @@ import { mergeSettings } from './settings';
 import wrap from '../wrap';
 import config from '../../config';
 
-const URL_SCIENTIA = {
-	'unnc': 'http://timetablingunnc.nottingham.ac.uk:8005',
-	'unuk': 'http://uiwwwsylp01.nottingham.ac.uk:8004',
-};
-
 export async function getDataByFilters(settings, filters) {
 	const processor = new FilterProcessor(mergeSettings(settings));
 	return await processor.getDataByFilters(filters, false);
@@ -288,7 +283,7 @@ function classify(objects, key, onlyId=false) {
 
 async function fetchActivityIdsByStuId_(stuInfo) {
 	const [campus, stuId] = stuInfo.split('_');
-	const url = `${URL_SCIENTIA[campus]}/reporting/Individual;Student+Sets;id;${stuId}?template=Student+Set+Individual&weeks=${config.tomatotabling[campus].semester}&days=1-7&periods=1-32`;
+	const url = `${config.scientia[campus]}/reporting/Individual;Student+Sets;id;${stuId}?template=Student+Set+Individual&weeks=${config.tomatotabling[campus].semester}&days=1-7&periods=1-32`;
 	assert(url, 'INVALID_CAMPUS');
 	let html;
 	try {

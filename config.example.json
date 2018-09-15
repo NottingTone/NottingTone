@@ -30,6 +30,10 @@
 			"semester": "1-20"
 		}
 	},
+	"scientia": {
+		"unnc": "http://timetablingunnc.nottingham.ac.uk",
+		"unuk": "http://timetablingunuk.nottingham.ac.uk",
+	},
 	"log": {
 		"koa": "logs/koa",
 		"http": "logs/http",
