@@ -3,7 +3,7 @@ export default async function () {
 		this.log.func = 'input/stuid';
 		const input = this.takeTextInput();
 		this.log.args.input = input;
-		const stuId = input && input.replace(/^(zy|zx)(\d{5})$/, '165$2');
+		const stuId = input && input.replace(/^(zy|zx|65)(\d{5})$/, '165$2');
 		if (/^\d{7,8}$/.test(stuId)) {
 			return this.user.info.stuId = stuId;
 		} else {
