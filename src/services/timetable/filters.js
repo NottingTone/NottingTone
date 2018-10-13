@@ -52,37 +52,62 @@ class FilterProcessor {
 	async getActiveData(filters, select) {
 		const data = await this.getDataByFilters(filters, true);
 		const activities = new Map();
+		const allActivities = new Map();
 		for (const [id, activity] of data.activities.entries()) {
 			activities.set(activity.id, {
+				...activity,
+				weeks: new Set(activity.weeks),
+			});
+			allActivities.set(activity.id, {
 				...activity,
 				weeks: new Set(activity.weeks),
 			});
 		}
 		const extraActivityIds = new Set();
 		for (const [object, set] of Object.entries(select)) {
-			if (!object.includes('/')) {
-				const activityId = parseInt(object);
-				if (set === 1 && !data.activities.includes(activityId)) {
-					extraActivityIds.add(activityId);
-				} else if (set === 0) {
-					activities.get(activityId).weeks = new Set();
-				}
+			const [activityId, week] = object.split('/').map(x => parseInt(x));
+			if (set === 1 && !allActivities.has(activityId)) {
+				extraActivityIds.add(activityId);
 			}
 		}
-		const extraActivities = await this.getActivitiesByIds(extraActivityIds);
+		const extraActivities = await this.getActivitiesByIds(new Set(extraActivityIds.keys()));
 		for (const extraActivity of extraActivities) {
 			activities.set(extraActivity.id, extraActivity);
 		}
+
 		for (const [object, set] of Object.entries(select)) {
-			if (object.includes('/')) {
-				const [activityId, week] = object.split('/').map(x => parseInt(x));
+			const [activityId, week] = object.split('/').map(x => parseInt(x));
+			if (!week) {
 				if (set === 1) {
+					const activity = allActivities.get(activityId);
+					activities.set(activityId, {
+						...activity,
+						weeks: new Set(activity.weeks),
+					});
+				} else if (activities.has(activityId)) {
+					activities.delete(activityId);
+				}
+			}
+		}
+
+		for (const [object, set] of Object.entries(select)) {
+			const [activityId, week] = object.split('/').map(x => parseInt(x));
+			if (week) {
+				if (set === 1) {
+					if (!activities.has(activityId)) {
+						const activity = allActivities.get(activityId);
+						activities.set(activityId, {
+							...activity,
+							weeks: new Set(),
+						});
+					}
 					activities.get(activityId).weeks.add(week);
-				} else if (set === 0) {
+				} else if (activities.has(activityId)) {
 					activities.get(activityId).weeks.delete(week);
 				}
 			}
 		}
+
 		for (const [id, activity] of activities) {
 			if (activity.weeks.size === 0) {
 				activities.delete(id);
