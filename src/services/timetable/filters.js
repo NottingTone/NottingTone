@@ -72,7 +72,7 @@ class FilterProcessor {
 		}
 		const extraActivities = await this.getActivitiesByIds(new Set(extraActivityIds.keys()));
 		for (const extraActivity of extraActivities) {
-			activities.set(extraActivity.id, extraActivity);
+			allActivities.set(extraActivity.id, extraActivity);
 		}
 
 		for (const [object, set] of Object.entries(select)) {
