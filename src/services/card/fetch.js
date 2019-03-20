@@ -51,6 +51,9 @@ async function randomOpenid() {
 }
 
 export async function fetchCardByStuId(stuId) {
+	if (stuId.match(/165\d{5}/)) {
+		stuId = stuId.slice(1);
+	}
 	let bindInfo;
 	try {
 		bindInfo = JSON.parse(await lsmartBind.get(stuId));
@@ -68,6 +71,9 @@ export async function fetchCardByStuId(stuId) {
 }
 
 export async function fetchCardByStuIdName(stuId, stuName) {
+	if (stuId.match(/165\d{5}/)) {
+		stuId = stuId.slice(1);
+	}
 	const openid = await randomOpenid();
 	assert(await bindStudent(openid, stuName, stuId), 'ERROR_IN_BINDING');
 	await lsmartBind.put(stuId, JSON.stringify({
